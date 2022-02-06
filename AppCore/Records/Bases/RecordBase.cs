@@ -8,6 +8,6 @@
         public string? CreatedBy { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string? UpdatedBy { get; set; }
-        public bool? IsDeleted { get; set; }
+        public bool? IsDeleted { get; set; } // Soft Delete
     }
 }
