@@ -25,8 +25,7 @@ constructor yazılır, daha sonra Index, Details, Create, Edit ve Delete aksiyon
 NuGet'ten Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation paketi indirilir ve projede Properties -> launchSettings.json
 dosyasına "ASPNETCORE_ENVIRONMENT" altına "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
 tüm profiller için eklenir.
-14) İstenirse launchSettings.json'daki profiles altında IIS Express development (DEV), _038_MoviesMvcCoreIntroBilgeAdam 
-production (PROD) olarak ayarlanabilir.
+14) İstenirse launchSettings.json'daki profiles altında IIS Express development (DEV), MvcWebUI production (PROD) olarak ayarlanabilir.
 
 Yapı:
 View <-> Controller (Başlangıç noktası) <-> Service (model) <-> Repository (entity -> context -> veritabanı)
