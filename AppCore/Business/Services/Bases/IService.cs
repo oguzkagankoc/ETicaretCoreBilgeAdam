@@ -1,4 +1,5 @@
-﻿using AppCore.DataAccess.Bases.EntityFramework;
+﻿using AppCore.Business.Models.Results;
+using AppCore.DataAccess.Bases.EntityFramework;
 using AppCore.Records.Bases;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,8 +9,8 @@ namespace AppCore.Business.Services.Bases
     {
         RepositoryBase<TEntity, TDbContext> Repository { get; set; }
         IQueryable<TModel> Query();
-        bool Add(TModel model);
-        bool Update(TModel model);
-        bool Delete(int id);
+        Result Add(TModel model);
+        Result Update(TModel model);
+        Result Delete(int id);
     }
 }

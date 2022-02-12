@@ -97,11 +97,23 @@ namespace AppCore.DataAccess.Bases.EntityFramework
             return DbContext.SaveChanges();
         }
 
+        #region Dispose
+        private bool _disposed = false;
+
+        private void Dispose(bool disposing)
+        {
+            if (!_disposed && disposing)
+            {
+                DbContext?.Dispose();
+            }
+            _disposed = true;
+        }
+
         public void Dispose()
         {
-            //if (DbContext != null)
-            //    DbContext.Dispose();
-            DbContext?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }
