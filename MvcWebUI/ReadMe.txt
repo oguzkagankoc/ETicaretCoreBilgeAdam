@@ -32,7 +32,7 @@ View <-> Controller (Başlangıç noktası) <-> Service (model) <-> Repository (
 
 Proje geliştirme aşamaları:
 1) DatabaseController
-1.1) Seed Action -> İlk verileri doldurma
+1.1) Seed Action -> İlk verileri doldurma, DbContext objesinin new'lenerek kullanılması
 2) KategorilerController
 2.1) Index Action 
 2.2) Details Action 

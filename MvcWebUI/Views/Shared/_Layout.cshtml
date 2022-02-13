@@ -25,7 +25,16 @@
             <ul class="list-unstyled admin">
                 <p>Admin</p>
                 <li class="nav-item">
-                    <a class="a-navbar" href="#"> Verileri Sıfırla</a>
+
+                    @* HTML *@
+                    @*<a class="a-navbar" href="/Database/Seed"> Verileri Sıfırla</a>*@
+
+                    @* HTML Helper Klasik MVC ve MVC Core *@
+                    @*@Html.ActionLink("Verileri Sıfırla", "Seed", "Database", null, new { @class = "a-navbar" })*@
+
+                    @* Tag Helper MVC Core *@
+                    <a asp-action="Seed" asp-controller="Database" class="a-navbar">Verileri Sıfırla</a> 
+
                 </li>
             </ul>
         </nav>

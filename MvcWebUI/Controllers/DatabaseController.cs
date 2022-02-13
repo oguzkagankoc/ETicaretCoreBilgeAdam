@@ -15,6 +15,21 @@ namespace MvcWebUI.Controllers
             //db.Dispose();
             using (ETicaretContext db = new ETicaretContext())
             {
+                // verilerin silinmesi:
+                var urunEntities = db.Urunler.ToList();
+
+                //if (urunEntities != null && urunEntities.Count > 0)
+                //{
+                //    foreach (var urunEntity in urunEntities)
+                //    {
+                //        db.Urunler.Remove(urunEntity);
+                //    }
+                //}
+                db.Urunler.RemoveRange(urunEntities);
+
+                var kategoriEntities = db.Kategoriler.ToList();
+                db.Kategoriler.RemoveRange(kategoriEntities);
+
                 // verilerin eklenmesi:
                 db.Kategoriler.Add(new Kategori()
                 {
