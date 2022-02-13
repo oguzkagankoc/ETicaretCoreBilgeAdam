@@ -48,33 +48,54 @@ namespace AppCore.DataAccess.Bases.EntityFramework
 
         public void Add(TEntity entity, bool save = true)
         {
-            entity.Guid = Guid.NewGuid().ToString();
-            entity.CreateDate = DateTime.Now;
-            DbContext.Set<TEntity>().Add(entity);
-            if (save)
-                Save();
+            try
+            {
+                entity.Guid = Guid.NewGuid().ToString();
+                entity.CreateDate = DateTime.Now;
+                DbContext.Set<TEntity>().Add(entity);
+                if (save)
+                    Save();
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
         }
 
         public void Update(TEntity entity, bool save = true)
         {
-            entity.UpdateDate = DateTime.Now;
-            DbContext.Set<TEntity>().Update(entity);
-            if (save)
-                Save();
+            try
+            {
+                entity.UpdateDate = DateTime.Now;
+                DbContext.Set<TEntity>().Update(entity);
+                if (save)
+                    Save();
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
         }
 
         public void Delete(TEntity entity, bool save = true, bool softDelete = false)
         {
-            if (softDelete) // kaydın veritabanından silinmeyip silindi olarak işaretlenmesi
+            try
             {
-                entity.IsDeleted = true;
-                Update(entity, save);
+                if (softDelete) // kaydın veritabanından silinmeyip silindi olarak işaretlenmesi
+                {
+                    entity.IsDeleted = true;
+                    Update(entity, save);
+                }
+                else // kaydın veritabanından silinmesi
+                {
+                    DbContext.Set<TEntity>().Remove(entity);
+                    if (save)
+                        Save();
+                }
             }
-            else // kaydın veritabanından silinmesi
+            catch (Exception exc)
             {
-                DbContext.Set<TEntity>().Remove(entity);
-                if (save)
-                    Save();
+                throw exc;
             }
         }
 
@@ -94,7 +115,14 @@ namespace AppCore.DataAccess.Bases.EntityFramework
 
         public int Save()
         {
-            return DbContext.SaveChanges();
+            try
+            {
+                return DbContext.SaveChanges();
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
         }
 
         #region Dispose

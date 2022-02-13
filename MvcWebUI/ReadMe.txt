@@ -33,13 +33,13 @@ View <-> Controller (Başlangıç noktası) <-> Service (model) <-> Repository (
 Proje geliştirme aşamaları:
 1) DatabaseController
 1.1) Seed Action -> İlk verileri doldurma
-2) UrunlerController
+2) KategorilerController
 2.1) Index Action 
 2.2) Details Action 
 2.3) Create Action
 2.4) Edit Action
 2.5) Delete Action
-3) KategorilerController
+3) UrunlerController
 3.1) Index Action 
 3.2) Details Action 
 3.3) Create Action 
