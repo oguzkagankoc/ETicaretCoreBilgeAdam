@@ -4,7 +4,7 @@ namespace MvcWebUI.Controllers
 {
     public class KategoriController : Controller
     {
-        private readonly IKategoriService _kategoriService;
+        //private readonly IKategoriService _kategoriService;
 
         public IActionResult Index()
         {

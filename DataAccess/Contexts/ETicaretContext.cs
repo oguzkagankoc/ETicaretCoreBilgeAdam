@@ -14,6 +14,7 @@ namespace DataAccess.Contexts
             //string connectionString = "server=.;database=BA_ETicaretCore;trusted_connection=true;multipleactiveresultsets=true;";
 
             // SQL Server Authentication
+            //string connectionString = "server=.\\SQLEXPRESS;database=BA_ETicaretCore;user id=sa;password=sa;multipleactiveresultsets=true;";
             string connectionString = "server=.;database=BA_ETicaretCore;user id=sa;password=123;multipleactiveresultsets=true;";
 
             optionsBuilder.UseSqlServer(connectionString);
