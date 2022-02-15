@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace AppCore.DataAccess.Bases.EntityFramework
+namespace AppCore.DataAccess.EntityFramework.Bases
 {
     public abstract class RepositoryBase<TEntity, TDbContext> : IRepositoryBase<TEntity, TDbContext> where TEntity : RecordBase, new() where TDbContext : DbContext, new()
     {

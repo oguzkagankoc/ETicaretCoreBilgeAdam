@@ -1,8 +1,8 @@
-﻿using AppCore.DataAccess.Bases.EntityFramework;
+﻿using AppCore.DataAccess.EntityFramework.Bases;
 using AppCore.Records.Bases;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppCore.DataAccess.Concretes.EntityFramework
+namespace AppCore.DataAccess.EntityFramework
 {
     public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContext> where TEntity : RecordBase, new() where TDbContext : DbContext, new()
     {

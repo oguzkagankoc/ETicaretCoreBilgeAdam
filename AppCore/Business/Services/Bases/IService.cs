@@ -1,5 +1,5 @@
 ﻿using AppCore.Business.Models.Results;
-using AppCore.DataAccess.Bases.EntityFramework;
+using AppCore.DataAccess.EntityFramework.Bases;
 using AppCore.Records.Bases;
 using Microsoft.EntityFrameworkCore;
 

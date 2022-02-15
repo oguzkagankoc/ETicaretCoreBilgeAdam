@@ -1,7 +1,7 @@
 ﻿using AppCore.Records.Bases;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppCore.DataAccess.Bases
+namespace AppCore.DataAccess.EntityFramework.Bases
 {
     //public interface IRepositoryBase<TEntity>
     //public interface IRepositoryBase<TEntity> where TEntity : class // TEntity referans tip olabilir
