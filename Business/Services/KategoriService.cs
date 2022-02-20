@@ -23,12 +23,19 @@ namespace Business.Services
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Repository.Dispose();
         }
 
+        // Sadece örneğin select Id, Adi, Aciklamasi from Kategoriler sorgusunu oluşturur.
         public IQueryable<KategoriModel> Query()
         {
-            throw new NotImplementedException();
+            IQueryable<KategoriModel> query = Repository.EntityQuery().OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
+            {
+                Id = kategori.Id,
+                Adi = kategori.Adi,
+                Aciklamasi = kategori.Aciklamasi
+            });
+            return query;
         }
 
         public Result Update(KategoriModel model)
