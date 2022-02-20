@@ -4,12 +4,18 @@ using Business.Models;
 using Business.Services.Bases;
 using DataAccess.Contexts;
 using DataAccess.Entities;
+using DataAccess.Repositories.Bases;
 
 namespace Business.Services
 {
     public class KategoriService : IKategoriService
     {
-        public RepositoryBase<Kategori, ETicaretContext> Repository { get; set; } 
+        public RepositoryBase<Kategori, ETicaretContext> Repository { get; set; }
+
+        public KategoriService(KategoriRepositoryBase repository)
+        {
+            Repository = repository;
+        }
 
         public Result Add(KategoriModel model)
         {

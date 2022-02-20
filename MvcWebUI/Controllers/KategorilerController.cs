@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MvcWebUI.Controllers
 {
-    public class KategoriController : Controller
+    public class KategorilerController : Controller
     {
         // Bu class'ın ihtiyacı olan objeleri class içinde new'lemek yerine dependency injection
         // (constructor injection) yapılmalı.
@@ -13,19 +13,22 @@ namespace MvcWebUI.Controllers
 
         private readonly IKategoriService _kategoriService;
 
-        public KategoriController(IKategoriService kategoriService)
+        public KategorilerController(IKategoriService kategoriService)
         {
             _kategoriService = kategoriService;
         }
 
-        public IActionResult Index() // ~/Kategori/Index
+        public IActionResult Index() // ~/Kategoriler/Index
         {
             List<KategoriModel> kategoriler = _kategoriService.Query().ToList();
             // ToList(), SingleOrDefault(), FirstOrDefault(), vb. methodlar Query ile
             // oluşturulan sorguyu veritabanında çalıştırır ve sonucunu bir objeye atar.
 
+            if (kategoriler == null || kategoriler.Count == 0) // liste boş ise
+                return View("Hata", "Kayıt bulunamadı.");
+
             //return View(); // Index.cshtml'i kullanır
-            return View("Kategoriler", kategoriler); // Kategoriler.cshtml'i kullanır
+            return View("KategoriListesi", kategoriler); // Kategoriler.cshtml'i kullanır
         }
     }
 }

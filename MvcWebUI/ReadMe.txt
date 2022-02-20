@@ -30,11 +30,13 @@ tüm profiller için eklenir.
 Yapı:
 View <-> Controller (Başlangıç noktası) <-> Service (model) <-> Repository (entity -> context -> veritabanı)
 
+HTML - CSS - Javascript örnekleri projede wwwroot -> HTML_Javascript_CSS_Intro klasörü altındadır.
+
 Proje geliştirme aşamaları:
 1) DatabaseController
 1.1) Seed Action -> İlk verileri doldurma, DbContext objesinin new'lenerek kullanılması
-2) KategorilerController
-2.1) Index Action 
+2) KategorilerController -> Servislerin constructor üzerinden enjecte edilmesi
+2.1) Index Action -> Aksiyondan Index yerine farklı isimde bir view'ın dönülmesi, View'da Model tanımı ve Razor kullanımı
 2.2) Details Action 
 2.3) Create Action
 2.4) Edit Action

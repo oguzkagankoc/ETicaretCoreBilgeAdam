@@ -1,0 +1,18 @@
+﻿@model string 
+@* Örnek: "Kayıt bulunamadı." *@
+
+@* 
+    Projedeki tüm controller ve view'lar üzerinden paylaşılarak kullanılabilmesi için 
+    bu view ~/Views/Shared klasörü altında oluşturulmalıdır.
+*@
+
+<h2 class="text-danger">Hata!</h2>
+
+@if (string.IsNullOrWhiteSpace(Model))
+{
+    <p class="text-danger">İşlem sırasında hata meydana geldi!</p>
+}
+else
+{
+    <p class="text-danger">@Model</p>
+}
