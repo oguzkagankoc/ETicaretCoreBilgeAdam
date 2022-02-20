@@ -9,14 +9,12 @@ update-database komutları çalıştırılır.
 veritabanında ilk verilerin oluşturulması sağlanabilir.
 7) Entity model dönüşümlerini gerçekleştirecek servis class'ları önce interface üzerinden methodlar tanımlanarak oluşturulur.
 Tanımlanabilecek methodlar CRUD işlemlerine karşılık gelecek Query, Add, Update ve Delete methodlarıdır.
-Bu aşamada entity'lere karşılık model'ler de oluşturulmalıdır. Servislerde de dependency injection için DbContext tipinde parametreli
-constructor yazılır.
+Bu aşamada entity'lere karşılık model'ler de oluşturulmalıdır.
 8) appsettings.json ve istenirse appsettings.Development.json içerisine ConnectionStrings altına projenin veritabanı bağlantı bilgisi yazılır. 
 Program.cs altında builder.Configuration.GetConnectionString methodu kullanılarak bağlantı bilgisi AppCore altındaki static
 ConnectionConfig class'ının static ConnectionString özelliğine set edilir. Daha sonra ConnectionConfig.ConnectionString özelliği context 
 class'ının OnConfiguring methodunda UseSqlServer methoduna parametre olarak gönderilir.
-9) Program.cs altında IoC Container içerisinde önce DbContext için projenin Context'i tanımı,
-daha sonra da service interface'leri için servis class'ları tanımları yapılır.
+9) Program.cs altında IoC Container içerisinde service interface'leri için servis class'ları tanımları yapılır.
 10) İlgili model için Controller oluşturulur, dependency injection için ilgili servisin interface'i tipinde parametreli 
 constructor yazılır, daha sonra Index, Details, Create, Edit ve Delete aksiyonları yazılır.
 11) Bu aksiyonlar sonucunda ilgili view'lar oluşturulur.
