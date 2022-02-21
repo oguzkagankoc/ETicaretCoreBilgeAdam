@@ -28,7 +28,7 @@ namespace MvcWebUI.Controllers
                 return View("Hata", "Kayıt bulunamadı.");
 
             //return View(); // Index.cshtml'i kullanır
-            return View("KategoriListesi", kategoriler); // Kategoriler.cshtml'i kullanır
+            return View("KategoriListesi", kategoriler); // KategoriListesi.cshtml'i kullanır
         }
     }
 }

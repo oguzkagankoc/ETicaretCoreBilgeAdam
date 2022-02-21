@@ -54,7 +54,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection(); // HTTP isteklerini HTTPS olarak yönlendirir
 
-app.UseStaticFiles(); // ~/wwwroot klasörü altýndaki css, js ve diðer dosyalarýn kullanýlmasýný saðlar
+app.UseStaticFiles(); // ~/wwwroot klasörü altýndaki css, js, html ve diðer dosyalarýn kullanýlmasýný saðlar
 
 app.UseRouting(); // aþaðýdaki default olarak belirlenen ve ekstra eklenebilecek route kullanýmlarýný saðlar
 

@@ -8,11 +8,12 @@ using DataAccess.Repositories.Bases;
 
 namespace Business.Services
 {
+    // Program.cs'de IoC Container'da kullanabilmek için oluşturulmalı
     public class KategoriService : IKategoriService
     {
         public RepositoryBase<Kategori, ETicaretContext> Repository { get; set; }
 
-        public KategoriService(KategoriRepositoryBase repository)
+        public KategoriService(KategoriRepositoryBase repository) // Repository'nin servise enjekte edilmesi. Ancak bu projede repository'yi new'leyerek kullanağız. Dolayısıyla repository'lerdeki DbContext de new'lenecek.
         {
             Repository = repository;
         }
@@ -32,7 +33,7 @@ namespace Business.Services
             Repository.Dispose();
         }
 
-        // Sadece örneğin select Id, Adi, Aciklamasi from Kategoriler sorgusunu oluşturur.
+        // Sadece örneğin select Id, Adi, Aciklamasi from Kategoriler order by Adi sorgusunu oluşturur.
         public IQueryable<KategoriModel> Query()
         {
             IQueryable<KategoriModel> query = Repository.EntityQuery().OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
