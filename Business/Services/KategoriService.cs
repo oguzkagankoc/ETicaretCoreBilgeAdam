@@ -1,4 +1,5 @@
 ﻿using AppCore.Business.Models.Results;
+using AppCore.DataAccess.EntityFramework;
 using AppCore.DataAccess.EntityFramework.Bases;
 using Business.Models;
 using Business.Services.Bases;
@@ -11,12 +12,14 @@ namespace Business.Services
     // Program.cs'de IoC Container'da kullanabilmek için oluşturulmalı
     public class KategoriService : IKategoriService
     {
-        public RepositoryBase<Kategori, ETicaretContext> Repository { get; set; }
+        // 2
+        public RepositoryBase<Kategori, ETicaretContext> Repository { get; set; } = new Repository<Kategori, ETicaretContext>();
 
-        public KategoriService(KategoriRepositoryBase repository) // Repository'nin servise enjekte edilmesi. Ancak bu projede repository'yi new'leyerek kullanağız. Dolayısıyla repository'lerdeki DbContext de new'lenecek.
-        {
-            Repository = repository;
-        }
+        // 1
+        //public KategoriService(KategoriRepositoryBase repository) // Repository'nin servise enjekte edilmesi. Ancak bu projede repository'yi new'leyerek kullanağız. Dolayısıyla repository'lerdeki DbContext de new'lenecek.
+        //{
+        //    Repository = repository;
+        //}
 
         public Result Add(KategoriModel model)
         {

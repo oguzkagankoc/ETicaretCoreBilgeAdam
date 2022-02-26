@@ -32,9 +32,9 @@ builder.Services.AddControllersWithViews(); // MVC web uygulamasý
 #region 1) IoC Container üzerinden servisler dýþýndaki tüm baðýmlýlýklarýn yönetimi
 // Bunun için öncellikle ETicaretContext tipi AddDbContext ile belirtilmeli, daha sonra da her entity için bir repository base ile repository oluþturulup aþaðýdaki þekilde baðýmlýlýklarý yönetilmelidir.
 // Bu iþlem doðru ancak zahmetli olduðu için repository ve ETicaretContext baðýmlýlýklarýný burada yönetmek yerine service'lerde repository'leri default constructor üzerinden new'leyeceðiz, dolayýsýyla repository'lerdeki DbContext de new'lenecek. Böylelikle sadece service baðýmlýlýklarýný aþaðýdaki þekilde tanýmlamamýz yeterli olacaktýr.
-builder.Services.AddDbContext<ETicaretContext>(); // ETicaretContext tipindeki parametre kullanýlan her constructor injection'da ETicaretContext tipinde bir obje new'ler.
+//builder.Services.AddDbContext<ETicaretContext>(); // ETicaretContext tipindeki parametre kullanýlan her constructor injection'da ETicaretContext tipinde bir obje new'ler.
 
-builder.Services.AddScoped<KategoriRepositoryBase, KategoriRepository>();
+//builder.Services.AddScoped<KategoriRepositoryBase, KategoriRepository>();
 #endregion
 
 builder.Services.AddScoped<IKategoriService, KategoriService>();
