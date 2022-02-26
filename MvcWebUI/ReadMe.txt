@@ -35,10 +35,10 @@ Proje geliştirme aşamaları:
 1.1) Seed Action -> İlk verileri doldurma, DbContext objesinin new'lenerek kullanılması, _Layout.cshtml'de HTML ve Tag helper'lar üzerinden link oluşturulması
 2) KategorilerController -> Servislerin constructor üzerinden enjekte edilmesi
 2.1) Index Action -> Aksiyondan Index yerine farklı isimde bir view'ın dönülmesi, View'da Model tanımı ve Razor kullanımı
-2.2) Details Action 
-2.3) Create Action
-2.4) Edit Action
-2.5) Delete Action
+2.2) Create Action -> (OlusturGetir, OlusturGonder): Sadece HTML içeren view'ın kullanılması, HTML form üzerinden input verilerinin aksiyonda parametre olarak kullanılması 
+2.3) Edit Action
+2.4) Delete Action
+2.5) Details Action 
 3) UrunlerController
 3.1) Index Action 
 3.2) Details Action 
