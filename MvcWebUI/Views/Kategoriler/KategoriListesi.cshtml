@@ -15,13 +15,6 @@
     <a asp-action="OlusturGetir">Yeni Kategori</a>
 </p>
 
-@if (TempData["BaşarılıMesajı"] != null)
-{
-    <p class="bg-success text-white">
-        @TempData["BaşarılıMesajı"]
-    </p>
-}
-
 @if (Model != null && Model.Count > 0)
 {
     <p class="bg-primary text-white">

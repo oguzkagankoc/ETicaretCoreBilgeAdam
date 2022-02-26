@@ -18,13 +18,3 @@
     <button type="reset" class="btn btn-warning">Temizle</button>
 
 </form>
-
-@*@if (ViewData["HataMesajı"] != null)*@
-
-@if (ViewBag.HataMesajı != null)
-{
-    <p class="text-danger">
-        @*@ViewData["HataMesajı"]*@
-        @ViewBag.HataMesajı
-    </p>
-}

@@ -47,17 +47,12 @@ namespace MvcWebUI.Controllers
             Result result = _kategoriService.Add(model);
             if (result.IsSuccessful)
             {
-                TempData["BaşarılıMesajı"] = result.Message;
-
+                
                 //return RedirectToAction("Index");
                 return RedirectToAction(nameof(Index));
 
             }
-
-            //return View("Hata", result.Message);
-            //ViewData["HataMesajı"] = result.Message;
-            ViewBag.HataMesajı = result.Message;
-            return View("OlusturHtml");
+            return View("Hata", result.Message);
         }
     }
 }

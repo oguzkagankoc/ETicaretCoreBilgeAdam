@@ -50,7 +50,7 @@ namespace Business.Services
             Repository.Add(newEntity);
             #endregion
 
-            return new SuccessResult("Kategori başarıyla eklendi.");
+            return new SuccessResult();
         }
 
         public Result Delete(int id)
