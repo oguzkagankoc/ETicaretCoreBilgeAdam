@@ -8,8 +8,21 @@
 @model List<KategoriModel>
 
 <h2>Kategoriler</h2>
-
 <br />
+
+@if (Model != null && Model.Count > 0)
+{
+    <p class="bg-primary text-white">
+        @Model.Count kayıt bulundu
+    </p>
+}
+else
+{
+    <p class="bg-primary text-white">
+        Kayıt bulunamadı
+    </p>
+}
+
 <table class="table">
     <thead>
         <th>
