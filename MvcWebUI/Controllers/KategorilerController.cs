@@ -1,4 +1,5 @@
-﻿using Business.Models;
+﻿using AppCore.Business.Models.Results;
+using Business.Models;
 using Business.Services;
 using Business.Services.Bases;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,34 @@ namespace MvcWebUI.Controllers
 
             //return View(); // Index.cshtml'i kullanır
             return View("KategoriListesi", kategoriler); // KategoriListesi.cshtml'i kullanır
+        }
+
+        public IActionResult OlusturGetir() // önce kullanıcıya giriş yapabileceği form sayfası getirilir
+        {
+            return View("OlusturHtml");
+        }
+
+        public IActionResult OlusturGonder(string Adi, string Aciklamasi) // kullanıcının girdiği kategori verileri gönderilir ve veritabanında oluşturulur
+        {
+            KategoriModel model = new KategoriModel()
+            {
+                Adi = Adi,
+                Aciklamasi = Aciklamasi
+            };
+            Result result = _kategoriService.Add(model);
+            if (result.IsSuccessful)
+            {
+                TempData["BaşarılıMesajı"] = result.Message;
+
+                //return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
+
+            }
+
+            //return View("Hata", result.Message);
+            //ViewData["HataMesajı"] = result.Message;
+            ViewBag.HataMesajı = result.Message;
+            return View("OlusturHtml");
         }
     }
 }

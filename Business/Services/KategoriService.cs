@@ -23,7 +23,34 @@ namespace Business.Services
 
         public Result Add(KategoriModel model)
         {
-            throw new NotImplementedException();
+            #region Validasyon İşlemleri
+            if (string.IsNullOrWhiteSpace(model.Adi))
+                return new ErrorResult("Kategori adı boş olamaz!");
+            if (model.Adi.Length > 100)
+                return new ErrorResult("Kategori adı en fazla 100 karakter olmalıdır!");
+            if (!string.IsNullOrWhiteSpace(model.Aciklamasi) && model.Aciklamasi.Length > 1000)
+                return new ErrorResult("Kategori açıklaması en fazla 1000 karakter olmalıdır!");
+
+            //Kategori existingEntity = Repository.EntityQuery().SingleOrDefault(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim());
+            //Kategori existingEntity = Repository.EntityQuery(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim()).SingleOrDefault();
+            //if (existingEntity != null)
+            //    return new ErrorResult("Girdiğiniz kategori adına sahip kayıt bulunmaktadır!");
+            if (Repository.EntityQuery().Any(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
+                return new ErrorResult("Girdiğiniz kategori adına sahip kayıt bulunmaktadır!");
+            #endregion
+
+            #region Yeni Kayıt Ekleme İşlemi
+            Kategori newEntity = new Kategori()
+            {
+                Adi = model.Adi.Trim(),
+
+                //Aciklamasi = model.Aciklamasi != null ? model.Aciklamasi.Trim() : null, // Ternary Operator
+                Aciklamasi = model.Aciklamasi?.Trim() // eğer null bir referansın bir özelliği veya methodu kullanılıyorsa o zaman mutlaka referansın (Aciklamasi) sonuna ? eklenmelidir. Eğer Aciklamasi girildiyse değerini Trim'le ve entity'de set et, girilmediyse (null ise) entity'de null olarak set et.
+            };
+            Repository.Add(newEntity);
+            #endregion
+
+            return new SuccessResult("Kategori başarıyla eklendi.");
         }
 
         public Result Delete(int id)

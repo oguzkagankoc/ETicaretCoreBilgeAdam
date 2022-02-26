@@ -1,0 +1,30 @@
+﻿<h2>Yeni Kategori</h2>
+
+<form action="/Kategoriler/OlusturGonder">
+
+    <div class="mb-3 mt-3">
+        <label for="adi" class="form-label">Adı:</label>
+        <input type="text" class="form-control" id="adi" placeholder="Kategori adı giriniz..." name="Adi">
+    </div>
+     <div class="mb-3">
+        <label for="aciklamasi" class="form-label">Açıklaması:</label>
+        <textarea class="form-control" id="aciklamasi" placeholder="Kategori açıklaması giriniz..." name="Aciklamasi"></textarea>
+    </div>
+
+    @*<input type="submit" class="btn btn-primary" value="Kaydet" />*@
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+    &nbsp;
+    <button type="reset" class="btn btn-warning">Temizle</button>
+
+</form>
+
+@*@if (ViewData["HataMesajı"] != null)*@
+
+@if (ViewBag.HataMesajı != null)
+{
+    <p class="text-danger">
+        @*@ViewData["HataMesajı"]*@
+        @ViewBag.HataMesajı
+    </p>
+}

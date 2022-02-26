@@ -32,7 +32,7 @@ HTML - CSS - Javascript örnekleri projede wwwroot -> HTML_Javascript_CSS_Intro 
 
 Proje geliştirme aşamaları:
 1) DatabaseController
-1.1) Seed Action -> İlk verileri doldurma, DbContext objesinin new'lenerek kullanılması
+1.1) Seed Action -> İlk verileri doldurma, DbContext objesinin new'lenerek kullanılması, _Layout.cshtml'de HTML ve Tag helper'lar üzerinden link oluşturulması
 2) KategorilerController -> Servislerin constructor üzerinden enjekte edilmesi
 2.1) Index Action -> Aksiyondan Index yerine farklı isimde bir view'ın dönülmesi, View'da Model tanımı ve Razor kullanımı
 2.2) Details Action 
