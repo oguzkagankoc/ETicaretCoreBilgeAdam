@@ -32,11 +32,13 @@ namespace MvcWebUI.Controllers
             return View("KategoriListesi", kategoriler); // KategoriListesi.cshtml'i kullanır
         }
 
+        // ~/Kategoriler/OlusturGetir
         public IActionResult OlusturGetir() // önce kullanıcıya giriş yapabileceği form sayfası getirilir
         {
             return View("OlusturHtml");
         }
 
+        // ~/Kategoriler/OlusturGonder
         public IActionResult OlusturGonder(string Adi, string Aciklamasi) // kullanıcının girdiği kategori verileri gönderilir ve veritabanında oluşturulur
         {
             KategoriModel model = new KategoriModel()
@@ -53,6 +55,18 @@ namespace MvcWebUI.Controllers
 
             }
             return View("Hata", result.Message);
+        }
+
+        https://httpstatuses.com/
+        public IActionResult Edit(int? id) // ~/Kategoriler/Edit/5
+        {
+            if (id == null)
+            {
+                //return BadRequest(); // status code: 400
+                //return BadRequest("Id gereklidir!");
+                return View("Hata", "Id gereklidir!");
+            }
+            return null;
         }
     }
 }
