@@ -1,4 +1,9 @@
-﻿@*@model DataAccess.Entities.Kategori*@
+﻿@*
+    ~/Views/_ViewStart.cshtml'de Layout değişkeni projenin _Layout.cshtml'ine set edildiği için view'lar
+    scaffold edilirken her seferinde layout seçilmesine gerek yoktur.
+*@
+
+@*@model DataAccess.Entities.Kategori*@
 @model KategoriModel
 
 @{
@@ -12,78 +17,175 @@
 <hr />
 <div class="row">
     <div class="col-12">
-        <form asp-action="Edit">
-		@Html.AntiForgeryToken()
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="row mb-3">
-                <label asp-for="Adi" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="Adi" class="form-control" />
-					<span asp-validation-for="Adi" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
-                <label asp-for="Aciklamasi" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="Aciklamasi" class="form-control" />
-					<span asp-validation-for="Aciklamasi" class="text-danger"></span>
-				</div>
-            </div>
-            <input type="hidden" asp-for="Id" />
 
-           @* <div class="row mb-3">
+        @* Tag Helper *@
+        @*<form asp-action="Edit">*@
+        @* form tag helper'ında method yazılmazsa default post'tur. *@
+
+        @* HTML Helper *@
+        @*@using (Html.BeginForm("Edit", "Kategoriler", FormMethod.Post)) *@
+
+        @*@using (Html.BeginForm("Edit", "Kategoriler")) *@
+        @* form HTML helper'ında method yazılmazsa default post'tur. *@
+
+        @using (Html.BeginForm()) 
+        @*
+            Kategoriler controller'ı Edit action'ından geldiğini bildiği için 
+            form verilerini Kategoriler controller'ının Edit action'ına post olarak gönderir. 
+        *@
+        { @* <form> *@
+
+            @* HTML Helper *@
+            @Html.AntiForgeryToken()
+
+            @* Tag Helper *@
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
+
+            @* HTML Helper *@
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+            <div class="row mb-3">
+
+                @* Tag Helper *@
+                @*<label asp-for="Adi" class="col-2 col-form-label"></label>*@
+
+                @* HTML Helper *@
+                @*@Html.Label("Adi", "Adı", new { @class="col-2 col-form-label" })*@
+                @Html.LabelFor(model => model.Adi, new { @class="col-2 col-form-label" })
+                
+                <div class="col-5">
+
+                    @* Tag Helper *@
+                    @*<input asp-for="Adi" class="form-control" />*@ @* model'deki özelliğin veri tipine göre otomatik input oluşturur. *@
+                    @*<input asp-for="Adi" class="form-control" type="text" />*@ @* textbox oluşturur. *@
+
+                    @* HTML Helper *@
+                    @*@Html.EditorFor(model => model.Adi)*@ @* model'deki özelliğin veri tipine göre otomatik input oluşturur. *@
+                    @Html.TextBoxFor(model => model.Adi, new { @class = "form-control" }) @* textbox oluşturur. *@
+
+                    @* Tag Helper *@
+                    @*<span asp-validation-for="Adi" class="text-danger"></span>*@
+                    @* HTML Helper *@
+                    @Html.ValidationMessageFor(model => model.Adi, null, new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="row mb-3">
+
+                @* Tag Helper *@
+                @*<label asp-for="Aciklamasi" class="col-2 col-form-label"></label>*@
+
+                @* HTML Helper *@
+                @Html.LabelFor(model => model.Aciklamasi, new { @class="col-2 col-form-label" })
+
+                <div class="col-5">
+
+                    @* Tag Helper *@
+                    @*<input asp-for="Aciklamasi" class="form-control" />*@
+                    @*<textarea asp-for="Aciklamasi" class="form-control" rows="3"></textarea>*@
+
+                    @* HTML Helper *@
+                    @Html.TextAreaFor(model => model.Aciklamasi, new { @class = "form-control", rows = "3" })
+
+                    @* Tag Helper *@
+                    @*<span asp-validation-for="Aciklamasi" class="text-danger"></span>*@
+
+                    @* HTML Helper *@
+                    @Html.ValidationMessageFor(model => model.Aciklamasi, null, new { @class = "text-danger" })
+
+                </div>
+            </div>
+
+            @* Tag Helper *@
+            @*<input type="hidden" asp-for="Id" />*@
+
+            @* HTML Helper *@
+            @Html.HiddenFor(model => model.Id)
+
+            @* <div class="row mb-3">
                 <label asp-for="Guid" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="Guid" class="form-control" />
-					<span asp-validation-for="Guid" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
+                <div class="col-5">
+                <input asp-for="Guid" class="form-control" />
+                <span asp-validation-for="Guid" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="row mb-3">
                 <label asp-for="CreateDate" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="CreateDate" class="form-control" />
-					<span asp-validation-for="CreateDate" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
+                <div class="col-5">
+                <input asp-for="CreateDate" class="form-control" />
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="row mb-3">
                 <label asp-for="CreatedBy" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="CreatedBy" class="form-control" />
-					<span asp-validation-for="CreatedBy" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
+                <div class="col-5">
+                <input asp-for="CreatedBy" class="form-control" />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="row mb-3">
                 <label asp-for="UpdateDate" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="UpdateDate" class="form-control" />
-					<span asp-validation-for="UpdateDate" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
+                <div class="col-5">
+                <input asp-for="UpdateDate" class="form-control" />
+                <span asp-validation-for="UpdateDate" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="row mb-3">
                 <label asp-for="UpdatedBy" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="UpdatedBy" class="form-control" />
-					<span asp-validation-for="UpdatedBy" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
+                <div class="col-5">
+                <input asp-for="UpdatedBy" class="form-control" />
+                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="row mb-3">
                 <label asp-for="IsDeleted" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="IsDeleted" class="form-control" />
-					<span asp-validation-for="IsDeleted" class="text-danger"></span>
-				</div>
-            </div>*@
+                <div class="col-5">
+                <input asp-for="IsDeleted" class="form-control" />
+                <span asp-validation-for="IsDeleted" class="text-danger"></span>
+                </div>
+                </div>*@
 
             <div class="row mb-3">
-				<div class="offset-2 col-5">
-					<input type="submit" value="Save" class="btn btn-primary" />
-					&nbsp;&nbsp;
+                <div class="offset-2 col-5">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    &nbsp;&nbsp;
                     <button type="reset" class="btn btn-outline-primary">Reset</button>
-					&nbsp;&nbsp;
-					<a asp-action="Index">Back to List</a>
-				</div>
+                    &nbsp;&nbsp;
+                    <a asp-action="Index">Back to List</a>
+                </div>
             </div>
-        </form>
+
+            @*</form>*@
+
+        } @* </form> *@
+
     </div>
 </div>
 
+@*
+    ASP.NET Core MVC'deki Genel Kullanılan HTML Helper'lar:
+    Html.TextBox
+    Html.TextBoxFor
+    Html.Password
+    Html.PasswordFor
+    Html.TextArea
+    Html.TextAreaFor
+    Html.CheckBox
+    Html.CheckBoxFor
+    Html.RadioButton
+    Html.RadioButtonFor
+    Html.DropDownList
+    Html.DropDownListFor
+    Html.ListBox
+    Html.ListBoxFor
+    Html.Hidden
+    Html.HiddenFor
+    Html.Editor
+    Html.EditorFor
+    Html.Display
+    Html.DisplayFor
+    Html.Label
+    Html.LabelFor
+    Html.ActionLink
+    Html.BeginForm
+*@

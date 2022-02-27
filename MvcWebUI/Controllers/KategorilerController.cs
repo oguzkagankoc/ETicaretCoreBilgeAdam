@@ -33,12 +33,18 @@ namespace MvcWebUI.Controllers
         }
 
         // ~/Kategoriler/OlusturGetir
+        [HttpGet] // Action Method Selector:
+                  // Web server'da herhangi bir kaynak getirip client'e dönmek için kullanılır.
+                  // eğer bir aksiyona herhangi bir Http attribute'u yazılmazsa default'u get'tir.
         public IActionResult OlusturGetir() // önce kullanıcıya giriş yapabileceği form sayfası getirilir
         {
             return View("OlusturHtml");
         }
 
         // ~/Kategoriler/OlusturGonder
+        [HttpPost] // Client'ın web server'a veri göndermesi için kullanılır.
+                   // Genelde HTML form'ları üzerinden method post olarak kullanılır.
+                   // Eğer post (gönderme) işlemi yapılıyorsa HttpPost mutlaka yazılmalıdır.
         public IActionResult OlusturGonder(string Adi, string Aciklamasi) // kullanıcının girdiği kategori verileri gönderilir ve veritabanında oluşturulur
         {
             KategoriModel model = new KategoriModel()
@@ -49,7 +55,7 @@ namespace MvcWebUI.Controllers
             Result result = _kategoriService.Add(model);
             if (result.IsSuccessful)
             {
-                
+
                 //return RedirectToAction("Index");
                 return RedirectToAction(nameof(Index));
 

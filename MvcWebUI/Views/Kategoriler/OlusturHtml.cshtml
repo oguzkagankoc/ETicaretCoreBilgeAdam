@@ -1,6 +1,15 @@
 ﻿<h2>Yeni Kategori</h2>
 
-<form action="/Kategoriler/OlusturGonder">
+<!-- 
+HTML formlarında eğer method yazılmazsa default olarak get'tir. get methodu form verilerinin bir query string 
+üzerinden action olarak belirtilen adrese gönderilmesini sağlar: 
+~/Kategoriler/OlusturGonder?Adi=Araba&Aciklamasi=Binek
+Eğer method post olarak kullanılırsa form verileri query string üzerinden değil direkt sunucuya gönderilir,
+dolayısıyla tarayıcının adres çubuğunda veriler görünmez:
+~/Kategoriler/OlusturGonder
+-->
+@*<form action="/Kategoriler/OlusturGonder" method="get">*@
+<form action="/Kategoriler/OlusturGonder" method="post">
 
     <div class="mb-3 mt-3">
         <label for="adi" class="form-label">Adı:</label>
