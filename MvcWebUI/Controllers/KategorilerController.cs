@@ -54,10 +54,10 @@ namespace MvcWebUI.Controllers
                 return RedirectToAction(nameof(Index));
 
             }
-            return View("Hata", result.Message);
+            return View("Hata", result.Message); // status code: 200 (OK)
         }
 
-        https://httpstatuses.com/
+        //https://httpstatuses.com/
         public IActionResult Edit(int? id) // ~/Kategoriler/Edit/5
         {
             if (id == null)
@@ -66,7 +66,53 @@ namespace MvcWebUI.Controllers
                 //return BadRequest("Id gereklidir!");
                 return View("Hata", "Id gereklidir!");
             }
-            return null;
+
+            KategoriModel model = _kategoriService.Query().SingleOrDefault(k => k.Id == id.Value);
+
+            if (model == null)
+            {
+                //return NotFound(); // status code: 404
+                //return NotFound("Kayıt bulunamadı!");
+                return View("Hata", "Kayıt bulunamadı!");
+            }
+
+            //return new ViewResult();
+            return View(model); // status code: 200 (OK)
+        }
+
+        /*
+        IActionResult
+        ActionResult
+        ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (File()) HttpResults JavaScriptResult (JavaScript())  JsonResult (Json())   RedirectResults
+        */
+        public ContentResult GetHtmlContent()
+        {
+            //return new ContentResult();
+            return Content("<b><i>Content result.</i></b>", "text/html");
+        }
+        public ActionResult GetKategorilerXmlContent() // XML döndürme işlemleri genelde bu şekilde yapılmaz, web servisler üzerinden döndürülür!
+        {
+            List<KategoriModel> kategoriler = _kategoriService.Query().ToList();
+            string xml = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
+            xml += "<KategoriModels>";
+            foreach (KategoriModel kategori in kategoriler)
+            {
+                xml += "<KategoriModel>";
+                xml += "<Id>" + kategori.Id + "</Id>";
+                xml += "<Adi>" + kategori.Adi + "</Adi>";
+                xml += "<Aciklamasi>" + kategori.Aciklamasi + "</Aciklamasi>";
+                xml += "</KategoriModel>";
+            }
+            xml += "</KategoriModels>";
+            return Content(xml, "application/xml");
+        }
+        public string GetString()
+        {
+            return "String.";
+        }
+        public EmptyResult GetEmpty()
+        {
+            return new EmptyResult();
         }
     }
 }
