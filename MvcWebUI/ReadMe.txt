@@ -36,7 +36,7 @@ Proje geliştirme aşamaları:
 2) KategorilerController -> Servislerin constructor üzerinden enjekte edilmesi, action'lardan IActionResult tipi üzerinden farklı tiplerin dönülmesi 
 2.1) Index Action -> Aksiyondan Index yerine farklı isimde bir view'ın dönülmesi, View'da Model tanımı ve Razor kullanımı
 2.2) Create Action -> (OlusturGetir, OlusturGonder): Sadece HTML içeren view'ın kullanılması, HTML form üzerinden input verilerinin aksiyonda parametre olarak kullanılması 
-2.3) Edit Action -> Http Status Code'ları, Edit view'ının scaffolding ile oluşturulması ve view'ın modele göre değiştirilmesi, Tag ile HTML helper'lar, set edilen ViewData["Title"]'ın _Layout.cshtml'de title'da kullanılması
+2.3) Edit Action -> ScaffoldingTemplates altındaki dosyaların ReadMe.txt ile belirtilen klasörlere kopayalanması, Http Status Code'ları, Edit view'ının scaffolding ile oluşturulması ve view'ın modele göre değiştirilmesi, Tag ile HTML helper'lar, set edilen ViewData["Title"]'ın _Layout.cshtml'de title'da kullanılması
 2.4) Delete Action
 2.5) Details Action 
 3) UrunlerController
