@@ -8,7 +8,7 @@ namespace MvcWebUI.Controllers
 {
     public class DatabaseController : Controller
     {
-        public IActionResult Seed() // https://localhost:44349/Database/Seed
+        public IActionResult Seed() // ~/Database/Seed
         {
             //ETicaretContext db = new ETicaretContext();
             //// veritabanı tablo insert işlemleri...

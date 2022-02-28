@@ -86,6 +86,7 @@ namespace MvcWebUI.Controllers
             return View(model); // status code: 200 (OK)
         }
 
+        #region IActionResult'ı implemente eden class'lar
         /*
         IActionResult
         ActionResult
@@ -120,5 +121,6 @@ namespace MvcWebUI.Controllers
         {
             return new EmptyResult();
         }
+        #endregion
     }
 }
