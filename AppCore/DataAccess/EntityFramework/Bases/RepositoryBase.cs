@@ -21,11 +21,11 @@ namespace AppCore.DataAccess.EntityFramework.Bases
         public IQueryable<TEntity> Query()
         {
             var query = DbContext.Set<TEntity>().AsQueryable();
-            
+
             // sadece silinmemiş kayıtları getrir
             //query = query.Where(q => q.IsDeleted == null || q.IsDeleted == false);
-            query = query.Where(q => q.IsDeleted ?? false == false);
-            
+            query = query.Where(q => (q.IsDeleted ?? false) == false);
+
             return query;
         }
 

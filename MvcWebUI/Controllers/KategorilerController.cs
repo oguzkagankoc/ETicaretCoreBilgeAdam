@@ -120,7 +120,16 @@ namespace MvcWebUI.Controllers
         {
             if (!id.HasValue)
                 return View("Hata", "Id gereklidir!");
-            return null;
+            var result = _kategoriService.Delete(id.Value);
+            if (result.IsSuccessful)
+            {
+                TempData["Success"] = result.Message; // Kategori başarıyla silindi.
+            }
+            else
+            {
+                TempData["Error"] = result.Message; // Silinmek istenen kategoriye ait ürünler bulunmaktadır!
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         #region IActionResult'ı implemente eden class'lar

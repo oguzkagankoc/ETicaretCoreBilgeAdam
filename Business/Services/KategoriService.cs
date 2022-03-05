@@ -81,7 +81,13 @@ namespace Business.Services
 
         public Result Delete(int id)
         {
-            throw new NotImplementedException();
+            Kategori entity = Repository.EntityQuery(k => k.Id == id, "Urunler").SingleOrDefault();
+            if (entity.Urunler != null && entity.Urunler.Count > 0) // bu id'ye sahip kategorinin ürünleri varsa
+            {
+                return new ErrorResult("Silinmek istenen kategoriye ait ürünler bulunmaktadır!");
+            }
+            Repository.DeleteEntity(id, true, true); // kaydı veritabanından silmeyecek, silindi olarak güncelleyecek (IsDeleted = true)
+            return new SuccessResult("Kategori başarıyla silindi.");
         }
 
         public void Dispose()

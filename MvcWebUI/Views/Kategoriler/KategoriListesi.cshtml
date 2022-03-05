@@ -51,9 +51,26 @@ else
                     @kategori.Aciklamasi
                 </td>
                 <td>
-                    <a href="/Kategoriler/Edit/@kategori.Id">Düzenle</a>
+                    <a href="/Kategoriler/Edit/@kategori.Id">Düzenle</a>&nbsp;|&nbsp;
+                    <a href="/Kategoriler/Delete/@kategori.Id">Sil</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@* Kategoriler controller'ının Edit post ve Delete get action'larında TempData["Success"] set ediliyor ve burada kullanılıyor. *@
+@if (TempData["Success"] != null)
+{
+    <p class="bg-success text-white">
+        @TempData["Success"]
+    </p>
+}
+
+@* Kategoriler controller'ının Delete get action'ında TempData["Error"] set ediliyor ve burada kullanılıyor. *@
+@if (TempData["Error"] != null)
+{
+    <p class="bg-danger text-white">
+        @TempData["Error"]
+    </p>
+}
