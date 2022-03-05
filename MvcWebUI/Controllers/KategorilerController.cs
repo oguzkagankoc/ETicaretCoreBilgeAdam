@@ -132,6 +132,16 @@ namespace MvcWebUI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult Details(int? id) // ~/Kategoriler/Details/5
+        {
+            if (!id.HasValue)
+                return View("Hata", "Id gereklidir!");
+            KategoriModel model = _kategoriService.Query().SingleOrDefault(k => k.Id == id.Value);
+            if (model == null)
+                return View("Hata", "Kayıt bulunamadı!");
+            return View(model);
+        }
+
         #region IActionResult'ı implemente eden class'lar
         /*
         IActionResult

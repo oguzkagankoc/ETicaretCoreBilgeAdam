@@ -24,11 +24,13 @@ namespace Business.Services
         // Sadece örneğin select Id, Adi, Aciklamasi from Kategoriler order by Adi sorgusunu oluşturur.
         public IQueryable<KategoriModel> Query()
         {
-            IQueryable<KategoriModel> query = Repository.EntityQuery().OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
+            //IQueryable<KategoriModel> query = Repository.EntityQuery().OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
+            IQueryable<KategoriModel> query = Repository.EntityQuery("Urunler").OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
             {
                 Id = kategori.Id,
                 Adi = kategori.Adi,
-                Aciklamasi = kategori.Aciklamasi
+                Aciklamasi = kategori.Aciklamasi,
+                UrunSayisiDisplay = kategori.Urunler.Count
             });
             return query;
         }

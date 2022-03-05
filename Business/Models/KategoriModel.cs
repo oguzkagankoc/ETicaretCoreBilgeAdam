@@ -21,5 +21,10 @@ namespace Business.Models
         [MaxLength(4000, ErrorMessage = "{0} en çok {1} karakter olmalıdır!")] // {0}: Açıklaması, {1}: 4000
         public string Aciklamasi { get; set; }
         #endregion
+
+        #region Sayfanın ekstra ihtiyacı olan özellikler
+        [DisplayName("Ürün Sayısı")]
+        public int UrunSayisiDisplay { get; set; }
+        #endregion
     }
 }
