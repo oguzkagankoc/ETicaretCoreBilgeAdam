@@ -21,6 +21,18 @@ namespace Business.Services
         //    Repository = repository;
         //}
 
+        // Sadece örneğin select Id, Adi, Aciklamasi from Kategoriler order by Adi sorgusunu oluşturur.
+        public IQueryable<KategoriModel> Query()
+        {
+            IQueryable<KategoriModel> query = Repository.EntityQuery().OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
+            {
+                Id = kategori.Id,
+                Adi = kategori.Adi,
+                Aciklamasi = kategori.Aciklamasi
+            });
+            return query;
+        }
+
         public Result Add(KategoriModel model)
         {
             #region Validasyon İşlemleri
@@ -53,6 +65,20 @@ namespace Business.Services
             return new SuccessResult();
         }
 
+        public Result Update(KategoriModel model)
+        {
+            // güncelleme işlemlerinde güncellenen kayıt dışında koşulunun belirtilmesi gerektiğinden mutlaka Id üzerinden koşul eklenmelidir.
+            if (Repository.EntityQuery().Any(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim() && k.Id != model.Id))
+                return new ErrorResult("Girdiğiniz kategori adına sahip kayıt bulunmaktadır!");
+            Kategori entity = Repository.EntityQuery(k => k.Id == model.Id).SingleOrDefault();
+            if (entity == null)
+                return new ErrorResult("Kategori kaydı bulunamadı!");
+            entity.Adi = model.Adi.Trim();
+            entity.Aciklamasi = model.Aciklamasi?.Trim();
+            Repository.Update(entity);
+            return new SuccessResult("Kategori başarıyla güncellendi.");
+        }
+
         public Result Delete(int id)
         {
             throw new NotImplementedException();
@@ -61,23 +87,6 @@ namespace Business.Services
         public void Dispose()
         {
             Repository.Dispose();
-        }
-
-        // Sadece örneğin select Id, Adi, Aciklamasi from Kategoriler order by Adi sorgusunu oluşturur.
-        public IQueryable<KategoriModel> Query()
-        {
-            IQueryable<KategoriModel> query = Repository.EntityQuery().OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
-            {
-                Id = kategori.Id,
-                Adi = kategori.Adi,
-                Aciklamasi = kategori.Aciklamasi
-            });
-            return query;
-        }
-
-        public Result Update(KategoriModel model)
-        {
-            throw new NotImplementedException();
         }
     }
 }

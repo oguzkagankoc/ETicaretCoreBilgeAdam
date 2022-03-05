@@ -51,3 +51,11 @@ else
         }
     </tbody>
 </table>
+
+@* Kategoriler controller'ının Edit post action'ında TempData["Success"] set ediliyor ve burada kullanılıyor. *@
+@if (TempData["Success"] != null)
+{
+    <p class="bg-success text-white">
+        @TempData["Success"]
+    </p>
+}

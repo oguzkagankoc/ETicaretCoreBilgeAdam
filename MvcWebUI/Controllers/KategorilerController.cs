@@ -86,6 +86,34 @@ namespace MvcWebUI.Controllers
             return View(model); // status code: 200 (OK)
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(KategoriModel model)
+        {
+            if (ModelState.IsValid) // modelde validasyon hataları yoksa
+            {
+                var result = _kategoriService.Update(model);
+                if (result.IsSuccessful)
+                {
+                    // TempData: eğer yönlendirme (redirect) işlemi varsa yönlendirilen aksiyon üzerinden dönen view'a
+                    // string bir index üzerinden herhangi bir obje taşımak için kullanılır.
+                    TempData["Success"] = result.Message; // Kategori başarıyla güncellendi.
+
+                    return RedirectToAction(nameof(Index));
+                }
+
+                // eğer servis başarısız sonucu döndüyse:
+
+                // ViewData veya ViewBag: eğer view dönülüyorsa string bir index üzerinden view'a herhangi bir obje taşımak için kullanılır.
+                // ViewBag (özellik) ile ViewData (index) birbirleri yerine aynı özellik ve index adları üzerinden kullanılabilir.
+                //ViewData["Error"] = result.Message; // Girdiğiniz kategori adına sahip kayıt bulunmaktadır!
+                ViewBag.Error = result.Message; 
+            }
+
+            // eğer modelde validasyon hataları varsa
+            return View(model);
+        }
+
         #region IActionResult'ı implemente eden class'lar
         /*
         IActionResult
