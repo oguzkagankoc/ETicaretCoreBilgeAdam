@@ -66,13 +66,15 @@ namespace MvcWebUI.Controllers
         //https://httpstatuses.com/
         public IActionResult Edit(int? id) // ~/Kategoriler/Edit/5
         {
-            if (id == null)
+            //if (id == null)
+            if (!id.HasValue)
             {
                 //return BadRequest(); // status code: 400
                 //return BadRequest("Id gereklidir!");
                 return View("Hata", "Id gereklidir!");
             }
 
+            //KategoriModel model = _kategoriService.Query().SingleOrDefault(k => k.Id == id);
             KategoriModel model = _kategoriService.Query().SingleOrDefault(k => k.Id == id.Value);
 
             if (model == null)
@@ -88,7 +90,7 @@ namespace MvcWebUI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(KategoriModel model)
+        public IActionResult Edit(KategoriModel model) // ~/Kategoriler/Edit
         {
             if (ModelState.IsValid) // modelde validasyon hataları yoksa
             {
@@ -112,6 +114,13 @@ namespace MvcWebUI.Controllers
 
             // eğer modelde validasyon hataları varsa
             return View(model);
+        }
+
+        public IActionResult Delete(int? id) // ~/Kategoriler/Delete/5
+        {
+            if (!id.HasValue)
+                return View("Hata", "Id gereklidir!");
+            return null;
         }
 
         #region IActionResult'ı implemente eden class'lar

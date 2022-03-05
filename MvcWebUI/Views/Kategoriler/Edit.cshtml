@@ -65,12 +65,12 @@
                 <div class="col-5">
 
                     @* Tag Helper *@
-                    @*<input asp-for="Adi" class="form-control" />*@ @* model'deki özelliğin veri tipine göre otomatik input oluşturur. *@
-                    @*<input asp-for="Adi" class="form-control" type="text" />*@ @* textbox oluşturur. *@
+                    @*<input asp-for="Adi" class="form-control" placeholder="Kategori adı giriniz..." />*@ @* model'deki özelliğin veri tipine göre otomatik input oluşturur. *@
+                    @*<input asp-for="Adi" class="form-control" type="text" placeholder="Kategori adı giriniz..." />*@ @* textbox oluşturur. *@
 
                     @* HTML Helper *@
                     @*@Html.EditorFor(model => model.Adi)*@ @* model'deki özelliğin veri tipine göre otomatik input oluşturur. *@
-                    @Html.TextBoxFor(model => model.Adi, new { @class = "form-control" }) @* textbox oluşturur. *@
+                    @Html.TextBoxFor(model => model.Adi, new { @class = "form-control", placeholder = "Kategori adı giriniz..." }) @* textbox oluşturur. *@
 
                     @* Tag Helper *@
                     @*<span asp-validation-for="Adi" class="text-danger"></span>*@
@@ -91,10 +91,10 @@
 
                     @* Tag Helper *@
                     @*<input asp-for="Aciklamasi" class="form-control" />*@
-                    @*<textarea asp-for="Aciklamasi" class="form-control" rows="3"></textarea>*@
+                    @*<textarea asp-for="Aciklamasi" class="form-control" rows="3" placeholder="Kategori açıklaması giriniz..."></textarea>*@
 
                     @* HTML Helper *@
-                    @Html.TextAreaFor(model => model.Aciklamasi, new { @class = "form-control", rows = "3" })
+                    @Html.TextAreaFor(model => model.Aciklamasi, new { @class = "form-control", rows = "3", placeholder = "Kategori açıklaması giriniz..." })
 
                     @* Tag Helper *@
                     @*<span asp-validation-for="Aciklamasi" class="text-danger"></span>*@
@@ -156,16 +156,16 @@
 
             <div class="row mb-3">
                 <div class="offset-2 col-5">
-                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <input type="submit" value="Kaydet" class="btn btn-primary" />
                     &nbsp;&nbsp;
-                    <button type="reset" class="btn btn-outline-primary">Reset</button>
+                    <button type="reset" class="btn btn-outline-primary">Temizle</button>
                     &nbsp;&nbsp;
 
                     @* Tag Helper *@
-                    @*<a asp-action="Index">Back to List</a>*@
+                    @*<a asp-action="Index">Kategori Listesi</a>*@
 
                     @* HTML Helper *@
-                    @Html.ActionLink("Back to List", "Index")
+                    @Html.ActionLink("Kategori Listesi", "Index")
 
                 </div>
             </div>

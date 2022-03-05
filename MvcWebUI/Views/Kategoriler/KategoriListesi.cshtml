@@ -36,6 +36,9 @@ else
         <th>
             Açıklaması
         </th>
+        <th>
+
+        </th>
     </thead>
     <tbody>
         @foreach (KategoriModel kategori in Model)
@@ -47,15 +50,10 @@ else
                 <td>
                     @kategori.Aciklamasi
                 </td>
+                <td>
+                    <a href="/Kategoriler/Edit/@kategori.Id">Düzenle</a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
-
-@* Kategoriler controller'ının Edit post action'ında TempData["Success"] set ediliyor ve burada kullanılıyor. *@
-@if (TempData["Success"] != null)
-{
-    <p class="bg-success text-white">
-        @TempData["Success"]
-    </p>
-}
