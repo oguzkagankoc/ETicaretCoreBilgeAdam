@@ -7,14 +7,17 @@
 //}
 
 // kodlar:
+using AppCore.MvcWebUI.Utils;
+using AppCore.MvcWebUI.Utils.Bases;
 using Business.Services;
 using Business.Services.Bases;
-using DataAccess.Contexts;
-using DataAccess.Repositories;
-using DataAccess.Repositories.Bases;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Bölgesel ayarýn tüm uygulama için ayarlanmasý, eðer parametresiz CultureInfo constuctor'ý kullanýlýrsa tr-TR üzerinden ayarlanýr.
+// Önce cultureUtil objesi new'lenir, daha sonra AddCulture methoduyla builder servisleri konfigüre edilir, son olarak da aþaðýda olduðu gibi app.UseRequestLocalization methodu içinde UseCulture methodu çaðrýlýr.
+CultureUtilBase cultureUtil = new CultureUtil(); // Ýngilizce için parametre en-US gönderilmelidir
+builder.Services.Configure(cultureUtil.AddCulture());
 
 // Add services to the container.
 builder.Services.AddControllersWithViews(); // MVC web uygulamasý
@@ -42,6 +45,8 @@ builder.Services.AddScoped<IUrunService, UrunService>();
 #endregion
 
 var app = builder.Build();
+
+app.UseRequestLocalization(cultureUtil.UseCulture());
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

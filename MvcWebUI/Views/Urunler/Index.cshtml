@@ -1,4 +1,6 @@
-﻿@*@model IEnumerable<DataAccess.Entities.Urun>*@
+﻿@using System.Globalization
+
+@*@model IEnumerable<DataAccess.Entities.Urun>*@
 @*@model List<UrunModel>*@ @* Eğer Model List tipinde tanımlanırsa aşağıda DisplayNameFor methodları kullanılamaz *@
 @model IEnumerable<UrunModel>
 
@@ -29,14 +31,22 @@
                 @Html.DisplayNameFor(model => model.Aciklamasi)
                 </th>*@
 
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.BirimFiyati)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.BirimFiyatiDisplay)
             </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.StokMiktari)
             </th>
-            <th>
+
+            @*<th>
                 @Html.DisplayNameFor(model => model.SonKullanmaTarihi)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.SonKullanmaTarihiDisplay)
             </th>
 
             @*<th>
@@ -80,14 +90,33 @@
                     @Html.DisplayFor(modelItem => item.Aciklamasi)
                     </td>*@
 
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.BirimFiyati)
+                </td>*@
+                @* Birim fiyatın formatlanmamış hali (kullanışsız, okunması zor). *@
+                
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.BirimFiyati.ToString("C2", new CultureInfo("tr-TR")))
+                </td>*@
+                @* View'larda minimum C# kodu yazılmalı, olabildiğince model verileri kullanılmalı. 
+                    Birim fiyatın formatlanması view'da değil ilgili serviste yapılmalı ve formatlanan özellik (BirimFiyatiDisplay) kullanılmalı.
+                *@
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirimFiyatiDisplay)
                 </td>
+                @* Birim fiyatın ihtiyacımız olan ilgili servis tarafından formatlanmış hali. *@
+
+
                 <td>
                     @Html.DisplayFor(modelItem => item.StokMiktari)
                 </td>
-                <td>
+
+                @*<td>
                     @Html.DisplayFor(modelItem => item.SonKullanmaTarihi)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.SonKullanmaTarihiDisplay)
                 </td>
 
                 @*<td>

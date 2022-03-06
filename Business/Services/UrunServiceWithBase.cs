@@ -5,6 +5,7 @@ using AppCore.DataAccess.EntityFramework.Bases;
 using Business.Models;
 using DataAccess.Contexts;
 using DataAccess.Entities;
+using System.Globalization;
 
 namespace Business.Services
 {
@@ -37,7 +38,16 @@ namespace Business.Services
                 //    Adi = u.Kategori.Adi,
                 //    Aciklamasi = u.Kategori.Aciklamasi
                 //},
-                KategoriAdiDisplay = u.Kategori.Adi
+                KategoriAdiDisplay = u.Kategori.Adi,
+
+                // https://docs.microsoft.com/tr-tr/dotnet/standard/base-types/standard-numeric-format-strings
+                //BirimFiyatiDisplay = u.BirimFiyati.ToString("C2", new CultureInfo("tr-TR"))
+                // İngilizce bölgesel ayar için: en-US, sadece tarih ve ondalık veri tipleri için CultureInfo kullanılmalı,
+                // ~/Program.cs içersinde tüm uygulama için tek seferde AppCore üzerinden tanımlanıp kullanılabilir.
+                BirimFiyatiDisplay = u.BirimFiyati.ToString("C2"),
+
+                //SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToString("dd.MM.yyyy") : ""
+                SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToShortDateString() : ""
             });
         }
 

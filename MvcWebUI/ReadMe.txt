@@ -39,8 +39,8 @@ Proje geliştirme aşamaları:
 2.3) Edit Action -> ScaffoldingTemplates altındaki dosyaların ReadMe.txt ile belirtilen klasörlere kopayalanması, Http Status Code'ları, Edit view'ının scaffolding ile oluşturulması ve view'ın modele göre değiştirilmesi, Tag ile HTML helper'lar, set edilen ViewData["Title"]'ın _Layout.cshtml'de title'da kullanılması, ViewData, ViewBag ve TempData kullanımı, ModelState ile model data annotation'larının validasyonu
 2.4) Delete Action -> Silinmek istenen kaydın ilişkili kayıtları var mı kontrolü, varsa kaydın silinmemesi, kayıt silinirse silindi (IsDeleted = true) olarak güncellenmesi
 2.5) Details Action -> Sayfanın ihtiyacı olan ekstra özelliklerin model'de tanımlanması, servis'te set edilmesi ve view'da gösterilmesi
-3) UrunlerController
-3.1) Index Action 
+3) UrunlerController -> Entity Framework üzerinden scaffolding ile controller ve view'ların oluşuturlması ve bunların servislere göre düzenlenmesi
+3.1) Index Action -> Web uygulamasının bölgesel ayarının sunucu bölgesel ayarından bağımsız Program.cs'de ayarlanması
 3.2) Details Action 
 3.3) Create Action 
 3.4) Edit Action

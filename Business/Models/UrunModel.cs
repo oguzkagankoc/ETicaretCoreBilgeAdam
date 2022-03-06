@@ -37,6 +37,12 @@ namespace Business.Models
         
         [DisplayName("Kategori")]
         public string KategoriAdiDisplay { get; set; }
+
+        [DisplayName("Birim Fiyatı")]
+        public string BirimFiyatiDisplay { get; set; }
+
+        [DisplayName("Son Kullanma Tarihi")]
+        public string SonKullanmaTarihiDisplay { get; set; }
         #endregion
     }
 }
