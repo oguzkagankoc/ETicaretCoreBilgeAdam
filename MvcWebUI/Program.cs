@@ -38,6 +38,7 @@ builder.Services.AddControllersWithViews(); // MVC web uygulamasý
 #endregion
 
 builder.Services.AddScoped<IKategoriService, KategoriService>();
+builder.Services.AddScoped<IUrunService, UrunService>();
 #endregion
 
 var app = builder.Build();

@@ -1,0 +1,90 @@
+﻿@model DataAccess.Entities.Urun
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Urun</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Adi)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Adi)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Aciklamasi)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Aciklamasi)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.BirimFiyati)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.BirimFiyati)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.StokMiktari)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.StokMiktari)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.SonKullanmaTarihi)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.SonKullanmaTarihi)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Kategori)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Kategori.Adi)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Guid)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Guid)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.CreateDate)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.UpdateDate)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.UpdateDate)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>&nbsp;|&nbsp;
+    <a asp-action="Index">Back to List</a>
+</div>
