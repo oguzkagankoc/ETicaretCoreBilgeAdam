@@ -28,6 +28,15 @@ namespace Business.Services
                 SonKullanmaTarihi = u.SonKullanmaTarihi,
                 StokMiktari = u.StokMiktari,
                 KategoriId = u.KategoriId,
+
+                // eğer ürün model üzerinden bir kategorinin adı dışında diğer özellikleri (Id, Aciklamasi, vb.) de kullanılmak isteniyorsa bu şekilde modelde referans tanımlanabilir ve bu referans new'lenerek set edilebilir.
+                // ürün model üzerinden KategoriDisplay kullanımı (genelde view'de): urunModel.KategoriDisplay.Id, urunModel.KategoriDisplay.Adi, urunModel.KategoriDisplay.Aciklamasi
+                //KategoriDisplay = new KategoriModel()
+                //{
+                //    Id = u.Kategori.Id,
+                //    Adi = u.Kategori.Adi,
+                //    Aciklamasi = u.Kategori.Aciklamasi
+                //},
                 KategoriAdiDisplay = u.Kategori.Adi
             });
         }
