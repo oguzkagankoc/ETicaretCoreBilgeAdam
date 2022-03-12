@@ -40,7 +40,7 @@ Proje geliştirme aşamaları:
 2.4) Delete Action -> Silinmek istenen kaydın ilişkili kayıtları var mı kontrolü, varsa kaydın silinmemesi, kayıt silinirse silindi (IsDeleted = true) olarak güncellenmesi
 2.5) Details Action -> Sayfanın ihtiyacı olan ekstra özelliklerin model'de tanımlanması, servis'te set edilmesi ve view'da gösterilmesi
 3) UrunlerController -> Entity Framework üzerinden scaffolding ile controller ve view'ların oluşuturlması ve bunların servislere göre düzenlenmesi
-3.1) Index Action -> Web uygulamasının bölgesel ayarının sunucu bölgesel ayarından bağımsız Program.cs'de ayarlanması
+3.1) Index Action -> Web uygulamasının bölgesel ayarının sunucu bölgesel ayarından bağımsız Program.cs'de ayarlanması, third party js-css kütüphane kullanımı 
 3.2) Details Action 
 3.3) Create Action 
 3.4) Edit Action

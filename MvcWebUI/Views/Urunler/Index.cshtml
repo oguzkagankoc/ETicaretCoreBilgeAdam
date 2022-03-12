@@ -13,7 +13,10 @@
 <p>
     <a asp-action="Create">Yeni Ürün</a>
 </p>
-<table class="table">
+
+@*<table class="table">*@
+<table id="urunler" class="display" style="width:100%">
+
     <thead>
         <tr>
             @*<th>
@@ -33,7 +36,7 @@
 
             @*<th>
                 @Html.DisplayNameFor(model => model.BirimFiyati)
-            </th>*@
+                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.BirimFiyatiDisplay)
             </th>
@@ -44,7 +47,7 @@
 
             @*<th>
                 @Html.DisplayNameFor(model => model.SonKullanmaTarihi)
-            </th>*@
+                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.SonKullanmaTarihiDisplay)
             </th>
@@ -92,13 +95,13 @@
 
                 @*<td>
                     @Html.DisplayFor(modelItem => item.BirimFiyati)
-                </td>*@
+                    </td>*@
                 @* Birim fiyatın formatlanmamış hali (kullanışsız, okunması zor). *@
-                
+
                 @*<td>
                     @Html.DisplayFor(modelItem => item.BirimFiyati.ToString("C2", new CultureInfo("tr-TR")))
-                </td>*@
-                @* View'larda minimum C# kodu yazılmalı, olabildiğince model verileri kullanılmalı. 
+                    </td>*@
+                @* View'larda minimum C# kodu yazılmalı, olabildiğince model verileri kullanılmalı.
                     Birim fiyatın formatlanması view'da değil ilgili serviste yapılmalı ve formatlanan özellik (BirimFiyatiDisplay) kullanılmalı.
                 *@
 
@@ -114,7 +117,7 @@
 
                 @*<td>
                     @Html.DisplayFor(modelItem => item.SonKullanmaTarihi)
-                </td>*@
+                    </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.SonKullanmaTarihiDisplay)
                 </td>
@@ -147,3 +150,25 @@
         }
     </tbody>
 </table>
+
+@* 
+    DataTables kütüphanesini tüm view'larda kullanılmayacağı için _Layout view'ında eklemek yerine 
+    sadece ürün listeleme sayfasında kullanılacağı Urunler -> Index view'ında Scripts section'ına 
+    css ve js kütüphaneleri ile birlikte eklemek gereklidir.
+*@
+@section Scripts
+{
+    @* https://datatables.net/ *@
+    <link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.min.css" />
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+
+    <script>
+            $(document).ready(function() {
+                $('#urunler').DataTable({
+                    language: {
+                        url: "/json/datatablesTurkish.json"
+                    }
+                });
+            });
+    </script>
+}
