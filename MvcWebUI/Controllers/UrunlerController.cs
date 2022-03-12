@@ -1,5 +1,6 @@
 ﻿using Business.Models;
 using Business.Services;
+using Business.Services.Bases;
 using DataAccess.Contexts;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,12 @@ namespace MvcWebUI.Controllers
         //}
 
         private readonly IUrunService _urunService;
+        private readonly IKategoriService _kategoriService;
 
-        public UrunlerController(IUrunService urunService)
+        public UrunlerController(IUrunService urunService, IKategoriService kategoriService)
         {
             _urunService = urunService;
+            _kategoriService = kategoriService;
         }
 
         // GET: Urunler
@@ -37,28 +40,43 @@ namespace MvcWebUI.Controllers
         }
 
         // GET: Urunler/Details/5
+        //public IActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var urun = _context.Urunler
+        //        .Include(u => u.Kategori)
+        //        .SingleOrDefault(m => m.Id == id);
+        //    if (urun == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(urun);
+        //}
         public IActionResult Details(int? id)
         {
             if (id == null)
-            {
-                return NotFound();
-            }
-
-            var urun = _context.Urunler
-                .Include(u => u.Kategori)
-                .SingleOrDefault(m => m.Id == id);
-            if (urun == null)
-            {
-                return NotFound();
-            }
-
-            return View(urun);
+                return View("Hata", "Id gereklidir!");
+            UrunModel model = _urunService.Query().SingleOrDefault(u => u.Id == id.Value);
+            if (model == null)
+                return View("Hata", "Kayıt bulunamadı!");
+            return View(model);
         }
 
         // GET: Urunler/Create
+        //public IActionResult Create()
+        //{
+        //    ViewData["KategoriId"] = new SelectList(_context.Kategoriler, "Id", "Adi");
+        //    return View();
+        //}
         public IActionResult Create()
         {
-            ViewData["KategoriId"] = new SelectList(_context.Kategoriler, "Id", "Adi");
+            List<KategoriModel> kategoriler = _kategoriService.Query().ToList();
+            ViewBag.KategoriId = new SelectList(kategoriler, "Id", "Adi");
             return View();
         }
 
@@ -67,15 +85,30 @@ namespace MvcWebUI.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Urun urun)
+        //public IActionResult Create(Urun urun)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(urun);
+        //        _context.SaveChanges();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["KategoriId"] = new SelectList(_context.Kategoriler, "Id", "Adi", urun.KategoriId);
+        //    return View(urun);
+        //}
+        public IActionResult Create(UrunModel urun)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(urun);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                var result = _urunService.Add(urun);
+                if (result.IsSuccessful)
+                {
+                    TempData["Success"] = result.Message;
+                    return RedirectToAction(nameof(Index));
+                }
+                ModelState.AddModelError("", result.Message);
             }
-            ViewData["KategoriId"] = new SelectList(_context.Kategoriler, "Id", "Adi", urun.KategoriId);
+            ViewBag.KategoriId = new SelectList(_kategoriService.Query().ToList(), "Id", "Adi", urun.KategoriId);
             return View(urun);
         }
 

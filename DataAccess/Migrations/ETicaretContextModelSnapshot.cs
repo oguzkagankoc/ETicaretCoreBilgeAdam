@@ -61,6 +61,45 @@ namespace DataAccess.Migrations
                     b.ToTable("ETicaretKategoriler", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccess.Entities.Magaza", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Adi")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Guid")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SanalMi")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ETicaretMagazalar", (string)null);
+                });
+
             modelBuilder.Entity("DataAccess.Entities.Urun", b =>
                 {
                     b.Property<int>("Id")
@@ -115,6 +154,23 @@ namespace DataAccess.Migrations
                     b.ToTable("ETicaretUrunler", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccess.Entities.UrunMagaza", b =>
+                {
+                    b.Property<int>("UrunId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("MagazaId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("UrunId", "MagazaId");
+
+                    b.HasIndex("MagazaId");
+
+                    b.ToTable("ETicaretUrunMagazalar", (string)null);
+                });
+
             modelBuilder.Entity("DataAccess.Entities.Urun", b =>
                 {
                     b.HasOne("DataAccess.Entities.Kategori", "Kategori")
@@ -126,9 +182,38 @@ namespace DataAccess.Migrations
                     b.Navigation("Kategori");
                 });
 
+            modelBuilder.Entity("DataAccess.Entities.UrunMagaza", b =>
+                {
+                    b.HasOne("DataAccess.Entities.Magaza", "Magaza")
+                        .WithMany("UrunMagazalar")
+                        .HasForeignKey("MagazaId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Entities.Urun", "Urun")
+                        .WithMany("UrunMagazalar")
+                        .HasForeignKey("UrunId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Magaza");
+
+                    b.Navigation("Urun");
+                });
+
             modelBuilder.Entity("DataAccess.Entities.Kategori", b =>
                 {
                     b.Navigation("Urunler");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.Magaza", b =>
+                {
+                    b.Navigation("UrunMagazalar");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.Urun", b =>
+                {
+                    b.Navigation("UrunMagazalar");
                 });
 #pragma warning restore 612, 618
         }

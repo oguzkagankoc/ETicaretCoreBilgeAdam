@@ -54,7 +54,19 @@ namespace Business.Services
 
         public Result Add(UrunModel model)
         {
-            throw new NotImplementedException();
+            if (Repository.EntityQuery().Any(u => u.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
+                return new ErrorResult("Girdiğiniz ürün adına sahip kayıt bulunmaktadır!");
+            Urun entity = new Urun()
+            {
+                Adi = model.Adi.Trim(),
+                Aciklamasi = model.Aciklamasi?.Trim(),
+                BirimFiyati = model.BirimFiyati,
+                StokMiktari = model.StokMiktari,
+                SonKullanmaTarihi = model.SonKullanmaTarihi,
+                KategoriId = model.KategoriId
+            };
+            Repository.Add(entity);
+            return new SuccessResult("Ürün başarıyla eklendi.");
         }
 
         public Result Update(UrunModel model)

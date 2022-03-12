@@ -1,111 +1,149 @@
-﻿@model DataAccess.Entities.Urun
+﻿@*@model DataAccess.Entities.Urun*@
+@model UrunModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Yeni Ürün";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<h4>Urun</h4>
+<h4>Ürün</h4>
 <hr />
 <div class="row">
     <div class="col-12">
         <form asp-action="Create">
-		@Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="row mb-3">
                 <label asp-for="Adi" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="Adi" class="form-control" />
-					<span asp-validation-for="Adi" class="text-danger"></span>
-				</div>
+                <div class="col-5">
+                    <input asp-for="Adi" class="form-control" />
+                    <span asp-validation-for="Adi" class="text-danger"></span>
+                </div>
             </div>
             <div class="row mb-3">
                 <label asp-for="Aciklamasi" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="Aciklamasi" class="form-control" />
-					<span asp-validation-for="Aciklamasi" class="text-danger"></span>
-				</div>
+                <div class="col-5">
+
+                    @*<input asp-for="Aciklamasi" class="form-control" />*@
+                    <textarea asp-for="Aciklamasi" class="form-control" rows="3"></textarea>
+
+                    <span asp-validation-for="Aciklamasi" class="text-danger"></span>
+                </div>
             </div>
             <div class="row mb-3">
                 <label asp-for="BirimFiyati" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="BirimFiyati" class="form-control" />
-					<span asp-validation-for="BirimFiyati" class="text-danger"></span>
-				</div>
+                <div class="col-5">
+                    <input asp-for="BirimFiyati" class="form-control" />
+                    <span asp-validation-for="BirimFiyati" class="text-danger"></span>
+                </div>
             </div>
             <div class="row mb-3">
                 <label asp-for="StokMiktari" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="StokMiktari" class="form-control" />
-					<span asp-validation-for="StokMiktari" class="text-danger"></span>
-				</div>
+                <div class="col-5">
+                    <input asp-for="StokMiktari" class="form-control" />
+                    <span asp-validation-for="StokMiktari" class="text-danger"></span>
+                </div>
             </div>
             <div class="row mb-3">
                 <label asp-for="SonKullanmaTarihi" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="SonKullanmaTarihi" class="form-control" />
-					<span asp-validation-for="SonKullanmaTarihi" class="text-danger"></span>
-				</div>
+                <div class="col-5">
+
+                    @* SonKullanmaTarihi veri tipi DateTime olduğundan input tarih tipinde oluşturulur. *@
+                    @*<input asp-for="SonKullanmaTarihi" class="form-control" />*@
+                    <input asp-for="SonKullanmaTarihi" class="form-control" type="text" id="sonkullanmatarihi" />
+
+                    <span asp-validation-for="SonKullanmaTarihi" class="text-danger"></span>
+                </div>
             </div>
             <div class="row mb-3">
                 <label asp-for="KategoriId" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<select asp-for="KategoriId" class ="form-control" asp-items="ViewBag.KategoriId"></select>
-				</div>
+                <div class="col-5">
+
+                    @*<select asp-for="KategoriId" class ="form-control" asp-items="ViewBag.KategoriId"></select>*@
+                    <select asp-for="KategoriId" class="form-control" asp-items="ViewBag.KategoriId">
+                        <option value="">-- Seçiniz --</option>
+                    </select>
+
+                </div>
             </div>
-            <div class="row mb-3">
+
+            @*<div class="row mb-3">
                 <label asp-for="Guid" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="Guid" class="form-control" />
-					<span asp-validation-for="Guid" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
+                <div class="col-5">
+                <input asp-for="Guid" class="form-control" />
+                <span asp-validation-for="Guid" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="row mb-3">
                 <label asp-for="CreateDate" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="CreateDate" class="form-control" />
-					<span asp-validation-for="CreateDate" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
+                <div class="col-5">
+                <input asp-for="CreateDate" class="form-control" />
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="row mb-3">
                 <label asp-for="CreatedBy" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="CreatedBy" class="form-control" />
-					<span asp-validation-for="CreatedBy" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
+                <div class="col-5">
+                <input asp-for="CreatedBy" class="form-control" />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="row mb-3">
                 <label asp-for="UpdateDate" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="UpdateDate" class="form-control" />
-					<span asp-validation-for="UpdateDate" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
+                <div class="col-5">
+                <input asp-for="UpdateDate" class="form-control" />
+                <span asp-validation-for="UpdateDate" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="row mb-3">
                 <label asp-for="UpdatedBy" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="UpdatedBy" class="form-control" />
-					<span asp-validation-for="UpdatedBy" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
+                <div class="col-5">
+                <input asp-for="UpdatedBy" class="form-control" />
+                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="row mb-3">
                 <label asp-for="IsDeleted" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="IsDeleted" class="form-control" />
-					<span asp-validation-for="IsDeleted" class="text-danger"></span>
-				</div>
-            </div>
+                <div class="col-5">
+                <input asp-for="IsDeleted" class="form-control" />
+                <span asp-validation-for="IsDeleted" class="text-danger"></span>
+                </div>
+                </div>*@
+
             <div class="row mb-3">
-				<div class="offset-2 col-5">
-					<input type="submit" value="Save" class="btn btn-primary" />
-					&nbsp;&nbsp;
-                    <button type="reset" class="btn btn-outline-primary">Reset</button>
-					&nbsp;&nbsp;
-					<a asp-action="Index">Back to List</a>
-				</div>
+                <div class="offset-2 col-5">
+                    <input type="submit" value="Kaydet" class="btn btn-primary" />
+                    &nbsp;&nbsp;
+                    <button type="reset" class="btn btn-outline-primary">Temizle</button>
+                    &nbsp;&nbsp;
+                    <a asp-action="Index">Ürün Listesi</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
+@*
+    Bootstrap-DatePicker kütüphanesini tüm view'larda kullanılmayacağı için _Layout view'ında eklemek yerine
+    sadece ürün ekleme ve düzenleme sayfalarında kullanılacağı Urunler -> Create ve Urunler -> Edit view'larında
+    Scripts section'ına css ve js kütüphaneleri ile birlikte eklemek gereklidir.
+*@
+@section Scripts
+{
+	@*https://uxsolutions.github.io/bootstrap-datepicker*@
+    <link rel="stylesheet" href="/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" />
+    <script src="/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>
+    <script>
+        $(function(){
+            $('#sonkullanmatarihi').datepicker({
+                todayBtn: "linked",
+                language: "tr",
+                orientation: "top auto",
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
+}

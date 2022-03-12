@@ -22,5 +22,7 @@ namespace DataAccess.Entities
 
         public int KategoriId { get; set; }
         public Kategori Kategori { get; set; }
+
+        public List<UrunMagaza> UrunMagazalar { get; set; }
     }
 }

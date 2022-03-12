@@ -14,6 +14,11 @@
     <a asp-action="Create">Yeni Ürün</a>
 </p>
 
+@if (TempData["Success"] != null)
+{
+    <p class="text-success">@TempData["Success"]</p>
+}
+
 @*<table class="table">*@
 <table id="urunler" class="display" style="width:100%">
 
@@ -49,7 +54,7 @@
                 @Html.DisplayNameFor(model => model.SonKullanmaTarihi)
                 </th>*@
             <th>
-                @Html.DisplayNameFor(model => model.SonKullanmaTarihiDisplay)
+                @Html.DisplayNameFor(model => model.SonKullanmaTarihiDisplay) (yıl-ay-gün)
             </th>
 
             @*<th>
@@ -161,9 +166,9 @@
     @* https://datatables.net/ *@
     <link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.min.css" />
     <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
-
     <script>
-            $(document).ready(function() {
+            //$(document).ready(function() { // içerisindeki kodlar sayfanın yüklenmesi tamamlandıktan sonra çalışır
+            $(function() {
                 $('#urunler').DataTable({
                     language: {
                         url: "/json/datatablesTurkish.json"

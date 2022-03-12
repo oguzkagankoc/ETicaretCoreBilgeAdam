@@ -28,6 +28,7 @@ namespace Business.Models
         [DisplayName("Son Kullanma Tarihi")]
         public DateTime? SonKullanmaTarihi { get; set; }
 
+        [DisplayName("Kategori")]
         public int KategoriId { get; set; }
         #endregion
 
