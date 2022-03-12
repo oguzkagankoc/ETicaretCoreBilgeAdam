@@ -41,14 +41,14 @@ namespace Business.Services
                 KategoriAdiDisplay = u.Kategori.Adi,
 
                 // https://docs.microsoft.com/tr-tr/dotnet/standard/base-types/standard-numeric-format-strings
-                //BirimFiyatiDisplay = u.BirimFiyati.ToString("C2", new CultureInfo("tr-TR"))
+                //BirimFiyatiDisplay = u.BirimFiyati.ToString("C2", new CultureInfo("tr-TR")) // Türkçe para birimi formatı
                 // İngilizce bölgesel ayar için: en-US, sadece tarih ve ondalık veri tipleri için CultureInfo kullanılmalı,
                 // ~/Program.cs içersinde tüm uygulama için tek seferde AppCore üzerinden tanımlanıp kullanılabilir.
-                BirimFiyatiDisplay = u.BirimFiyati.ToString("C2"), // Para birimi formatı
+                BirimFiyatiDisplay = u.BirimFiyati.ToString("C2"), // Bölgesel ayara göre para birimi formatı
 
                 //SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToString("dd.MM.yyyy") : "" // Türkçe tarih formatı
                 //SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToShortDateString() : "" // Kısa tarih formatı
-                SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToString("yyyy-MM-dd") : "" // SQL tarih formatı
+                SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToString("yyyy-MM-dd") : "" // SQL tarih formatı, tarihin doğru bir şekilde sıralanması için
             });
         }
 
