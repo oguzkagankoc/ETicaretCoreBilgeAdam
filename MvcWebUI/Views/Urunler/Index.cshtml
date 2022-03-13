@@ -169,6 +169,8 @@
             $(function() {
                 $('#urunler').DataTable({
                     language: {
+                        // Eğer kullanılan metinsel bir dosyada Türkçe karakter sorunu varsa
+                        // dosya Notepad ile açılıp kodlama (encoding) UTF-8'e değiştirilerek kaydedilmelidir.
                         url: "/json/datatablesTurkish.json"
                     }
                 });

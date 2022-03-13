@@ -60,10 +60,10 @@ namespace Business.Services
             {
                 Adi = model.Adi.Trim(),
                 Aciklamasi = model.Aciklamasi?.Trim(),
-                BirimFiyati = model.BirimFiyati,
-                StokMiktari = model.StokMiktari,
+                BirimFiyati = model.BirimFiyati.Value,
+                StokMiktari = model.StokMiktari.Value,
                 SonKullanmaTarihi = model.SonKullanmaTarihi,
-                KategoriId = model.KategoriId
+                KategoriId = model.KategoriId.Value
             };
             Repository.Add(entity);
             return new SuccessResult("Ürün başarıyla eklendi.");

@@ -1,12 +1,13 @@
-﻿@model DataAccess.Entities.Urun
+﻿@*@model DataAccess.Entities.Urun*@
+@model UrunModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Ürün Düzenle";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<h4>Urun</h4>
+<h4>Ürün</h4>
 <hr />
 <div class="row">
     <div class="col-12">
@@ -23,7 +24,10 @@
             <div class="row mb-3">
                 <label asp-for="Aciklamasi" class="col-2 col-form-label"></label>
 				<div class="col-5">
-					<input asp-for="Aciklamasi" class="form-control" />
+
+					@*<input asp-for="Aciklamasi" class="form-control" />*@
+					<textarea asp-for="Aciklamasi" class="form-control" rows="3"></textarea>
+
 					<span asp-validation-for="Aciklamasi" class="text-danger"></span>
 				</div>
             </div>
@@ -44,19 +48,30 @@
             <div class="row mb-3">
                 <label asp-for="SonKullanmaTarihi" class="col-2 col-form-label"></label>
 				<div class="col-5">
-					<input asp-for="SonKullanmaTarihi" class="form-control" />
+
+					@*<input asp-for="SonKullanmaTarihi" class="form-control" />*@
+					<input asp-for="SonKullanmaTarihi" class="form-control sonkullanmatarihi" type="text" />
+
 					<span asp-validation-for="SonKullanmaTarihi" class="text-danger"></span>
 				</div>
             </div>
             <div class="row mb-3">
                 <label asp-for="KategoriId" class="col-2 col-form-label"></label>
 				<div class="col-5">
-					<select asp-for="KategoriId" class="form-control" asp-items="ViewBag.KategoriId"></select>
+
+					@*<select asp-for="KategoriId" class="form-control kategoriler" asp-items="ViewBag.KategoriId"></select>*@
+					@*<select asp-for="KategoriId" class="form-control kategoriler" asp-items="ViewBag.KategoriId">
+						<option value="">-- Seçiniz --</option>
+					</select>*@
+                    @*@Html.DropDownListFor(model => model.KategoriId, (SelectList)ViewBag.KategoriId, "-- Seçiniz --", new { @class = "form-control kategoriler" })*@
+                    @Html.DropDownListFor(model => model.KategoriId, ViewBag.KategoriId as SelectList, "-- Seçiniz --", new { @class = "form-control kategoriler" })
+
 					<span asp-validation-for="KategoriId" class="text-danger"></span>
 				</div>
             </div>
             <input type="hidden" asp-for="Id" />
-            <div class="row mb-3">
+
+           @* <div class="row mb-3">
                 <label asp-for="Guid" class="col-2 col-form-label"></label>
 				<div class="col-5">
 					<input asp-for="Guid" class="form-control" />
@@ -97,17 +112,49 @@
 					<input asp-for="IsDeleted" class="form-control" />
 					<span asp-validation-for="IsDeleted" class="text-danger"></span>
 				</div>
-            </div>
+            </div>*@
+
             <div class="row mb-3">
 				<div class="offset-2 col-5">
-					<input type="submit" value="Save" class="btn btn-primary" />
+					<input type="submit" value="Kaydet" class="btn btn-primary" />
 					&nbsp;&nbsp;
-                    <button type="reset" class="btn btn-outline-primary">Reset</button>
+                    <button type="reset" class="btn btn-outline-primary">Temizle</button>
 					&nbsp;&nbsp;
-					<a asp-action="Index">Back to List</a>
+					<a asp-action="Index">Ürün Listesi</a>
 				</div>
             </div>
         </form>
     </div>
 </div>
 
+@*
+    Bootstrap-DatePicker kütüphanesi tüm view'larda kullanılmayacağı için _Layout view'ında eklemek yerine
+    sadece ürün ekleme ve düzenleme sayfalarında kullanılacağı Urunler -> Create ve Urunler -> Edit view'larında
+    Scripts section'ına css ve js kütüphaneleri ile birlikte eklenmelidir.
+*@
+@section Scripts
+{
+	@*https://uxsolutions.github.io/bootstrap-datepicker*@
+    <link rel="stylesheet" href="/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" />
+    <script src="/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>
+
+    @* https://select2.org/ *@
+    <link rel="stylesheet" href="/lib/select2/css/select2.min.css" />
+    <script src="/lib/select2/js/select2.min.js"></script>
+    <script src="/lib/select2/js/i18n/tr.min.js"></script>
+
+    <script>
+        $(function(){
+            $('.sonkullanmatarihi').datepicker({
+                todayBtn: "linked",
+                language: "tr",
+                orientation: "top auto",
+                autoclose: true,
+                todayHighlight: true
+            });
+
+             $(".kategoriler").select2();
+        });
+    </script>
+}

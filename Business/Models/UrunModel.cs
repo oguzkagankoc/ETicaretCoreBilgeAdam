@@ -19,17 +19,19 @@ namespace Business.Models
         [Range(0, 1000000000, ErrorMessage = "{0} {1} ile {2} aralığında olmalıdır!")] // {0}: Birim Fiyatı, {1}: 0, {2}: 1000000000
         [Required(ErrorMessage = "{0} gereklidir!")] // BirimFiyati nullable olmadığı için zorunlu, required mesajını özelleştirebilmek için data annotation'ı ekledik
         [DisplayName("Birim Fiyatı")]
-        public double BirimFiyati { get; set; }
+        public double? BirimFiyati { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "{0} {1} ile {2} aralığında olmalıdır!")]
+        [Required(ErrorMessage = "{0} gereklidir!")]
         [DisplayName("Stok Miktarı")]
-        public int StokMiktari { get; set; }
+        public int? StokMiktari { get; set; }
 
         [DisplayName("Son Kullanma Tarihi")]
         public DateTime? SonKullanmaTarihi { get; set; }
 
         [DisplayName("Kategori")]
-        public int KategoriId { get; set; }
+        [Required(ErrorMessage = "{0} gereklidir!")]
+        public int? KategoriId { get; set; }
         #endregion
 
         #region Sayfanın ekstra ihtiyacı olan özellikler

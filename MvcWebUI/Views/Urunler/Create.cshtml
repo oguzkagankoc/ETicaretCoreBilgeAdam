@@ -60,11 +60,12 @@
                 <label asp-for="KategoriId" class="col-2 col-form-label"></label>
                 <div class="col-5">
 
-                    @*<select asp-for="KategoriId" class ="form-control" asp-items="ViewBag.KategoriId"></select>*@
-                    <select asp-for="KategoriId" class="form-control" asp-items="ViewBag.KategoriId">
+                    @*<select asp-for="KategoriId" class ="form-control kategoriler" asp-items="ViewBag.KategoriId"></select>*@
+                    <select asp-for="KategoriId" class="form-control kategoriler" asp-items="ViewBag.KategoriId">
                         <option value="">-- Seçiniz --</option>
                     </select>
 
+                    <span asp-validation-for="KategoriId" class="text-danger"></span>
                 </div>
             </div>
 
@@ -135,6 +136,12 @@
     <link rel="stylesheet" href="/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" />
     <script src="/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
     <script src="/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>
+
+    @* https://select2.org/ *@
+    <link rel="stylesheet" href="/lib/select2/css/select2.min.css" />
+    <script src="/lib/select2/js/select2.min.js"></script>
+    <script src="/lib/select2/js/i18n/tr.min.js"></script>
+
     <script>
         $(function(){
             $('#sonkullanmatarihi').datepicker({
@@ -144,6 +151,8 @@
                 autoclose: true,
                 todayHighlight: true
             });
+
+            $(".kategoriler").select2();
         });
     </script>
 }

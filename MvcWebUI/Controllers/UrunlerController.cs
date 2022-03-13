@@ -113,20 +113,30 @@ namespace MvcWebUI.Controllers
         }
 
         // GET: Urunler/Edit/5
+        //public IActionResult Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var urun = _context.Urunler.Find(id);
+        //    if (urun == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["KategoriId"] = new SelectList(_context.Kategoriler, "Id", "Adi", urun.KategoriId);
+        //    return View(urun);
+        //}
         public IActionResult Edit(int? id)
         {
             if (id == null)
-            {
-                return NotFound();
-            }
-
-            var urun = _context.Urunler.Find(id);
-            if (urun == null)
-            {
-                return NotFound();
-            }
-            ViewData["KategoriId"] = new SelectList(_context.Kategoriler, "Id", "Adi", urun.KategoriId);
-            return View(urun);
+                return View("Hata", "Id gereklidir!");
+            UrunModel model = _urunService.Query().SingleOrDefault(u => u.Id == id.Value);
+            if (model == null)
+                return View("Hata", "Kayıt bulunamadı!");
+            ViewBag.KategoriId = new SelectList(_kategoriService.Query().ToList(), "Id", "Adi", model.KategoriId);
+            return View(model);
         }
 
         // POST: Urunler/Edit

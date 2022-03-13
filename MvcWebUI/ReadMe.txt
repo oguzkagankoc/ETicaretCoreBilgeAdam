@@ -43,5 +43,5 @@ Proje geliştirme aşamaları:
 3.1) Index Action -> Web uygulamasının bölgesel ayarının sunucu bölgesel ayarından bağımsız Program.cs'de ayarlanması, third party js-css kütüphane kullanımı, bazı verilerin modeldeki Display ile biten özellik adları üzerinden formatlanarak gösterimi 
 3.2) Details Action
 3.3) Create Action -> verilerin kendi özellik adları ve veri tipleri üzerinden formdan alınması, aksiyonda ihtiyaç duyulan servislerin enjekte edilmesi, SelectList kullanımı
-3.4) Edit Action
+3.4) Edit Action -> Html DropDownListFor helper kullanımı
 3.5) Delete Action
