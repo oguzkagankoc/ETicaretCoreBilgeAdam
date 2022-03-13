@@ -144,46 +144,79 @@ namespace MvcWebUI.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Urun urun)
+        //public IActionResult Edit(Urun urun)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Update(urun);
+        //        _context.SaveChanges();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["KategoriId"] = new SelectList(_context.Kategoriler, "Id", "Adi", urun.KategoriId);
+        //    return View(urun);
+        //}
+        public IActionResult Edit(UrunModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Update(urun);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                var result = _urunService.Update(model);
+                if (result.IsSuccessful)
+                {
+                    TempData["Success"] = result.Message;
+                    return RedirectToAction(nameof(Index));
+                }
+                ModelState.AddModelError("", result.Message);
             }
-            ViewData["KategoriId"] = new SelectList(_context.Kategoriler, "Id", "Adi", urun.KategoriId);
-            return View(urun);
+            ViewBag.KategoriId = new SelectList(_kategoriService.Query().ToList(), "Id", "Adi", model.KategoriId);
+            return View(model);
         }
 
         // GET: Urunler/Delete/5
+        //public IActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var urun = _context.Urunler
+        //        .Include(u => u.Kategori)
+        //        .SingleOrDefault(m => m.Id == id);
+        //    if (urun == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(urun);
+        //}
         public IActionResult Delete(int? id)
         {
             if (id == null)
-            {
-                return NotFound();
-            }
-
-            var urun = _context.Urunler
-                .Include(u => u.Kategori)
-                .SingleOrDefault(m => m.Id == id);
-            if (urun == null)
-            {
-                return NotFound();
-            }
-
-            return View(urun);
+                return View("Hata", "Id gereklidir!");
+            UrunModel model = _urunService.Query().SingleOrDefault(u => u.Id == id.Value);
+            if (model == null)
+                return View("Hata", "Kayıt bulunamadı!");
+            return View(model);
         }
 
         // POST: Urunler/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        //public IActionResult DeleteConfirmed(int id)
+        //{
+        //    var urun = _context.Urunler.Find(id);
+        //    _context.Urunler.Remove(urun);
+        //    _context.SaveChanges();
+        //    return RedirectToAction(nameof(Index));
+        //}
         public IActionResult DeleteConfirmed(int id)
         {
-            var urun = _context.Urunler.Find(id);
-            _context.Urunler.Remove(urun);
-            _context.SaveChanges();
+            var result = _urunService.Delete(id);
+            //if (result.IsSuccessful) // Delete methodu her zaman başarılı sonucunu döneceğinden if'le kontrole gerek yok
+            //{
+            TempData["Success"] = result.Message;
             return RedirectToAction(nameof(Index));
+            //}
         }
-	}
+    }
 }

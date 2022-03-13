@@ -71,12 +71,23 @@ namespace Business.Services
 
         public Result Update(UrunModel model)
         {
-            throw new NotImplementedException();
+            if (Repository.EntityQuery().Any(u => u.Adi.ToUpper() == model.Adi.ToUpper().Trim() && u.Id != model.Id))
+                return new ErrorResult("Girdiğiniz ürün adına sahip kayıt bulunmaktadır!");
+            Urun entity = Repository.EntityQuery(u => u.Id == model.Id).SingleOrDefault();
+            entity.Adi = model.Adi.Trim();
+            entity.Aciklamasi = model.Aciklamasi?.Trim();
+            entity.BirimFiyati = model.BirimFiyati.Value;
+            entity.StokMiktari = model.StokMiktari.Value;
+            entity.SonKullanmaTarihi = model.SonKullanmaTarihi;
+            entity.KategoriId = model.KategoriId.Value;
+            Repository.Update(entity);
+            return new SuccessResult("Ürün başarıyla güncellendi.");
         }
 
         public Result Delete(int id)
         {
-            throw new NotImplementedException();
+            Repository.DeleteEntity(id);
+            return new SuccessResult("Ürün başarıyla silindi.");
         }
 
         public void Dispose()

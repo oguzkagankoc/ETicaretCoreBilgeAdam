@@ -50,7 +50,7 @@
 				<div class="col-5">
 
 					@*<input asp-for="SonKullanmaTarihi" class="form-control" />*@
-					<input asp-for="SonKullanmaTarihi" class="form-control sonkullanmatarihi" type="text" />
+					<input asp-for="SonKullanmaTarihi" asp-format="{0:dd.MM.yyyy}" class="form-control sonkullanmatarihi" type="text" />
 
 					<span asp-validation-for="SonKullanmaTarihi" class="text-danger"></span>
 				</div>
@@ -59,7 +59,7 @@
                 <label asp-for="KategoriId" class="col-2 col-form-label"></label>
 				<div class="col-5">
 
-					@*<select asp-for="KategoriId" class="form-control kategoriler" asp-items="ViewBag.KategoriId"></select>*@
+					@*<select asp-for="KategoriId" class="form-control" asp-items="ViewBag.KategoriId"></select>*@
 					@*<select asp-for="KategoriId" class="form-control kategoriler" asp-items="ViewBag.KategoriId">
 						<option value="">-- Seçiniz --</option>
 					</select>*@
