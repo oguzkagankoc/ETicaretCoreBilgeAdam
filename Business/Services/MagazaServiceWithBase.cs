@@ -38,7 +38,7 @@ namespace Business.Services
                 SanalMi = model.SanalMi
             };
             Repository.Add(entity);
-            return new SuccessResult("Mağaza başarıyla eklendi.");
+            return new SuccessResult();
         }
 
         public Result Update(MagazaModel model)
@@ -49,19 +49,25 @@ namespace Business.Services
             entity.Adi = model.Adi.Trim();
             entity.SanalMi = model.SanalMi;
             Repository.Update(entity);
-            return new SuccessResult("Mağaza başarıyla güncellendi.");
+            return new SuccessResult();
         }
 
         public Result Delete(int id)
         {
-            using (Repository<UrunMagaza, ETicaretContext> urunMagazaRepository = new Repository<UrunMagaza, ETicaretContext>())
+            Magaza entity = Repository.EntityQuery(m => m.Id == id, "UrunMagazalar").SingleOrDefault();
+            if (entity.UrunMagazalar != null && entity.UrunMagazalar.Count > 0)
             {
-                Magaza entity = Repository.EntityQuery(m => m.Id == id).SingleOrDefault();
-                if (entity.UrunMagazalar != null && entity.UrunMagazalar.Count > 0)
+                using (Repository<UrunMagaza, ETicaretContext> urunMagazaRepository = new Repository<UrunMagaza, ETicaretContext>())
                 {
-
-                }
-            };
+                    foreach (UrunMagaza urunMagaza in entity.UrunMagazalar)
+                    {
+                        urunMagazaRepository.Delete(urunMagaza, false);
+                    }
+                    urunMagazaRepository.Save();
+                };
+            }
+            Repository.Delete(entity);
+            return new SuccessResult();
         }
 
         public void Dispose()

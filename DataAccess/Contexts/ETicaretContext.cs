@@ -5,10 +5,13 @@ namespace DataAccess.Contexts
 {
     public class ETicaretContext : DbContext
     {
+        //todo
         public DbSet<Urun> Urunler { get; set; }
         public DbSet<Kategori> Kategoriler { get; set; }
         public DbSet<Magaza> Magazalar { get; set; }
+        public DbSet<UrunMagaza> UrunMagazalar { get; set; }
         public DbSet<Kullanici> Kullanicilar { get; set; }
+        public DbSet<KullaniciDetayi> KullaniciDetaylari { get; set; }
         public DbSet<Rol> Roller { get; set; }
         public DbSet<Ulke> Ulkeler { get; set; }
         public DbSet<Sehir> Sehirler { get; set; }

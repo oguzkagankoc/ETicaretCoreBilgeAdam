@@ -1,0 +1,30 @@
+﻿@model MagazaModel
+
+@{
+    ViewData["Title"] = "Mağaza Detayı";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Mağaza</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Adi)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Adi)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.SanalMiDisplay)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.SanalMiDisplay)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Düzenle</a>&nbsp;|&nbsp;
+    <a asp-action="Index">Mağaza Listesi</a>
+</div>

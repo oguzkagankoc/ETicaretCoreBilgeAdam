@@ -11,7 +11,7 @@ namespace MvcWebUI.Controllers
 {
     public class UrunlerController : Controller
     {
-        private readonly ETicaretContext _context;
+        //private readonly ETicaretContext _context;
 
         //public UrunlerController(ETicaretContext context)
         //{

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<MagazaModel>
+
+@{
+    ViewData["Title"] = "Mağaza Listesi";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create">Yeni Mağaza</a>
+</p>
+
+@if (Model == null || Model.Count() == 0)
+{
+    <p class="bg-danger text-white">
+        Kayıt bulunamadı
+    </p>
+}
+else
+{
+    <p class="bg-success text-white">
+        @Model.Count() kayıt bulundu
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="width:70%;">
+                @Html.DisplayNameFor(model => model.Adi)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Adi)
+                </td>
+                <td style="text-align:right;">
+                    <a asp-action="Details" asp-route-id="@item.Id">Detay</a>&nbsp;|&nbsp;
+                    <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>&nbsp;|&nbsp;
+
+                    @*<a asp-action="Delete" asp-route-id="@item.Id">Sil</a>*@
+                    <a href="#" onclick="magazaSil(@item.Id);">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @* https://alertifyjs.com/ *@
+    <link href="~/lib/AlertifyJS/css/alertify.min.css" rel="stylesheet" />
+    <script src="~/lib/AlertifyJS/alertify.min.js"></script>
+
+    <script>
+        function magazaSil(id) {
+               alertify.confirm("Uyarı!",
+                   "Bu mağazayı silmek istediğinize emin misiniz?",
+                   function () { // OK
+                       //alertify.success("Silme başarılı.");
+                       window.location.href = "/Magazalar/Delete/" + id;
+                   },
+                   function () { // Cancel
+                       //alertify.error("Silme iptal edildi.");
+                   }
+               ).set('labels', { ok: 'Evet', cancel: 'Hayır' });
+           }
+    </script>
+}
