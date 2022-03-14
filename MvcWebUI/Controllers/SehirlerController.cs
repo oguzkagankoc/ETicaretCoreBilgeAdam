@@ -1,9 +1,7 @@
 ﻿using Business.Models;
 using Business.Services;
-using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace MvcWebUI.Controllers
 {
