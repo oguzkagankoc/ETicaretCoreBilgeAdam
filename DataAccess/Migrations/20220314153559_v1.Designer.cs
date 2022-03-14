@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ETicaretContext))]
-    [Migration("20220314134101_v1")]
+    [Migration("20220314153559_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
