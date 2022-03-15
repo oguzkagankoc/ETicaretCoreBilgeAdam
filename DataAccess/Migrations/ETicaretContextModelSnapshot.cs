@@ -115,7 +115,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.KullaniciDetayi", b =>
                 {
-                    b.Property<int>("KullaniciId")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Adres")
@@ -125,10 +125,22 @@ namespace DataAccess.Migrations
                     b.Property<int>("Cinsiyet")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Eposta")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Guid")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("SehirId")
                         .HasColumnType("int");
@@ -136,7 +148,13 @@ namespace DataAccess.Migrations
                     b.Property<int>("UlkeId")
                         .HasColumnType("int");
 
-                    b.HasKey("KullaniciId");
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Eposta")
                         .IsUnique();
@@ -358,11 +376,11 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.UrunMagaza", b =>
                 {
-                    b.Property<int>("UrunId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("MagazaId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
@@ -373,11 +391,11 @@ namespace DataAccess.Migrations
                     b.Property<string>("Guid")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<int>("MagazaId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
@@ -385,11 +403,16 @@ namespace DataAccess.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UrunId", "MagazaId");
+                    b.Property<int>("UrunId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("MagazaId");
 
-                    b.ToTable("ETicaretUrunMagazalar", (string)null);
+                    b.HasIndex("UrunId");
+
+                    b.ToTable("UrunMagazalar");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Kullanici", b =>
@@ -407,7 +430,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DataAccess.Entities.Kullanici", "Kullanici")
                         .WithOne("KullaniciDetayi")
-                        .HasForeignKey("DataAccess.Entities.KullaniciDetayi", "KullaniciId")
+                        .HasForeignKey("DataAccess.Entities.KullaniciDetayi", "Id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

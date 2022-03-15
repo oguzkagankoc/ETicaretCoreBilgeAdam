@@ -4,100 +4,86 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MvcWebUI.Controllers
 {
-    public class MagazalarController : Controller
+    public class UlkelerController : Controller
     {
-        private readonly IMagazaService _magazaService;
+        private readonly IUlkeService _ulkeService;
 
-        public MagazalarController(IMagazaService magazaService)
+        public UlkelerController(IUlkeService ulkeService)
         {
-            _magazaService = magazaService;
+            _ulkeService = ulkeService;
         }
 
-        // GET: Magazalar
+        // GET: Ulkeler
         public IActionResult Index()
         {
-            return View(_magazaService.Query().ToList());
+            return View(_ulkeService.Query().ToList());
         }
 
-        // GET: Magazalar/Details/5
-        public IActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return View("Hata", "Id gereklidir!");
-            }
-            var magaza = _magazaService.Query().SingleOrDefault(m => m.Id == id);
-            if (magaza == null)
-            {
-                return View("Hata", "Kayıt bulunamadı!");
-            }
-            return View(magaza);
-        }
-
-        // GET: Magazalar/Create
+        // GET: Ulkeler/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Magazalar/Create
+        // POST: Ulkeler/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(MagazaModel magaza)
+        public IActionResult Create(UlkeModel ulke)
         {
             if (ModelState.IsValid)
             {
-                var result = _magazaService.Add(magaza);
+                var result = _ulkeService.Add(ulke);
                 if (result.IsSuccessful)
                     return RedirectToAction(nameof(Index));
                 ModelState.AddModelError("", result.Message);
             }
-            return View(magaza);
+            return View(ulke);
         }
 
-        // GET: Magazalar/Edit/5
+        // GET: Ulkeler/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return View("Hata", "Id gereklidir!");
             }
-            var magaza = _magazaService.Query().SingleOrDefault(m => m.Id == id);
-            if (magaza == null)
+            UlkeModel ulke = _ulkeService.Query().SingleOrDefault(u => u.Id == id);
+            if (ulke == null)
             {
                 return View("Hata", "Kayıt bulunamadı!");
             }
-            return View(magaza);
+            return View(ulke);
         }
 
-        // POST: Magazalar/Edit
+        // POST: Ulkeler/Edit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(MagazaModel magaza)
+        public IActionResult Edit(UlkeModel ulke)
         {
             if (ModelState.IsValid)
             {
-                var result = _magazaService.Update(magaza);
+                var result = _ulkeService.Update(ulke);
                 if (result.IsSuccessful)
                     return RedirectToAction(nameof(Index));
                 ModelState.AddModelError("", result.Message);
             }
-            return View(magaza);
+            return View(ulke);
         }
 
-        // GET: Magazalar/Delete/5
+        // GET: Ulkeler/Delete/5
         public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return View("Hata", "Id gereklidir!");
             }
-            _magazaService.Delete(id.Value);
+            var result = _ulkeService.Delete(id.Value);
+            TempData["Result"] = result.Message;
             return RedirectToAction(nameof(Index));
         }
-    }
+	}
 }

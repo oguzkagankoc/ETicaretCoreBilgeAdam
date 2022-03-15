@@ -22,21 +22,6 @@ namespace MvcWebUI.Controllers
             return View(_sehirService.Query().ToList());
         }
 
-        // GET: Sehirler/Details/5
-        public IActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return View("Hata", "Id gereklidir!");
-            }
-            SehirModel sehir = _sehirService.Query().SingleOrDefault(s => s.Id == id.Value);
-            if (sehir == null)
-            {
-                return View("Hata", "Kayıt bulunamadı!");
-            }
-            return View(sehir);
-        }
-
         // GET: Sehirler/Create
         public IActionResult Create()
         {
@@ -99,15 +84,12 @@ namespace MvcWebUI.Controllers
         // GET: Sehirler/Delete/5
         public IActionResult Delete(int? id)
         {
+            if (id == null)
+            {
+                return View("Hata", "Id gereklidir!");
+            }
             var result = _sehirService.Delete(id.Value);
-            if (result.IsSuccessful)
-            {
-                TempData["Success"] = result.Message;
-            }
-            else
-            {
-                TempData["Error"] = result.Message;
-            }
+            TempData["Result"] = result.Message;
             return RedirectToAction(nameof(Index));
         }
     }

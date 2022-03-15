@@ -12,13 +12,13 @@
 
 @if (Model == null || Model.Count() == 0)
 {
-    <p class="bg-danger text-white">
+    <p class="bg-warning text-black">
         Kayıt bulunamadı
     </p>
 }
 else
 {
-    <p class="bg-success text-white">
+    <p class="bg-info text-black">
         @Model.Count() kayıt bulundu
     </p>
 }

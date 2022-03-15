@@ -169,12 +169,13 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ETicaretUrunMagazalar",
+                name: "UrunMagazalar",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UrunId = table.Column<int>(type: "int", nullable: false),
                     MagazaId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -184,14 +185,14 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ETicaretUrunMagazalar", x => new { x.UrunId, x.MagazaId });
+                    table.PrimaryKey("PK_UrunMagazalar", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ETicaretUrunMagazalar_ETicaretMagazalar_MagazaId",
+                        name: "FK_UrunMagazalar_ETicaretMagazalar_MagazaId",
                         column: x => x.MagazaId,
                         principalTable: "ETicaretMagazalar",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ETicaretUrunMagazalar_ETicaretUrunler_UrunId",
+                        name: "FK_UrunMagazalar_ETicaretUrunler_UrunId",
                         column: x => x.UrunId,
                         principalTable: "ETicaretUrunler",
                         principalColumn: "Id");
@@ -201,19 +202,25 @@ namespace DataAccess.Migrations
                 name: "ETicaretKullaniciDetaylari",
                 columns: table => new
                 {
-                    KullaniciId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Cinsiyet = table.Column<int>(type: "int", nullable: false),
                     Eposta = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     UlkeId = table.Column<int>(type: "int", nullable: false),
                     SehirId = table.Column<int>(type: "int", nullable: false),
-                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ETicaretKullaniciDetaylari", x => x.KullaniciId);
+                    table.PrimaryKey("PK_ETicaretKullaniciDetaylari", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ETicaretKullaniciDetaylari_ETicaretKullanicilar_KullaniciId",
-                        column: x => x.KullaniciId,
+                        name: "FK_ETicaretKullaniciDetaylari_ETicaretKullanicilar_Id",
+                        column: x => x.Id,
                         principalTable: "ETicaretKullanicilar",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -271,9 +278,14 @@ namespace DataAccess.Migrations
                 column: "KategoriId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ETicaretUrunMagazalar_MagazaId",
-                table: "ETicaretUrunMagazalar",
+                name: "IX_UrunMagazalar_MagazaId",
+                table: "UrunMagazalar",
                 column: "MagazaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UrunMagazalar_UrunId",
+                table: "UrunMagazalar",
+                column: "UrunId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -282,7 +294,7 @@ namespace DataAccess.Migrations
                 name: "ETicaretKullaniciDetaylari");
 
             migrationBuilder.DropTable(
-                name: "ETicaretUrunMagazalar");
+                name: "UrunMagazalar");
 
             migrationBuilder.DropTable(
                 name: "ETicaretKullanicilar");

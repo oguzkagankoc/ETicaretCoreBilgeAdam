@@ -16,21 +16,6 @@
             </div>
             <ul class="list-unstyled components">
                 <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Urunler" class="a-sidebar"> Ürünler</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Kategoriler" class="a-sidebar">Kategoriler</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Magazalar" class="a-sidebar">Mağazalar</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Sehirler" class="a-sidebar">Şehirler</a>
-                </li>
-            </ul>
-            <ul class="list-unstyled admin">
-                <p>Admin</p>
-                <li class="nav-item">
 
                     @* HTML *@
                     @*<a class="a-navbar" href="/Database/Seed"> Verileri Sıfırla</a>*@
@@ -41,6 +26,24 @@
                     @* Tag Helper MVC Core *@
                     <a asp-action="Seed" asp-controller="Database" class="a-navbar">Verileri Sıfırla</a> 
 
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Urunler" class="a-sidebar">Ürünler</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Kategoriler" class="a-sidebar">Kategoriler</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Magazalar" class="a-sidebar">Mağazalar</a>
+                </li>
+            </ul>
+            <ul class="list-unstyled admin">
+                <p>Tanımlar</p>
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Ulkeler" class="a-sidebar">Ülkeler</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Sehirler" class="a-sidebar">Şehirler</a>
                 </li>
             </ul>
         </nav>

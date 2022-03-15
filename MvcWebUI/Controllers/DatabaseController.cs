@@ -16,6 +16,22 @@ namespace MvcWebUI.Controllers
             using (ETicaretContext db = new ETicaretContext())
             {
                 // verilerin silinmesi:
+                //todo
+                var urunMagazaEntities = db.UrunMagazalar.ToList();
+                db.UrunMagazalar.RemoveRange(urunMagazaEntities);
+
+                //todo
+                var magazaEntities = db.Magazalar.ToList();
+                db.Magazalar.RemoveRange(magazaEntities);
+
+                //todo
+                var sehirEntities = db.Sehirler.ToList();
+                db.Sehirler.RemoveRange(sehirEntities);
+
+                //todo
+                var ulkeEntities = db.Ulkeler.ToList();
+                db.Ulkeler.RemoveRange(ulkeEntities);
+
                 var urunEntities = db.Urunler.ToList();
 
                 //if (urunEntities != null && urunEntities.Count > 0)
@@ -94,6 +110,90 @@ namespace MvcWebUI.Controllers
                         }
                     }
                 });
+
+                //todo
+                db.SaveChanges();
+
+                //todo
+                db.Magazalar.Add(new Magaza()
+                {
+                    Adi = "Vatan Bilgisayar",
+                    SanalMi = false,
+                    UrunMagazalar = new List<UrunMagaza>()
+                    {
+                        new UrunMagaza()
+                        {
+                            UrunId = db.Urunler.SingleOrDefault(u => u.Adi == "Dizüstü Bilgisayar").Id
+                        },
+                        new UrunMagaza()
+                        {
+                            UrunId = db.Urunler.SingleOrDefault(u => u.Adi == "Amfi").Id
+                        },
+                        new UrunMagaza()
+                        {
+                            UrunId = db.Urunler.SingleOrDefault(u => u.Adi == "Ekolayzer").Id
+                        }
+                    }
+                });
+                db.Magazalar.Add(new Magaza()
+                {
+                    Adi = "Hepsiburada",
+                    SanalMi = true,
+                    UrunMagazalar = new List<UrunMagaza>()
+                    {
+                        new UrunMagaza()
+                        {
+                            UrunId = db.Urunler.SingleOrDefault(u => u.Adi == "Bilgisayar Faresi").Id
+                        },
+                        new UrunMagaza()
+                        {
+                            UrunId = db.Urunler.SingleOrDefault(u => u.Adi == "Bilgisayar Klavyesi").Id
+                        },
+                        new UrunMagaza()
+                        {
+                            UrunId = db.Urunler.SingleOrDefault(u => u.Adi == "Bilgisayar Monitörü").Id
+                        },
+                        new UrunMagaza()
+                        {
+                            UrunId = db.Urunler.SingleOrDefault(u => u.Adi == "Hoparlör").Id
+                        }
+                    }
+                });
+                db.Ulkeler.Add(new Ulke()
+                {
+                    Adi = "Türkiye",
+                    Sehirler = new List<Sehir>()
+                    {
+                        new Sehir()
+                        {
+                            Adi = "Ankara"
+                        },
+                        new Sehir()
+                        {
+                            Adi = "İstanbul"
+                        },
+                        new Sehir()
+                        {
+                            Adi = "İzmir"
+                        }
+                    }
+                });
+                db.Ulkeler.Add(new Ulke()
+                {
+                    Adi = "Amerika Birleşik Devletleri",
+                    Sehirler = new List<Sehir>()
+                    {
+                        new Sehir()
+                        {
+                            Adi = "New York"
+                        },
+                        new Sehir()
+                        {
+                            Adi = "Los Angeles"
+                        }
+                    }
+                });
+
                 db.SaveChanges();
             }
             return Content("<label style=\"color:red;\"><b>İlk veriler oluşturuldu.</b></label>", "text/html", Encoding.UTF8);

@@ -54,19 +54,20 @@ namespace Business.Services
 
         public Result Delete(int id)
         {
-            Magaza entity = Repository.EntityQuery(m => m.Id == id, "UrunMagazalar").SingleOrDefault();
-            if (entity.UrunMagazalar != null && entity.UrunMagazalar.Count > 0)
+            // önce ürünle ilişkili olan ürün mağaza kayıtları mağaza id'ye göre getirilir ve silinir.
+            using (RepositoryBase<UrunMagaza, ETicaretContext> urunMagazaRepository = new Repository<UrunMagaza, ETicaretContext>())
             {
-                using (Repository<UrunMagaza, ETicaretContext> urunMagazaRepository = new Repository<UrunMagaza, ETicaretContext>())
+                List<UrunMagaza> urunMagazaEntities = urunMagazaRepository.EntityQuery(um => um.MagazaId == id).ToList();
+                if (urunMagazaEntities != null && urunMagazaEntities.Count > 0)
                 {
-                    foreach (UrunMagaza urunMagaza in entity.UrunMagazalar)
+                    foreach (UrunMagaza urunMagazaEntity in urunMagazaEntities)
                     {
-                        urunMagazaRepository.Delete(urunMagaza, false);
+                        urunMagazaRepository.Delete(urunMagazaEntity, false); // birden çok ürün mağaza kaydı silinebileceği için save parametresini false gönderip veritabanında silme sorgusunu çalıştırmıyoruz, sadece ürün mağaza kaydını silinecek olarak işaretliyoruz.
                     }
-                    urunMagazaRepository.Save();
-                };
+                    urunMagazaRepository.Save(); // yukarıda silinecek ürün mağaza kayıtlarını işaretledikten sonra tek seferde veritabanında silme sorgularını çalıştırıyoruz (unit of work).
+                }
             }
-            Repository.Delete(entity);
+            Repository.DeleteEntity(id); // son olarak mağazamızı siliyoruz.
             return new SuccessResult();
         }
 

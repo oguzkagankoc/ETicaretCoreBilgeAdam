@@ -1,26 +1,26 @@
-﻿@model IEnumerable<SehirModel>
+﻿@model IEnumerable<UlkeModel>
 
 @{
-    ViewData["Title"] = "Şehir Listesi";
+    ViewData["Title"] = "Ülke Listesi";
 }
 
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create">Yeni Şehir</a>
+    <a asp-action="Create">Yeni Ülke</a>
 </p>
 
 @if (Model == null || Model.Count() == 0)
 {
-    <p class="bg-warning text-black">
-        Kayıt bulunamadı
-    </p>
+        <p class="bg-warning text-black">
+            Kayıt bulunamadı
+        </p>
 }
 else
 {
-    <p class="bg-info text-black">
+        <p class="bg-info text-black">
         @Model.Count() kayıt bulundu
-    </p>
+        </p>
 }
 
 @if (TempData["Result"] != null)
@@ -31,23 +31,20 @@ else
     {
         color = "danger";
     }
-    <p class="text-@color">
+        <p class="text-@color">
         @result
-    </p>
+        </p>
 }
 
 <div style="overflow-y: auto; height: 450px; border-style: solid; border-width: 1px;">
     <table class="table table-striped">
         <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Adi)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UlkeDisplay.Adi)
-            </th>
-            <th></th>
-        </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Adi)
+                </th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
         @foreach (var item in Model)
@@ -56,14 +53,11 @@ else
                 <td>
                     @Html.DisplayFor(modelItem => item.Adi)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UlkeDisplay.Adi)
-                </td>
                 <td style="text-align: right;">
                     <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>&nbsp;|&nbsp;
 
-                    @*<a asp-action="Delete" asp-route-id="@item.Id">Sil</a>*@
-                    <a href="#" onclick="sehirSil(@item.Id);">Sil</a>
+                    @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                    <a href="#" onclick="ulkeSil(@item.Id);">Sil</a>
                 </td>
             </tr>
         }
@@ -77,12 +71,12 @@ else
     <script src="~/lib/AlertifyJS/alertify.min.js"></script>
 
     <script>
-        function sehirSil(id) {
+        function ulkeSil(id) {
             alertify.confirm("Uyarı!",
-                "Bu şehri silmek istediğinize emin misiniz?",
+                "Bu ülkeyi silmek istediğinize emin misiniz?",
                 function () { // OK
                     //alertify.success("Silme başarılı.");
-                    window.location.href = "/Sehirler/Delete/" + id;
+                    window.location.href = "/Ulkeler/Delete/" + id;
                 },
                 function () { // Cancel
                     //alertify.error("Silme iptal edildi.");

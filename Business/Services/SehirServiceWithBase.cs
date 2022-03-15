@@ -61,7 +61,7 @@ namespace Business.Services
             if (entity.KullaniciDetaylari != null && entity.KullaniciDetaylari.Count > 0)
                 return new ErrorResult("Silinmek istenen şehre ait kullanıcılar bulunmaktadır!");
             Repository.DeleteEntity(id);
-            return new SuccessResult();
+            return new SuccessResult("Şehir başarıyla silindi.");
         }
 
         public void Dispose()

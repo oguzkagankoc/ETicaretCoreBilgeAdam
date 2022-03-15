@@ -56,7 +56,7 @@ namespace Business.Services
             if (entity.KullaniciDetaylari != null && entity.KullaniciDetaylari.Count > 0)
                 return new ErrorResult("Silinmek istenen ülkeye ait kullanıcılar bulunmaktadır!");
             Repository.DeleteEntity(id);
-            return new SuccessResult();
+            return new SuccessResult("Ülke başarıyla silindi.");
         }
 
         public void Dispose()
