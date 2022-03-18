@@ -37,7 +37,7 @@ builder.Services.AddControllersWithViews(); // MVC web uygulamasý
 // Bu iþlem doðru ancak zahmetli olduðu için repository ve ETicaretContext baðýmlýlýklarýný burada yönetmek yerine service'lerde repository'leri default constructor üzerinden new'leyeceðiz, dolayýsýyla repository'lerdeki DbContext de new'lenecek. Böylelikle sadece service baðýmlýlýklarýný aþaðýdaki þekilde tanýmlamamýz yeterli olacaktýr.
 //builder.Services.AddDbContext<ETicaretContext>(); // ETicaretContext tipindeki parametre kullanýlan her constructor injection'da ETicaretContext tipinde bir obje new'ler.
 
-//builder.Services.AddScoped<KategoriRepositoryBase, KategoriRepository>();
+//builder.Services.AddScoped<KategoriRepoBase, KategoriRepo>();
 #endregion
 
 builder.Services.AddScoped<IKategoriService, KategoriService>();
