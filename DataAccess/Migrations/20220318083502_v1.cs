@@ -17,12 +17,7 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Adi = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Aciklamasi = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -37,12 +32,7 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Adi = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     SanalMi = table.Column<bool>(type: "bit", nullable: false),
-                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -56,12 +46,7 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Adi = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -75,12 +60,7 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Adi = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -99,12 +79,7 @@ namespace DataAccess.Migrations
                     StokMiktari = table.Column<int>(type: "int", nullable: false),
                     SonKullanmaTarihi = table.Column<DateTime>(type: "datetime2", nullable: true),
                     KategoriId = table.Column<int>(type: "int", nullable: false),
-                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -126,12 +101,7 @@ namespace DataAccess.Migrations
                     Sifre = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     AktifMi = table.Column<bool>(type: "bit", nullable: false),
                     RolId = table.Column<int>(type: "int", nullable: false),
-                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -151,12 +121,7 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Adi = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     UlkeId = table.Column<int>(type: "int", nullable: false),
-                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -169,30 +134,22 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UrunMagazalar",
+                name: "ETicaretUrunMagazalar",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     UrunId = table.Column<int>(type: "int", nullable: false),
-                    MagazaId = table.Column<int>(type: "int", nullable: false),
-                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    MagazaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UrunMagazalar", x => x.Id);
+                    table.PrimaryKey("PK_ETicaretUrunMagazalar", x => new { x.UrunId, x.MagazaId });
                     table.ForeignKey(
-                        name: "FK_UrunMagazalar_ETicaretMagazalar_MagazaId",
+                        name: "FK_ETicaretUrunMagazalar_ETicaretMagazalar_MagazaId",
                         column: x => x.MagazaId,
                         principalTable: "ETicaretMagazalar",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UrunMagazalar_ETicaretUrunler_UrunId",
+                        name: "FK_ETicaretUrunMagazalar_ETicaretUrunler_UrunId",
                         column: x => x.UrunId,
                         principalTable: "ETicaretUrunler",
                         principalColumn: "Id");
@@ -202,25 +159,19 @@ namespace DataAccess.Migrations
                 name: "ETicaretKullaniciDetaylari",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    KullaniciId = table.Column<int>(type: "int", nullable: false),
                     Cinsiyet = table.Column<int>(type: "int", nullable: false),
                     Eposta = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     UlkeId = table.Column<int>(type: "int", nullable: false),
                     SehirId = table.Column<int>(type: "int", nullable: false),
-                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ETicaretKullaniciDetaylari", x => x.Id);
+                    table.PrimaryKey("PK_ETicaretKullaniciDetaylari", x => x.KullaniciId);
                     table.ForeignKey(
-                        name: "FK_ETicaretKullaniciDetaylari_ETicaretKullanicilar_Id",
-                        column: x => x.Id,
+                        name: "FK_ETicaretKullaniciDetaylari_ETicaretKullanicilar_KullaniciId",
+                        column: x => x.KullaniciId,
                         principalTable: "ETicaretKullanicilar",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -278,14 +229,9 @@ namespace DataAccess.Migrations
                 column: "KategoriId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UrunMagazalar_MagazaId",
-                table: "UrunMagazalar",
+                name: "IX_ETicaretUrunMagazalar_MagazaId",
+                table: "ETicaretUrunMagazalar",
                 column: "MagazaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UrunMagazalar_UrunId",
-                table: "UrunMagazalar",
-                column: "UrunId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -294,7 +240,7 @@ namespace DataAccess.Migrations
                 name: "ETicaretKullaniciDetaylari");
 
             migrationBuilder.DropTable(
-                name: "UrunMagazalar");
+                name: "ETicaretUrunMagazalar");
 
             migrationBuilder.DropTable(
                 name: "ETicaretKullanicilar");

@@ -30,7 +30,7 @@ View <-> Controller (Başlangıç noktası) <-> Service (model) <-> Repository (
 
 HTML - CSS - Javascript örnekleri projede wwwroot -> HTML_Javascript_CSS_Intro klasörü altındadır.
 
-Proje geliştirme aşamaları:
+Ders içi proje geliştirme aşamaları:
 1) DatabaseController
 1.1) Seed Action -> İlk verileri doldurma, DbContext objesinin new'lenerek kullanılması, _Layout.cshtml'de HTML ve Tag helper'lar üzerinden link oluşturulması
 2) KategorilerController -> Servislerin constructor üzerinden enjekte edilmesi, action'lardan IActionResult tipi üzerinden farklı tiplerin dönülmesi 
@@ -42,6 +42,6 @@ Proje geliştirme aşamaları:
 3) UrunlerController -> Entity Framework üzerinden scaffolding ile controller ve view'ların oluşuturlması ve bunların servislere göre düzenlenmesi
 3.1) Index Action -> Web uygulamasının bölgesel ayarının sunucu bölgesel ayarından bağımsız Program.cs'de ayarlanması, third party js-css kütüphane kullanımı, bazı verilerin modeldeki Display ile biten özellik adları üzerinden formatlanarak gösterimi 
 3.2) Details Action -> Partial view kullanımı
-3.3) Create Action -> verilerin kendi özellik adları ve veri tipleri üzerinden formdan alınması, aksiyonda ihtiyaç duyulan servislerin enjekte edilmesi, SelectList kullanımı
+3.3) Create Action -> Verilerin kendi özellik adları ve veri tipleri üzerinden formdan alınması, aksiyonda ihtiyaç duyulan servislerin enjekte edilmesi, SelectList kullanımı
 3.4) Edit Action -> Html DropDownListFor helper kullanımı
 3.5) Delete Action -> ActionName filter kullanımı

@@ -5,7 +5,6 @@ using AppCore.DataAccess.EntityFramework.Bases;
 using Business.Models;
 using DataAccess.Contexts;
 using DataAccess.Entities;
-using System.Globalization;
 
 namespace Business.Services
 {
@@ -16,11 +15,11 @@ namespace Business.Services
 
     public class UrunService : IUrunService
     {
-        public RepositoryBase<Urun, ETicaretContext> Repository { get; set; } = new Repository<Urun, ETicaretContext>();
+        public RepoBase<Urun, ETicaretContext> Repo { get; set; } = new Repo<Urun, ETicaretContext>();
 
         public IQueryable<UrunModel> Query()
         {
-            return Repository.EntityQuery("Kategori").OrderBy(u => u.Kategori.Adi).ThenBy(u => u.Adi).Select(u => new UrunModel()
+            return Repo.Query("Kategori").OrderBy(u => u.Kategori.Adi).ThenBy(u => u.Adi).Select(u => new UrunModel()
             {
                 Id = u.Id,
                 Adi = u.Adi,
@@ -54,7 +53,7 @@ namespace Business.Services
 
         public Result Add(UrunModel model)
         {
-            if (Repository.EntityQuery().Any(u => u.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
+            if (Repo.Query().Any(u => u.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
                 return new ErrorResult("Girdiğiniz ürün adına sahip kayıt bulunmaktadır!");
             Urun entity = new Urun()
             {
@@ -65,34 +64,34 @@ namespace Business.Services
                 SonKullanmaTarihi = model.SonKullanmaTarihi,
                 KategoriId = model.KategoriId.Value
             };
-            Repository.Add(entity);
+            Repo.Add(entity);
             return new SuccessResult("Ürün başarıyla eklendi.");
         }
 
         public Result Update(UrunModel model)
         {
-            if (Repository.EntityQuery().Any(u => u.Adi.ToUpper() == model.Adi.ToUpper().Trim() && u.Id != model.Id))
+            if (Repo.Query().Any(u => u.Adi.ToUpper() == model.Adi.ToUpper().Trim() && u.Id != model.Id))
                 return new ErrorResult("Girdiğiniz ürün adına sahip kayıt bulunmaktadır!");
-            Urun entity = Repository.EntityQuery(u => u.Id == model.Id).SingleOrDefault();
+            Urun entity = Repo.Query(u => u.Id == model.Id).SingleOrDefault();
             entity.Adi = model.Adi.Trim();
             entity.Aciklamasi = model.Aciklamasi?.Trim();
             entity.BirimFiyati = model.BirimFiyati.Value;
             entity.StokMiktari = model.StokMiktari.Value;
             entity.SonKullanmaTarihi = model.SonKullanmaTarihi;
             entity.KategoriId = model.KategoriId.Value;
-            Repository.Update(entity);
+            Repo.Update(entity);
             return new SuccessResult("Ürün başarıyla güncellendi.");
         }
 
         public Result Delete(int id)
         {
-            Repository.DeleteEntity(id);
+            Repo.Delete(u => u.Id == id);
             return new SuccessResult("Ürün başarıyla silindi.");
         }
 
         public void Dispose()
         {
-            Repository.Dispose();
+            Repo.Dispose();
         }
     }
 }

@@ -16,19 +16,15 @@ namespace MvcWebUI.Controllers
             using (ETicaretContext db = new ETicaretContext())
             {
                 // verilerin silinmesi:
-                //todo
                 var urunMagazaEntities = db.UrunMagazalar.ToList();
                 db.UrunMagazalar.RemoveRange(urunMagazaEntities);
 
-                //todo
                 var magazaEntities = db.Magazalar.ToList();
                 db.Magazalar.RemoveRange(magazaEntities);
 
-                //todo
                 var sehirEntities = db.Sehirler.ToList();
                 db.Sehirler.RemoveRange(sehirEntities);
 
-                //todo
                 var ulkeEntities = db.Ulkeler.ToList();
                 db.Ulkeler.RemoveRange(ulkeEntities);
 
@@ -111,10 +107,8 @@ namespace MvcWebUI.Controllers
                     }
                 });
 
-                //todo
                 db.SaveChanges();
 
-                //todo
                 db.Magazalar.Add(new Magaza()
                 {
                     Adi = "Vatan Bilgisayar",

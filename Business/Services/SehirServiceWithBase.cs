@@ -15,11 +15,11 @@ namespace Business.Services
 
     public class SehirService : ISehirService
     {
-        public RepositoryBase<Sehir, ETicaretContext> Repository { get; set; } = new Repository<Sehir, ETicaretContext>();
+        public RepoBase<Sehir, ETicaretContext> Repo { get; set; } = new Repo<Sehir, ETicaretContext>();
 
         public IQueryable<SehirModel> Query()
         {
-            return Repository.EntityQuery("Ulke").OrderBy(s => s.Adi).Select(s => new SehirModel()
+            return Repo.Query("Ulke").OrderBy(s => s.Adi).Select(s => new SehirModel()
             {
                 Id = s.Id,
                 Adi = s.Adi,
@@ -33,40 +33,40 @@ namespace Business.Services
 
         public Result Add(SehirModel model)
         {
-            if (Repository.EntityQuery().Any(s => s.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
+            if (Repo.Query().Any(s => s.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
                 return new ErrorResult("Girdiğiniz şehir adına sahip kayıt bulunmaktadır!");
             Sehir entity = new Sehir()
             {
                 Adi = model.Adi.Trim(),
                 UlkeId = model.UlkeId.Value
             };
-            Repository.Add(entity);
+            Repo.Add(entity);
             return new SuccessResult();
         }
 
         public Result Update(SehirModel model)
         {
-            if (Repository.EntityQuery().Any(s => s.Adi.ToUpper() == model.Adi.ToUpper().Trim() && s.Id != model.Id))
+            if (Repo.Query().Any(s => s.Adi.ToUpper() == model.Adi.ToUpper().Trim() && s.Id != model.Id))
                 return new ErrorResult("Girdiğiniz şehir adına sahip kayıt bulunmaktadır!");
-            Sehir entity = Repository.EntityQuery(s => s.Id == model.Id).SingleOrDefault();
+            Sehir entity = Repo.Query(s => s.Id == model.Id).SingleOrDefault();
             entity.Adi = model.Adi.Trim();
             entity.UlkeId = model.UlkeId.Value;
-            Repository.Update(entity);
+            Repo.Update(entity);
             return new SuccessResult();
         }
 
         public Result Delete(int id)
         {
-            Sehir entity = Repository.EntityQuery(s => s.Id == id, "KullaniciDetaylari").SingleOrDefault();
+            Sehir entity = Repo.Query(s => s.Id == id, "KullaniciDetaylari").SingleOrDefault();
             if (entity.KullaniciDetaylari != null && entity.KullaniciDetaylari.Count > 0)
                 return new ErrorResult("Silinmek istenen şehre ait kullanıcılar bulunmaktadır!");
-            Repository.DeleteEntity(id);
+            Repo.Delete(s => s.Id == id);
             return new SuccessResult("Şehir başarıyla silindi.");
         }
 
         public void Dispose()
         {
-            Repository.Dispose();
+            Repo.Dispose();
         }
     }
 }

@@ -5,7 +5,6 @@ namespace DataAccess.Contexts
 {
     public class ETicaretContext : DbContext
     {
-        //todo
         // tüm entity'ler için DbSet özellikleri oluşturulmalı
         public DbSet<Urun> Urunler { get; set; }
         public DbSet<Kategori> Kategoriler { get; set; }
@@ -54,11 +53,9 @@ namespace DataAccess.Contexts
             modelBuilder.Entity<Kategori>()
                 .ToTable("ETicaretKategoriler");
 
-            //todo
-            // UrunMagaza entity'si RecordBase'den türediği için primary key'i Id olacaktır
-            //modelBuilder.Entity<UrunMagaza>()
-            //    .ToTable("ETicaretUrunMagazalar")
-            //    .HasKey(urunMagaza => new { urunMagaza.UrunId, urunMagaza.MagazaId });
+            modelBuilder.Entity<UrunMagaza>()
+                .ToTable("ETicaretUrunMagazalar")
+                .HasKey(urunMagaza => new { urunMagaza.UrunId, urunMagaza.MagazaId });
 
             modelBuilder.Entity<Kullanici>()
                 .ToTable("ETicaretKullanicilar")
@@ -71,10 +68,7 @@ namespace DataAccess.Contexts
                 .ToTable("ETicaretKullaniciDetaylari")
                 .HasOne(kullaniciDetayi => kullaniciDetayi.Kullanici)
                 .WithOne(kullanici => kullanici.KullaniciDetayi)
-                //todo
-                // KullaniciDetayi entity'si RecordBase'den türediği için primary key'i Id olacaktır ve foreign key olarak da Id tanımlanmalıdır
-                //.HasForeignKey<KullaniciDetayi>(kullaniciDetayi => kullaniciDetayi.KullaniciId)
-                .HasForeignKey<KullaniciDetayi>(kullaniciDetayi => kullaniciDetayi.Id)
+                .HasForeignKey<KullaniciDetayi>(kullaniciDetayi => kullaniciDetayi.KullaniciId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<KullaniciDetayi>()

@@ -5,7 +5,6 @@ using Business.Models;
 using Business.Services.Bases;
 using DataAccess.Contexts;
 using DataAccess.Entities;
-using DataAccess.Repositories.Bases;
 
 namespace Business.Services
 {
@@ -13,19 +12,19 @@ namespace Business.Services
     public class KategoriService : IKategoriService
     {
         // 2
-        public RepositoryBase<Kategori, ETicaretContext> Repository { get; set; } = new Repository<Kategori, ETicaretContext>();
+        public RepoBase<Kategori, ETicaretContext> Repo { get; set; } = new Repo<Kategori, ETicaretContext>();
 
         // 1
-        //public KategoriService(KategoriRepositoryBase repository) // Repository'nin servise enjekte edilmesi. Ancak bu projede repository'yi new'leyerek kullanağız. Dolayısıyla repository'lerdeki DbContext de new'lenecek.
+        //public KategoriService(KategoriRepoBase repo) // Repository'nin servise enjekte edilmesi. Ancak bu projede repository'yi new'leyerek kullanağız. Dolayısıyla repository'lerdeki DbContext de new'lenecek.
         //{
-        //    Repository = repository;
+        //    Repo = repo;
         //}
 
         // Sadece örneğin select Id, Adi, Aciklamasi from Kategoriler order by Adi sorgusunu oluşturur.
         public IQueryable<KategoriModel> Query()
         {
-            //IQueryable<KategoriModel> query = Repository.EntityQuery().OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
-            IQueryable<KategoriModel> query = Repository.EntityQuery("Urunler").OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
+            //IQueryable<KategoriModel> query = Repo.Query().OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
+            IQueryable<KategoriModel> query = Repo.Query("Urunler").OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
             {
                 Id = kategori.Id,
                 Adi = kategori.Adi,
@@ -45,11 +44,11 @@ namespace Business.Services
             if (!string.IsNullOrWhiteSpace(model.Aciklamasi) && model.Aciklamasi.Length > 1000)
                 return new ErrorResult("Kategori açıklaması en fazla 1000 karakter olmalıdır!");
 
-            //Kategori existingEntity = Repository.EntityQuery().SingleOrDefault(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim());
-            //Kategori existingEntity = Repository.EntityQuery(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim()).SingleOrDefault();
+            //Kategori existingEntity = Repo.EntityQuery().SingleOrDefault(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim());
+            //Kategori existingEntity = Repo.EntityQuery(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim()).SingleOrDefault();
             //if (existingEntity != null)
             //    return new ErrorResult("Girdiğiniz kategori adına sahip kayıt bulunmaktadır!");
-            if (Repository.EntityQuery().Any(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
+            if (Repo.Query().Any(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
                 return new ErrorResult("Girdiğiniz kategori adına sahip kayıt bulunmaktadır!");
             #endregion
 
@@ -61,7 +60,7 @@ namespace Business.Services
                 //Aciklamasi = model.Aciklamasi != null ? model.Aciklamasi.Trim() : null, // Ternary Operator
                 Aciklamasi = model.Aciklamasi?.Trim() // eğer null bir referansın bir özelliği veya methodu kullanılıyorsa o zaman mutlaka referansın (Aciklamasi) sonuna ? eklenmelidir. Eğer Aciklamasi girildiyse değerini Trim'le ve entity'de set et, girilmediyse (null ise) entity'de null olarak set et.
             };
-            Repository.Add(newEntity);
+            Repo.Add(newEntity);
             #endregion
 
             return new SuccessResult();
@@ -70,31 +69,31 @@ namespace Business.Services
         public Result Update(KategoriModel model)
         {
             // güncelleme işlemlerinde güncellenen kayıt dışında koşulunun belirtilmesi gerektiğinden mutlaka Id üzerinden koşul eklenmelidir.
-            if (Repository.EntityQuery().Any(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim() && k.Id != model.Id))
+            if (Repo.Query().Any(k => k.Adi.ToUpper() == model.Adi.ToUpper().Trim() && k.Id != model.Id))
                 return new ErrorResult("Girdiğiniz kategori adına sahip kayıt bulunmaktadır!");
-            Kategori entity = Repository.EntityQuery(k => k.Id == model.Id).SingleOrDefault();
+            Kategori entity = Repo.Query(k => k.Id == model.Id).SingleOrDefault();
             if (entity == null)
                 return new ErrorResult("Kategori kaydı bulunamadı!");
             entity.Adi = model.Adi.Trim();
             entity.Aciklamasi = model.Aciklamasi?.Trim();
-            Repository.Update(entity);
+            Repo.Update(entity);
             return new SuccessResult("Kategori başarıyla güncellendi.");
         }
 
         public Result Delete(int id)
         {
-            Kategori entity = Repository.EntityQuery(k => k.Id == id, "Urunler").SingleOrDefault();
+            Kategori entity = Repo.Query(k => k.Id == id, "Urunler").SingleOrDefault();
             if (entity.Urunler != null && entity.Urunler.Count > 0) // bu id'ye sahip kategorinin ürünleri varsa
             {
                 return new ErrorResult("Silinmek istenen kategoriye ait ürünler bulunmaktadır!");
             }
-            Repository.DeleteEntity(id, true, true); // kaydı veritabanından silmeyecek, silindi olarak güncelleyecek (IsDeleted = true)
+            Repo.Delete(k => k.Id == id); 
             return new SuccessResult("Kategori başarıyla silindi.");
         }
 
         public void Dispose()
         {
-            Repository.Dispose();
+            Repo.Dispose();
         }
     }
 }

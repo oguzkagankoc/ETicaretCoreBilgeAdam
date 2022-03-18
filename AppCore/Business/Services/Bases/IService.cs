@@ -7,7 +7,7 @@ namespace AppCore.Business.Services.Bases
 {
     public interface IService<TModel, TEntity, TDbContext> : IDisposable where TModel : RecordBase, new() where TEntity : RecordBase, new() where TDbContext : DbContext, new()
     {
-        RepositoryBase<TEntity, TDbContext> Repository { get; set; }
+        RepoBase<TEntity, TDbContext> Repo { get; set; }
         IQueryable<TModel> Query();
         Result Add(TModel model);
         Result Update(TModel model);
