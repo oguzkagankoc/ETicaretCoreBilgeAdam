@@ -1,5 +1,6 @@
 ﻿using DataAccess.Contexts;
 using DataAccess.Entities;
+using DataAccess.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Text;
@@ -16,17 +17,26 @@ namespace MvcWebUI.Controllers
             using (ETicaretContext db = new ETicaretContext())
             {
                 // verilerin silinmesi:
-                var urunMagazaEntities = db.UrunMagazalar.ToList();
-                db.UrunMagazalar.RemoveRange(urunMagazaEntities);
+                var kullaniciDetayiEntities = db.KullaniciDetaylari.ToList();
+                db.KullaniciDetaylari.RemoveRange(kullaniciDetayiEntities);
 
-                var magazaEntities = db.Magazalar.ToList();
-                db.Magazalar.RemoveRange(magazaEntities);
+                var kullaniciEntities = db.Kullanicilar.ToList();
+                db.Kullanicilar.RemoveRange(kullaniciEntities);
+
+                var rolEntities = db.Roller.ToList();
+                db.Roller.RemoveRange(rolEntities);
 
                 var sehirEntities = db.Sehirler.ToList();
                 db.Sehirler.RemoveRange(sehirEntities);
 
                 var ulkeEntities = db.Ulkeler.ToList();
                 db.Ulkeler.RemoveRange(ulkeEntities);
+
+                var urunMagazaEntities = db.UrunMagazalar.ToList();
+                db.UrunMagazalar.RemoveRange(urunMagazaEntities);
+
+                var magazaEntities = db.Magazalar.ToList();
+                db.Magazalar.RemoveRange(magazaEntities);
 
                 var urunEntities = db.Urunler.ToList();
 
@@ -184,6 +194,51 @@ namespace MvcWebUI.Controllers
                         new Sehir()
                         {
                             Adi = "Los Angeles"
+                        }
+                    }
+                });
+
+                db.SaveChanges();
+
+                db.Roller.Add(new Rol()
+                {
+                    Adi = "Admin",
+                    Kullanicilar = new List<Kullanici>()
+                    {
+                        new Kullanici()
+                        {
+                            KullaniciAdi = "cagil",
+                            Sifre = "cagil",
+                            AktifMi = true,
+                            KullaniciDetayi = new KullaniciDetayi()
+                            {
+                                Adres = "Çankaya",
+                                Cinsiyet = Cinsiyet.Erkek,
+                                Eposta = "cagil@eticaret.com",
+                                UlkeId = db.Ulkeler.SingleOrDefault(u => u.Adi == "Türkiye").Id,
+                                SehirId = db.Sehirler.SingleOrDefault(s => s.Adi == "Ankara").Id
+                            }
+                        }
+                    }
+                });
+                db.Roller.Add(new Rol()
+                {
+                    Adi = "Kullanıcı",
+                    Kullanicilar = new List<Kullanici>()
+                    {
+                        new Kullanici()
+                        {
+                            KullaniciAdi = "leo",
+                            Sifre = "leo",
+                            AktifMi = true,
+                            KullaniciDetayi = new KullaniciDetayi()
+                            {
+                                Adres = "Çankaya",
+                                Cinsiyet = Cinsiyet.Erkek,
+                                Eposta = "leo@eticaret.com",
+                                UlkeId = db.Ulkeler.SingleOrDefault(u => u.Adi == "Türkiye").Id,
+                                SehirId = db.Sehirler.SingleOrDefault(s => s.Adi == "Ankara").Id
+                            }
                         }
                     }
                 });

@@ -44,7 +44,8 @@ builder.Services.AddScoped<IKategoriService, KategoriService>();
 builder.Services.AddScoped<IUrunService, UrunService>();
 builder.Services.AddScoped<IMagazaService, MagazaService>();
 builder.Services.AddScoped<ISehirService, SehirService>();
-builder.Services.AddScoped<IUlkeService, UlkeService>();
+builder.Services.AddScoped<IUlkeService, UlkeService>(); builder.Services.AddScoped<IHesapService, HesapService>();
+builder.Services.AddScoped<IKullaniciService, KullaniciService>();
 #endregion
 
 var app = builder.Build();
