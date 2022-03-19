@@ -45,3 +45,5 @@ Ders içi proje geliştirme aşamaları:
 3.3) Create Action -> Verilerin kendi özellik adları ve veri tipleri üzerinden formdan alınması, aksiyonda ihtiyaç duyulan servislerin enjekte edilmesi, SelectList kullanımı
 3.4) Edit Action -> Html DropDownListFor helper kullanımı
 3.5) Delete Action -> ActionName filter kullanımı
+4) HesaplarController -> bir servis içerisine başka bir servisin enjekte edilmesi
+4.1) Giris Action -> farklı repository'lere tek bir DbContext enjekte edilerek inner join kullanımı, MVC SignIn işlemi

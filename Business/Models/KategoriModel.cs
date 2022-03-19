@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Business.Models
 {
     // Modeller entity'ler üzerinden oluşturularak kullanıcı ile etkileşimde bulunulacak sayfalarda kullanılır.
+    // Validasyon işlemleri için MVC FluentValidation third-party kütüphanesi de kullanılabilir: https://docs.fluentvalidation.net/
     public class KategoriModel : RecordBase
     {
         #region Entity'den kopyalanan özellikler

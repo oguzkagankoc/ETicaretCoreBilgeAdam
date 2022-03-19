@@ -23,6 +23,7 @@ namespace Business.Services
         // Sadece örneğin select Id, Adi, Aciklamasi from Kategoriler order by Adi sorgusunu oluşturur.
         public IQueryable<KategoriModel> Query()
         {
+            // Entity ve model özellik verileri atama işlemleri AutoMapper third-party kütüphanesi üzerinden yapılabilir: https://automapper.org/
             //IQueryable<KategoriModel> query = Repo.Query().OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
             IQueryable<KategoriModel> query = Repo.Query("Urunler").OrderBy(kategori => kategori.Adi).Select(kategori => new KategoriModel()
             {
