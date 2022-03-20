@@ -81,7 +81,7 @@
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="a-navbar" asp-action="Cikis" asp-controller="Hesaplar"> Çıkış</a>
+                                <a class="a-navbar" href="#"> Çıkış</a>
                             </li>
                         </ul>
                     </div>
