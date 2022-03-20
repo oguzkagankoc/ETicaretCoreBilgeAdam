@@ -24,7 +24,7 @@
                     @*@Html.ActionLink("Verileri Sıfırla", "Seed", "Database", null, new { @class = "a-navbar" })*@
 
                     @* Tag Helper MVC Core *@
-                    <a asp-action="Seed" asp-controller="Database" class="a-navbar">Verileri Sıfırla</a> 
+                    <a asp-action="Seed" asp-controller="Database" class="a-navbar">Verileri Sıfırla</a>
 
                 </li>
                 <li class="nav-item">
@@ -69,20 +69,26 @@
                     </ul>
                     <div class="navbar-text">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="a-navbar" href="#"> Kayıt</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="a-navbar" asp-action="Giris" asp-controller="Hesaplar"> Giriş</a>
-                            </li>
-                            <li class="nav-item">
-                                <div class="div-navbar">
-                                    <span class="s-navbar"> KullanıcıAdı</span>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="a-navbar" asp-action="Cikis" asp-controller="Hesaplar"> Çıkış</a>
-                            </li>
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="a-navbar" asp-action="Kayit" asp-controller="Hesaplar"> Kayıt</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="a-navbar" asp-action="Giris" asp-controller="Hesaplar"> Giriş</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <div class="div-navbar">
+                                        <span class="s-navbar"> @User.Identity.Name</span>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="a-navbar" asp-action="Cikis" asp-controller="Hesaplar"> Çıkış</a>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </div>
@@ -97,6 +103,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/main.js"></script>
-    @await RenderSectionAsync("Scripts", required: false) 
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

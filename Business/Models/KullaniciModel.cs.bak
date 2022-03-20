@@ -24,10 +24,10 @@ namespace Business.Models
         #endregion
 
         #region Sayfanın ekstra ihtiyacı olan özellikler
-        public KullaniciDetayiModel KullaniciDetayi { get; set; }
+        public KullaniciDetayiModel KullaniciDetayiDisplay { get; set; }
 
         // bu class'ta sadece kullanıcının rolü üzerinden rol adını göstermemiz gerektiğinden RolModel üzerinden bunu yapabileceğimiz gibi az (tek) özellik kullanacağımızdan sadece rol adı için özellik oluşturmamız da yeterlidir.
-        //public RolModel Rol { get; set; }
+        //public RolModel RolDisplay { get; set; }
         public string RolAdiDisplay { get; set; }
         #endregion
     }

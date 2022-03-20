@@ -10,7 +10,7 @@ namespace Business.Services
 {
     public interface IUlkeService : IService<UlkeModel, Ulke, ETicaretContext>
     {
-        Result<List<UlkeModel>> List();
+
     }
 
     public class UlkeService : IUlkeService
@@ -62,15 +62,6 @@ namespace Business.Services
         public void Dispose()
         {
             Repo.Dispose();
-        }
-        
-        // servisler ihtiyaca göre yeni tanımlanan methodlar üzerinden özelleştirilebilir.
-        public Result<List<UlkeModel>> List()
-        {
-            var ulkeler = Query().ToList();
-            if (ulkeler.Count == 0)
-                return new ErrorResult<List<UlkeModel>>("Ülke bulunamadı.");
-            return new SuccessResult<List<UlkeModel>>(ulkeler);
         }
     }
 }

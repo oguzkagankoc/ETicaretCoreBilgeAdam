@@ -3,6 +3,7 @@ using Business.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
 namespace MvcWebUI.Controllers
@@ -11,9 +12,14 @@ namespace MvcWebUI.Controllers
     {
         private readonly IHesapService _hesapService;
 
-        public HesaplarController(IHesapService hesapService)
+        private readonly IUlkeService _ulkeService;
+        private readonly ISehirService _sehirService;
+
+        public HesaplarController(IHesapService hesapService, IUlkeService ulkeService, ISehirService sehirService)
         {
             _hesapService = hesapService;
+            _ulkeService = ulkeService;
+            _sehirService = sehirService;
         }
 
         public IActionResult Giris()
@@ -34,7 +40,7 @@ namespace MvcWebUI.Controllers
                     {
                         new Claim(ClaimTypes.Name, result.Data.KullaniciAdi),
                         new Claim(ClaimTypes.Role, result.Data.RolAdiDisplay),
-                        new Claim(ClaimTypes.Email, result.Data.KullaniciDetayiDisplay.Eposta)
+                        new Claim(ClaimTypes.Email, result.Data.KullaniciDetayi.Eposta)
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
@@ -55,6 +61,16 @@ namespace MvcWebUI.Controllers
         public IActionResult YetkisizIslem()
         {
             return View("Hata", "Bu işlem için yetkiniz bulunmamaktadır!");
+        }
+
+        public IActionResult Kayit()
+        {
+            var result = _ulkeService.List();
+            if (result.IsSuccessful)
+                ViewBag.UlkeId = new SelectList(result.Data, "Id", "Adi");
+            else
+                ViewBag.Mesaj = result.Message;
+            return View();
         }
     }
 }

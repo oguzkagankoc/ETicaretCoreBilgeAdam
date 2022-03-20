@@ -46,4 +46,7 @@ Ders içi proje geliştirme aşamaları:
 3.4) Edit Action -> Html DropDownListFor helper kullanımı
 3.5) Delete Action -> ActionName filter kullanımı
 4) HesaplarController -> bir servis içerisine başka bir servisin enjekte edilmesi
-4.1) Giris Action -> farklı repository'lere tek bir DbContext enjekte edilerek inner join kullanımı, MVC SignIn işlemi
+4.1) Giris Action -> farklı repository'lere tek bir DbContext enjekte edilerek inner join kullanımı, MVC SignIn işlemi, asenkron method kullanımı
+4.2) Cikis Action -> MVC SignOut işlemi
+4.3) YetkisizIslem Action
+4.4) Kayit Action -> service interface'lerine ekstra method tanımı, view'da radio button tag helper ve AJAX kullanımı 

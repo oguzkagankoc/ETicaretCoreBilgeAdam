@@ -2,9 +2,20 @@
     ViewData["Title"] = "Hoşgeldiniz";
 }
 
-<div class="text-left">
+@*<div class="text-left">
     <h1 class="display-4">E-Ticaret</h1>
     <p>Hoşgeldiniz.</p>
+</div>*@
+<div class="text-left">
+    <h1 class="display-4">E-Ticaret</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>Hoşgeldiniz @User.Identity.Name.</p>
+    }
+    else
+    {
+        <p>Hoşgeldiniz.</p>
+    }
 </div>
 
 <hr />

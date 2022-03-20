@@ -2,6 +2,7 @@
 using Business.Models;
 using Business.Services;
 using Business.Services.Bases;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MvcWebUI.Controllers
@@ -19,6 +20,8 @@ namespace MvcWebUI.Controllers
             _kategoriService = kategoriService;
         }
 
+        //[Authorize(Roles = "Admin,Kullanıcı")]
+        [Authorize] // sisteme giriş yapmış (authentication cookie'si) olan kullanıcılar bu aksiyonu çalıştırabilir
         public IActionResult Index() // ~/Kategoriler/Index
         {
             List<KategoriModel> kategoriler = _kategoriService.Query().ToList();
@@ -36,6 +39,7 @@ namespace MvcWebUI.Controllers
         [HttpGet] // Action Method Selector:
                   // Web server'da herhangi bir kaynak getirip client'e dönmek için kullanılır.
                   // eğer bir aksiyona herhangi bir Http attribute'u yazılmazsa default'u get'tir.
+        [Authorize(Roles = "Admin")] // sisteme giriş yapmış (authentication cookie'si) olan ve Admin rolündeki kullanıcılar bu aksiyonu çalıştırabilir
         public IActionResult OlusturGetir() // önce kullanıcıya giriş yapabileceği form sayfası getirilir
         {
             return View("OlusturHtml");
@@ -45,6 +49,7 @@ namespace MvcWebUI.Controllers
         [HttpPost] // Client'ın web server'a veri göndermesi için kullanılır.
                    // Genelde HTML form'ları üzerinden method post olarak kullanılır.
                    // Eğer post (gönderme) işlemi yapılıyorsa HttpPost mutlaka yazılmalıdır.
+        [Authorize(Roles = "Admin")]
         public IActionResult OlusturGonder(string Adi, string Aciklamasi) // kullanıcının girdiği kategori verileri gönderilir ve veritabanında oluşturulur
         {
             KategoriModel model = new KategoriModel()
@@ -64,6 +69,7 @@ namespace MvcWebUI.Controllers
         }
 
         //https://httpstatuses.com/
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int? id) // ~/Kategoriler/Edit/5
         {
             //if (id == null)
@@ -90,6 +96,7 @@ namespace MvcWebUI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(KategoriModel model) // ~/Kategoriler/Edit
         {
             if (ModelState.IsValid) // modelde validasyon hataları yoksa
@@ -109,15 +116,20 @@ namespace MvcWebUI.Controllers
                 // ViewData veya ViewBag: eğer view dönülüyorsa string bir index üzerinden view'a herhangi bir obje taşımak için kullanılır.
                 // ViewBag (özellik) ile ViewData (index) birbirleri yerine aynı özellik ve index adları üzerinden kullanılabilir.
                 //ViewData["Error"] = result.Message; // Girdiğiniz kategori adına sahip kayıt bulunmaktadır!
-                ViewBag.Error = result.Message; 
+                ViewBag.Error = result.Message;
             }
 
             // eğer modelde validasyon hataları varsa
             return View(model);
         }
 
+        //[Authorize(Roles = "Admin")] // alternatif olarak aşağıda olduğu gibi User objesi üzerinden de kimlik kontrolü yapılabilir
         public IActionResult Delete(int? id) // ~/Kategoriler/Delete/5
         {
+            //if (!User.Identity.IsAuthenticated || !User.IsInRole("Admin")) // kullanici giriş yapmamış ve Admin rolünde değil, bunun yerine Authorize attribute kullanımı genelde tercih edilmeli
+            if (!(User.Identity.IsAuthenticated && User.IsInRole("Admin")))
+                return RedirectToAction("Giris", "Hesaplar");
+
             if (!id.HasValue)
                 return View("Hata", "Id gereklidir!");
             var result = _kategoriService.Delete(id.Value);
@@ -132,6 +144,7 @@ namespace MvcWebUI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Details(int? id) // ~/Kategoriler/Details/5
         {
             if (!id.HasValue)

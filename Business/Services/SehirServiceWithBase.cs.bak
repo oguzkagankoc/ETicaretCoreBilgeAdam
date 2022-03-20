@@ -24,7 +24,7 @@ namespace Business.Services
                 Id = s.Id,
                 Adi = s.Adi,
                 UlkeId = s.UlkeId,
-                Ulke = new UlkeModel()
+                UlkeDisplay = new UlkeModel()
                 {
                     Adi = s.Ulke.Adi
                 }

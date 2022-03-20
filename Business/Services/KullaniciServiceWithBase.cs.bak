@@ -60,7 +60,7 @@ namespace Business.Services
                             KullaniciAdi = kullanici.KullaniciAdi,
                             Sifre = kullanici.Sifre,
                             AktifMi = kullanici.AktifMi,
-                            KullaniciDetayi = new KullaniciDetayiModel()
+                            KullaniciDetayiDisplay = new KullaniciDetayiModel()
                             {
                                 Cinsiyet = kullaniciDetayi.Cinsiyet,
                                 Eposta = kullaniciDetayi.Eposta,

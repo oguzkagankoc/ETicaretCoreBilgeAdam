@@ -18,7 +18,7 @@ namespace Business.Models
         #endregion
 
         #region Sayfanın ekstra ihtiyacı olan özellikler
-        public UlkeModel Ulke { get; set; }
+        public UlkeModel UlkeDisplay { get; set; }
         #endregion
     }
 }

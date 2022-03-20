@@ -8,13 +8,19 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<p>
+@*<p>
     <a asp-action="Create">Yeni Ürün</a>
+    </p>*@
+<p>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <a asp-action="Create">Yeni Ürün</a>
+    }
 </p>
 
 @if (TempData["Success"] != null)
 {
-        <p class="text-success">@TempData["Success"]</p>
+    <p class="text-success">@TempData["Success"]</p>
 }
 
 @*<table class="table">*@
@@ -80,17 +86,17 @@
     <tbody>
         @foreach (var item in Model)
         {
-                <tr>
+            <tr>
                 @*<td>
                     @Html.DisplayFor(modelItem => item.Kategori.Adi)
                     </td>*@
-                    <td>
+                <td>
                     @Html.DisplayFor(modelItem => item.KategoriAdiDisplay)
-                    </td>
+                </td>
 
-                    <td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Adi)
-                    </td>
+                </td>
 
                 @*<td>
                     @Html.DisplayFor(modelItem => item.Aciklamasi)
@@ -108,22 +114,22 @@
                     Birim fiyatın formatlanması view'da değil ilgili serviste yapılmalı ve formatlanan özellik (BirimFiyatiDisplay) kullanılmalı.
                 *@
 
-                    <td>
+                <td>
                     @Html.DisplayFor(modelItem => item.BirimFiyatiDisplay)
-                    </td>
+                </td>
                 @* Birim fiyatın ihtiyacımız olan ilgili servis tarafından formatlanmış hali. *@
 
 
-                    <td>
+                <td>
                     @Html.DisplayFor(modelItem => item.StokMiktari)
-                    </td>
+                </td>
 
                 @*<td>
                     @Html.DisplayFor(modelItem => item.SonKullanmaTarihi)
                     </td>*@
-                    <td>
+                <td>
                     @Html.DisplayFor(modelItem => item.SonKullanmaTarihiDisplay)
-                    </td>
+                </td>
 
                 @*<td>
                     @Html.DisplayFor(modelItem => item.Guid)
@@ -144,36 +150,47 @@
                     @Html.DisplayFor(modelItem => item.IsDeleted)
                     </td>*@
 
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">Detay</a>&nbsp;|&nbsp;
-                        <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>&nbsp;|&nbsp;
-                        <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
-                    </td>
-                </tr>
+                <td>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id">Detay</a>
+                        if (User.IsInRole("Admin"))
+                        {
+                             @:&nbsp;
+                            <text>|&nbsp;</text>
+                            @* Razor escape işlemleri için ya @: ya da <text> tag'i kullanılır. *@
+
+                            <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>
+                            @:&nbsp;| &nbsp;
+                            <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
+                        }
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>
 
-@* 
-    DataTables kütüphanesi tüm view'larda kullanılmayacağı için _Layout view'ında eklemek yerine 
-    sadece ürün listeleme sayfasında kullanılacağı Urunler -> Index view'ında Scripts section'ına 
+@*
+    DataTables kütüphanesi tüm view'larda kullanılmayacağı için _Layout view'ında eklemek yerine
+    sadece ürün listeleme sayfasında kullanılacağı Urunler -> Index view'ında Scripts section'ına
     css ve js kütüphaneleri ile birlikte eklenmelidir.
 *@
 @section Scripts
 {
     @* https://datatables.net/ *@
-    <link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.min.css" />
-    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
-    <script>
-            //$(document).ready(function() { // içerisindeki kodlar sayfanın yüklenmesi tamamlandıktan sonra çalışır
-            $(function() {
-                $('#urunler').DataTable({
-                    language: {
-                        // Eğer kullanılan metinsel bir dosyada Türkçe karakter sorunu varsa
-                        // dosya Notepad ile açılıp kodlama (encoding) UTF-8'e değiştirilerek kaydedilmelidir.
-                        url: "/json/datatablesTurkish.json"
-                    }
-                });
-            });
-    </script>
+<link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.min.css" />
+<script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+<script>
+    //$(document).ready(function() { // içerisindeki kodlar sayfanın yüklenmesi tamamlandıktan sonra çalışır
+    $(function() {
+        $('#urunler').DataTable({
+            language: {
+                // Eğer kullanılan metinsel bir dosyada Türkçe karakter sorunu varsa
+                // dosya Notepad ile açılıp kodlama (encoding) UTF-8'e değiştirilerek kaydedilmelidir.
+                url: "/json/datatablesTurkish.json"
+            }
+        });
+    });
+</script>
 }
