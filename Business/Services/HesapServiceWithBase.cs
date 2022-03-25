@@ -19,7 +19,7 @@ namespace Business.Services
         //    _repository = new Repository<Kullanici, ETicaretContext>();
         //}
 
-        // hesap servisi kullanıcı işlemleri için direkt kullanıcı repository'sini kullanmak yerine kullanıcı CRUD işlemlerini yapan kullanıcı servisini kullanmalıdır.
+        // hesap servisi kullanıcı işlemleri için direkt kullanıcı repository'sini kullanmak yerine kullanıcı CRUD işlemlerini yapan kullanıcı servisini kullanmalıdır
         private readonly IKullaniciService _kullaniciService;
 
         public HesapService(IKullaniciService kullaniciService)
