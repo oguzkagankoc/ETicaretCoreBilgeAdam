@@ -16,36 +16,49 @@
             </div>
             <ul class="list-unstyled components">
                 <li class="nav-item">
-
-                    @* HTML *@
-                    @*<a class="a-navbar" href="/Database/Seed"> Verileri Sıfırla</a>*@
-
-                    @* HTML Helper Klasik MVC ve MVC Core *@
-                    @*@Html.ActionLink("Verileri Sıfırla", "Seed", "Database", null, new { @class = "a-navbar" })*@
-
-                    @* Tag Helper MVC Core *@
-                    <a asp-action="Seed" asp-controller="Database" class="a-navbar">Verileri Sıfırla</a>
-
-                </li>
-                <li class="nav-item">
                     <a asp-action="Index" asp-controller="Urunler" class="a-sidebar">Ürünler</a>
                 </li>
-                <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Kategoriler" class="a-sidebar">Kategoriler</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Magazalar" class="a-sidebar">Mağazalar</a>
-                </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @if (User.IsInRole("Admin"))
+                    {
+                            <li class="nav-item">
+                            @* HTML *@
+                            @*<a class="a-navbar" href="/Database/Seed"> Verileri Sıfırla</a>*@
+
+                            @* HTML Helper Klasik MVC ve MVC Core *@
+                            @*@Html.ActionLink("Verileri Sıfırla", "Seed", "Database", null, new { @class = "a-navbar" })*@
+
+                            @* Tag Helper MVC Core *@
+                            @*<a asp-action="Seed" asp-controller="Database" class="a-navbar">Verileri Sıfırla</a>*@
+                            </li>
+                    }
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Kategoriler" class="a-sidebar">Kategoriler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Magazalar" class="a-sidebar">Mağazalar</a>
+                    </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Kullanicilar" class="a-sidebar">Kullanıcılar</a>
+                        </li>
+                    }
+                }
             </ul>
-            <ul class="list-unstyled admin">
-                <p>Tanımlar</p>
-                <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Ulkeler" class="a-sidebar">Ülkeler</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Sehirler" class="a-sidebar">Şehirler</a>
-                </li>
-            </ul>
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <ul class="list-unstyled admin">
+                    <p>Tanımlar</p>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Ulkeler" class="a-sidebar">Ülkeler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Sehirler" class="a-sidebar">Şehirler</a>
+                    </li>
+                </ul>
+            }
         </nav>
         <div id="content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -62,13 +75,13 @@
                     <span class="navbar-toggler-icon navbar-span"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="a-navbar" href="#"> Ana Sayfa</a>
                         </li>
                     </ul>
                     <div class="navbar-text">
-                        <ul class="navbar-nav mr-auto">
+                        <ul class="navbar-nav me-auto">
                             @if (!User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item">

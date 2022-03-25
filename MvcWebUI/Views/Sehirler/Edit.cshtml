@@ -23,7 +23,7 @@
             <div class="row mb-3">
                 <label asp-for="UlkeId" class="col-2 col-form-label"></label>
 				<div class="col-5">
-                    <select asp-for="UlkeId" class="form-control" asp-items="ViewBag.UlkeId">
+                    <select asp-for="UlkeId" class="form-control ulkeler" asp-items="ViewBag.UlkeId">
 						<option value="">-- Seçiniz --</option>
                     </select>
 					<span asp-validation-for="UlkeId" class="text-danger"></span>
@@ -43,3 +43,16 @@
     </div>
 </div>
 
+@section Scripts
+{
+    @* https://select2.org/ *@
+    <link rel="stylesheet" href="/lib/select2/css/select2.min.css" />
+    <script src="/lib/select2/js/select2.min.js"></script>
+    <script src="/lib/select2/js/i18n/tr.min.js"></script>
+
+    <script>
+        $(function() {
+            $(".ulkeler").select2();
+        });
+    </script>
+}

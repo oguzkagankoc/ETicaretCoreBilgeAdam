@@ -1,9 +1,11 @@
 ﻿using Business.Models;
 using Business.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MvcWebUI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UlkelerController : Controller
     {
         private readonly IUlkeService _ulkeService;
@@ -82,7 +84,7 @@ namespace MvcWebUI.Controllers
                 return View("Hata", "Id gereklidir!");
             }
             var result = _ulkeService.Delete(id.Value);
-            TempData["Result"] = result.Message;
+            TempData["Sonuc"] = result.Message;
             return RedirectToAction(nameof(Index));
         }
 	}

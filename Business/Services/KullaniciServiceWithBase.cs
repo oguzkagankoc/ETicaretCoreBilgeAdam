@@ -11,7 +11,8 @@ namespace Business.Services
 {
     public interface IKullaniciService : IService<KullaniciModel, Kullanici, ETicaretContext>
     {
-
+        Result<List<KullaniciModel>> KullanicilariGetir();
+        Result<KullaniciModel> KullaniciGetir(int id);
     }
 
     public class KullaniciService : IKullaniciService
@@ -71,7 +72,8 @@ namespace Business.Services
                                 Adres = kullaniciDetayi.Adres
                             },
                             RolId = kullanici.RolId,
-                            RolAdiDisplay = rol.Adi
+                            RolAdiDisplay = rol.Adi,
+                            AktifDisplay = kullanici.AktifMi ? "Evet" : "Hayır"
                         };
             return query;
         }
@@ -98,6 +100,22 @@ namespace Business.Services
             _rolRepo.Dispose();
             _ulkeRepo.Dispose();
             _sehirRepo.Dispose();
+        }
+
+        public Result<List<KullaniciModel>> KullanicilariGetir()
+        {
+            var kullanicilar = Query().ToList();
+            if (kullanicilar.Count == 0)
+                return new ErrorResult<List<KullaniciModel>>("Kullanıcı bulunamadı!");
+            return new SuccessResult<List<KullaniciModel>>(kullanicilar);
+        }
+
+        public Result<KullaniciModel> KullaniciGetir(int id)
+        {
+            var kullanici = Query().SingleOrDefault(k => k.Id == id);
+            if (kullanici == null)
+                return new ErrorResult<KullaniciModel>("Kullanıcı bulunamadı!");
+            return new SuccessResult<KullaniciModel>(kullanici);
         }
     }
 }

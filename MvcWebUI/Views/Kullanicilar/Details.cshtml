@@ -1,0 +1,73 @@
+﻿@model KullaniciModel
+
+@{
+    ViewData["Title"] = "Kullanıcı Detayı";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model == null)
+{
+    <partial name="_Sonuc" />
+}
+else
+{
+    <div>
+        <h4>Kullanıcı</h4>
+        <hr/>
+        <dl class="row">
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.KullaniciAdi)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.KullaniciAdi)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.Sifre)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.Sifre)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.RolAdiDisplay)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.RolAdiDisplay)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.AktifDisplay)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.AktifDisplay)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.KullaniciDetayi.Eposta)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.KullaniciDetayi.Eposta)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.KullaniciDetayi.UlkeAdiDisplay)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.KullaniciDetayi.UlkeAdiDisplay)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.KullaniciDetayi.SehirAdiDisplay)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.KullaniciDetayi.SehirAdiDisplay)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.KullaniciDetayi.Adres)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.KullaniciDetayi.Adres)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Düzenle</a>&nbsp;|&nbsp;
+        <a asp-action="Index">Kullanıcı Listesi</a>
+    </div>
+}

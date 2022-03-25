@@ -1,10 +1,12 @@
 ﻿using Business.Models;
 using Business.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MvcWebUI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SehirlerController : Controller
     {
         private readonly ISehirService _sehirService;
@@ -89,7 +91,7 @@ namespace MvcWebUI.Controllers
                 return View("Hata", "Id gereklidir!");
             }
             var result = _sehirService.Delete(id.Value);
-            TempData["Result"] = result.Message;
+            TempData["Sonuc"] = result.Message;
             return RedirectToAction(nameof(Index));
         }
     }

@@ -1,9 +1,11 @@
 ﻿using Business.Models;
 using Business.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MvcWebUI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class MagazalarController : Controller
     {
         private readonly IMagazaService _magazaService;
@@ -14,6 +16,7 @@ namespace MvcWebUI.Controllers
         }
 
         // GET: Magazalar
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View(_magazaService.Query().ToList());

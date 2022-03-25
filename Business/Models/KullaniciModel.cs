@@ -18,17 +18,23 @@ namespace Business.Models
         [DisplayName("Şifre")]
         public string Sifre { get; set; }
 
+        [DisplayName("Aktif")]
         public bool AktifMi { get; set; }
 
+        [DisplayName("Rol")]
         public int RolId { get; set; }
         #endregion
 
         #region Sayfanın ekstra ihtiyacı olan özellikler
         public KullaniciDetayiModel KullaniciDetayi { get; set; }
 
+        [DisplayName("Rol")]
         // bu class'ta sadece kullanıcının rolü üzerinden rol adını göstermemiz gerektiğinden RolModel üzerinden bunu yapabileceğimiz gibi az (tek) özellik kullanacağımızdan sadece rol adı için özellik oluşturmamız da yeterlidir.
         //public RolModel Rol { get; set; }
         public string RolAdiDisplay { get; set; }
+
+        [DisplayName("Aktif")]
+        public string AktifDisplay { get; set; }
         #endregion
     }
 }

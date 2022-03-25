@@ -1,0 +1,25 @@
+﻿@if (ViewData["Sonuc"] != null)
+{
+    string result = ViewData["Sonuc"].ToString();
+    string color = "success";
+    if (result.EndsWith("!"))
+    {
+        color = "danger";
+    }
+    <p class="text-@color">
+        @result
+    </p>
+}
+
+@if (TempData["Sonuc"] != null)
+{
+    string result = TempData["Sonuc"].ToString();
+    string color = "success";
+    if (result.EndsWith("!"))
+    {
+        color = "danger";
+    }
+    <p class="text-@color">
+        @result
+    </p>
+}

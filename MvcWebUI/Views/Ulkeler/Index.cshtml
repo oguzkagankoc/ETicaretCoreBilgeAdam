@@ -12,29 +12,18 @@
 
 @if (Model == null || Model.Count() == 0)
 {
-        <p class="bg-warning text-black">
-            Kayıt bulunamadı
-        </p>
+    <p class="bg-warning text-black">
+        Kayıt bulunamadı
+    </p>
 }
 else
 {
-        <p class="bg-info text-black">
+    <p class="bg-info text-black">
         @Model.Count() kayıt bulundu
-        </p>
+    </p>
 }
 
-@if (TempData["Result"] != null)
-{
-    string result = TempData["Result"].ToString();
-    string color = "success";
-    if (result.EndsWith("!"))
-    {
-        color = "danger";
-    }
-        <p class="text-@color">
-        @result
-        </p>
-}
+<partial name="_Sonuc" />
 
 <div style="overflow-y: auto; height: 450px; border-style: solid; border-width: 1px;">
     <table class="table table-striped">
@@ -47,20 +36,18 @@ else
             </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Adi)
-                </td>
-                <td style="text-align: right;">
-                    <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>&nbsp;|&nbsp;
-
-                    @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
-                    <a href="#" onclick="ulkeSil(@item.Id);">Sil</a>
-                </td>
-            </tr>
-        }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Adi)
+                    </td>
+                    <td style="text-align: right;">
+                        <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>&nbsp;|&nbsp;
+                        <a href="#" onclick="ulkeSil(@item.Id);">Sil</a>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

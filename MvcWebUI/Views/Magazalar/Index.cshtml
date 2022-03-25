@@ -6,9 +6,12 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<p>
-    <a asp-action="Create">Yeni Mağaza</a>
-</p>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Yeni Mağaza</a>
+    </p>
+}
 
 @if (Model == null || Model.Count() == 0)
 {
@@ -39,12 +42,17 @@ else
                 <td>
                     @Html.DisplayFor(modelItem => item.Adi)
                 </td>
-                <td style="text-align:right;">
-                    <a asp-action="Details" asp-route-id="@item.Id">Detay</a>&nbsp;|&nbsp;
-                    <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>&nbsp;|&nbsp;
+                <td style="text-align: right;">
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id">Detay</a>
+                        @:&nbsp;|&nbsp;
+                        <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>
+                        @:&nbsp;|&nbsp;
 
-                    @*<a asp-action="Delete" asp-route-id="@item.Id">Sil</a>*@
-                    <a href="#" onclick="magazaSil(@item.Id);">Sil</a>
+                        @*<a asp-action="Delete" asp-route-id="@item.Id">Sil</a>*@
+                        <a href="#" onclick="magazaSil(@item.Id);">Sil</a>
+                    }
                 </td>
             </tr>
         }
