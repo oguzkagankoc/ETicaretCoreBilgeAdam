@@ -24,8 +24,7 @@ namespace MvcWebUI.Controllers
         public IActionResult Index()
         {
             var result = _kullaniciService.KullanicilariGetir();
-            if (!result.IsSuccessful)
-                ViewBag.Sonuc = result.Message;
+            ViewBag.Sonuc = result.Message;
             return View(result.Data);
         }
 

@@ -1,7 +1,12 @@
-﻿@if (ViewData["Sonuc"] != null)
+﻿@{
+    string result;
+    string color;
+}
+
+@if (ViewBag.Sonuc != null)
 {
-    string result = ViewData["Sonuc"].ToString();
-    string color = "success";
+    result = ViewBag.Sonuc.ToString();
+    color = "success";
     if (result.EndsWith("!"))
     {
         color = "danger";
@@ -13,8 +18,8 @@
 
 @if (TempData["Sonuc"] != null)
 {
-    string result = TempData["Sonuc"].ToString();
-    string color = "success";
+    result = TempData["Sonuc"].ToString();
+    color = "success";
     if (result.EndsWith("!"))
     {
         color = "danger";

@@ -107,7 +107,7 @@ namespace Business.Services
             var kullanicilar = Query().ToList();
             if (kullanicilar.Count == 0)
                 return new ErrorResult<List<KullaniciModel>>("Kullanıcı bulunamadı!");
-            return new SuccessResult<List<KullaniciModel>>(kullanicilar);
+            return new SuccessResult<List<KullaniciModel>>(kullanicilar.Count + " kullanıcı bulundu.", kullanicilar);
         }
 
         public Result<KullaniciModel> KullaniciGetir(int id)

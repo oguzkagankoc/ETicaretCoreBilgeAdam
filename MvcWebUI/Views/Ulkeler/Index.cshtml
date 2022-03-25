@@ -10,6 +10,8 @@
     <a asp-action="Create">Yeni Ülke</a>
 </p>
 
+<partial name="_Sonuc" />
+
 @if (Model == null || Model.Count() == 0)
 {
     <p class="bg-warning text-black">
@@ -22,8 +24,6 @@ else
         @Model.Count() kayıt bulundu
     </p>
 }
-
-<partial name="_Sonuc" />
 
 <div style="overflow-y: auto; height: 450px; border-style: solid; border-width: 1px;">
     <table class="table table-striped">

@@ -10,19 +10,6 @@
     <a asp-action="Create">Yeni Kullanıcı</a>
 </p>
 
-@if (Model == null || Model.Count() == 0)
-{
-    <p class="bg-warning text-black">
-        Kayıt bulunamadı
-    </p>
-}
-else
-{
-    <p class="bg-info text-black">
-        @Model.Count() kayıt bulundu
-    </p>
-}
-
 <partial name="_Sonuc" />
 
 <table class="table">
