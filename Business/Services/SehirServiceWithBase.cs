@@ -10,7 +10,7 @@ namespace Business.Services
 {
     public interface ISehirService : IService<SehirModel, Sehir, ETicaretContext>
     {
-
+        Result<List<SehirModel>> SehirleriGetir(int ulkeId);
     }
 
     public class SehirService : ISehirService
@@ -26,6 +26,7 @@ namespace Business.Services
                 UlkeId = s.UlkeId,
                 Ulke = new UlkeModel()
                 {
+                    Id = s.Ulke.Id,
                     Adi = s.Ulke.Adi
                 }
             });
@@ -33,7 +34,8 @@ namespace Business.Services
 
         public Result Add(SehirModel model)
         {
-            if (Repo.Query().Any(s => s.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
+            //if (Repo.Query().Any(s => s.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
+            if (Query().Any(s => s.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
                 return new ErrorResult("Girdiğiniz şehir adına sahip kayıt bulunmaktadır!");
             Sehir entity = new Sehir()
             {
@@ -46,7 +48,8 @@ namespace Business.Services
 
         public Result Update(SehirModel model)
         {
-            if (Repo.Query().Any(s => s.Adi.ToUpper() == model.Adi.ToUpper().Trim() && s.Id != model.Id))
+            //if (Repo.Query().Any(s => s.Adi.ToUpper() == model.Adi.ToUpper().Trim() && s.Id != model.Id))
+            if (Query().Any(s => s.Adi.ToUpper() == model.Adi.ToUpper().Trim() && s.Id != model.Id))
                 return new ErrorResult("Girdiğiniz şehir adına sahip kayıt bulunmaktadır!");
             Sehir entity = Repo.Query(s => s.Id == model.Id).SingleOrDefault();
             entity.Adi = model.Adi.Trim();
@@ -67,6 +70,12 @@ namespace Business.Services
         public void Dispose()
         {
             Repo.Dispose();
+        }
+
+        public Result<List<SehirModel>> SehirleriGetir(int ulkeId)
+        {
+            var sehirler = Query().Where(s => s.UlkeId == ulkeId).ToList();
+            return new SuccessResult<List<SehirModel>>(sehirler);
         }
     }
 }

@@ -41,7 +41,7 @@
             </div>
             <div class="row mb-3">
                 <label asp-for="KullaniciDetayi.Cinsiyet" class="col-2 col-form-label"></label>
-				<div class="col-5">
+				<div class="col-5" style="padding-top:7px;">
 					<input asp-for="KullaniciDetayi.Cinsiyet" type="radio" value="@((int)Cinsiyet.Kadın)" checked /> @Cinsiyet.Kadın
                     &nbsp;
                     <input asp-for="KullaniciDetayi.Cinsiyet" type="radio" value="@((int)Cinsiyet.Erkek)" /> @Cinsiyet.Erkek
@@ -57,16 +57,16 @@
             <div class="row mb-3">
                 <label asp-for="KullaniciDetayi.UlkeId" class="col-2 col-form-label"></label>
                 <div class="col-5">
-                    <select asp-for="KullaniciDetayi.UlkeId" class="form-control ulkeler" asp-items="ViewBag.UlkeId">
+                    <select asp-for="KullaniciDetayi.UlkeId" class="form-control liste" asp-items="ViewBag.UlkeId" id="ulkeler">
                         <option value="">-- Seçiniz --</option>
                     </select>
-                    <span asp-validation-for="KullaniciDetayi.UlkeId" class="text-danger"></span>
+                    <span asp-validation-for="KullaniciDetayi.UlkeId" class="text-danger" id="ulkelermesaj"></span>
                 </div>
             </div>
             <div class="row mb-3">
                 <label asp-for="KullaniciDetayi.SehirId" class="col-2 col-form-label"></label>
                 <div class="col-5">
-                    <select asp-for="KullaniciDetayi.SehirId" class="form-control sehirler">
+                    <select asp-for="KullaniciDetayi.SehirId" class="form-control liste" id="sehirler">
                         <option value="">-- Ülke Seçiniz --</option>
                     </select>
                     <span asp-validation-for="KullaniciDetayi.SehirId" class="text-danger"></span>
@@ -89,3 +89,74 @@
         </form>
     </div>
 </div>
+
+@section Scripts
+{
+    @* https://select2.org/ *@
+    <link rel="stylesheet" href="/lib/select2/css/select2.min.css" />
+    <script src="/lib/select2/js/select2.min.js"></script>
+    <script src="/lib/select2/js/i18n/tr.min.js"></script>
+
+    <script src="/lib/jquery-ajax-unobstrusive/jquery.unobstrusive-ajax.min.js"></script>
+
+    <script>
+        $(function(){
+             // ajax: asynchronous javascript and xml, json: javascript object notification
+             $("#ulkeler").off("change"); // daha önce tanımlanmış event'in kaldırılmasını sağlar
+             $("#ulkeler").change(function() {
+                $("#sehirler").empty();
+                $("#ulkelermesaj").text("");
+                var seciliUlkeId = $("#ulkeler").val();
+
+                // === ve !== hem veri değerlerine hem de veri tiplerine bakar
+                // == ve != sadece veri değerlerine bakar
+                //if (seciliUlkeId == "") {
+                if (seciliUlkeId === "") {
+                    $("#ulkelermesaj").text("Lütfen ülke seçiniz...");
+                    $("#sehirler").append('<option value="">-- Ülke Seçiniz --</option>');
+                } else {
+
+                    $.ajax({
+                        cache: false,
+                        // ASP.NET Core web uygulamalarında problem çıkarır, .NET Framework web uygulamalarında kullanılabilir.
+                        //contentType: "application/json;charset=utf-8;",
+                        dataType: "json",
+                        // GET isteği 1. yöntem:
+                        //url: "/SehirlerAjax/SehirlerGet/" + seciliUlkeId,
+                        //type: "get",
+                        // GET isteği 2. yöntem:
+                        //url: "/SehirlerAjax/SehirlerGet",
+                        //type: "get",
+                        //data: { ulkeId: seciliUlkeId },
+                        // POST isteği:
+                        url: "/SehirlerAjax/SehirlerGet",
+                        type: "post",
+                        data: { ulkeId: seciliUlkeId },
+                        success: function(sehirler) {
+                            $("#sehirler").append('<option value="">-- Şehir Seçiniz --</option>');
+                            for (var i = 0; i < sehirler.length; i++) {
+                                $("#sehirler").append('<option value="' + sehirler[i].id + '">' + sehirler[i].adi + '</option>');
+                            }
+                        },
+                        error: function() {
+                            alert("AJAX isteği sonucunda hata meydana geldi!");
+                        }
+                    });
+                    //$.getJSON(
+                    //    //"/SehirlerAjax/SehirlerGet/" + seciliUlkeId, // GET isteği 1. yöntem
+                        
+                    //    "/SehirlerAjax/SehirlerGet", // GET isteği 2. yöntem
+                    //    { ulkeId: seciliUlkeId },
+
+                    //    function(sehirler) {
+                    //        $("#sehirler").append('<option value="">-- Şehir Seçiniz --</option>');
+                    //        for (var i = 0; i < sehirler.length; i++) {
+                    //            $("#sehirler").append('<option value="' + sehirler[i].id + '">' + sehirler[i].adi + '</option>');
+                    //        }
+                    //    }
+                    //);
+                }
+             });
+        });
+    </script>
+}

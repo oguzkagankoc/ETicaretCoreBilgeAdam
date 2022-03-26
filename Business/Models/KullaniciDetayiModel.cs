@@ -15,8 +15,10 @@ namespace Business.Models
         [DisplayName("E-Posta")]
         public string Eposta { get; set; }
 
+        [DisplayName("Ülke")]
         public int UlkeId { get; set; }
 
+        [DisplayName("Şehir")]
         public int SehirId { get; set; }
 
         [Required(ErrorMessage = "{0} gereklidir!")]

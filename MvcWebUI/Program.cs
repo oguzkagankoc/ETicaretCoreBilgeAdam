@@ -87,6 +87,12 @@ app.UseAuthentication(); // sen kimsin?
 
 app.UseAuthorization(); // sen iþlem için yetkili misin?
 
+// Þehirler AJAX iþlemi için route tanýmý 1. yöntem, 2. yöntem SehirlerAjaxController.cs altýndadýr.
+// default dýþýnda tanýmlanan tüm yeni route'lar default route tanýmý üzerine yazýlmalýdýr, sýra önemlidir.
+//app.MapControllerRoute(
+//    name: "sehirlerAjax",
+//    pattern: "SehirlerAjax/SehirlerGet/{ulkeId?}");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
