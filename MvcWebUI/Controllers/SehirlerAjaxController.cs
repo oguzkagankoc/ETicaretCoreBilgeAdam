@@ -27,5 +27,15 @@ namespace MvcWebUI.Controllers
 
             return Json(result.Data);
         }
+
+        [Route("SehirlerPost/{ulkeId?}")] // ~/SehirlerAjax/SehirlerPost
+        [HttpPost]
+        public IActionResult SehirlerPost(int? ulkeId)
+        {
+            if (!ulkeId.HasValue)
+                return NotFound();
+            var result = _sehirService.SehirleriGetir(ulkeId.Value);
+            return Json(result.Data);
+        }
     }
 }

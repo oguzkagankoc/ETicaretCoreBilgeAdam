@@ -57,7 +57,7 @@
             <div class="row mb-3">
                 <label asp-for="KullaniciDetayi.UlkeId" class="col-2 col-form-label"></label>
                 <div class="col-5">
-                    <select asp-for="KullaniciDetayi.UlkeId" class="form-control liste" asp-items="ViewBag.UlkeId" id="ulkeler">
+                    <select asp-for="KullaniciDetayi.UlkeId" class="form-control" asp-items="ViewBag.UlkeId" id="ulkeler">
                         <option value="">-- Seçiniz --</option>
                     </select>
                     <span asp-validation-for="KullaniciDetayi.UlkeId" class="text-danger" id="ulkelermesaj"></span>
@@ -66,7 +66,7 @@
             <div class="row mb-3">
                 <label asp-for="KullaniciDetayi.SehirId" class="col-2 col-form-label"></label>
                 <div class="col-5">
-                    <select asp-for="KullaniciDetayi.SehirId" class="form-control liste" id="sehirler">
+                    <select asp-for="KullaniciDetayi.SehirId" class="form-control" id="sehirler" asp-items="ViewBag.SehirId">
                         <option value="">-- Ülke Seçiniz --</option>
                     </select>
                     <span asp-validation-for="KullaniciDetayi.SehirId" class="text-danger"></span>
@@ -129,7 +129,7 @@
                         //type: "get",
                         //data: { ulkeId: seciliUlkeId },
                         // POST isteği:
-                        url: "/SehirlerAjax/SehirlerGet",
+                        url: "/SehirlerAjax/SehirlerPost",
                         type: "post",
                         data: { ulkeId: seciliUlkeId },
                         success: function(sehirler) {

@@ -80,7 +80,27 @@ namespace Business.Services
 
         public Result Add(KullaniciModel model)
         {
-            throw new NotImplementedException();
+            if (Repo.Query().Any(k => k.KullaniciAdi.ToUpper() == model.KullaniciAdi.ToUpper().Trim()))
+                return new ErrorResult("Girilen kullanıcı adına sahip kullanıcı kaydı bulunmaktadır!");
+            if (Repo.Query("KullaniciDetayi").Any(k => k.KullaniciDetayi.Eposta.ToUpper() == model.KullaniciDetayi.Eposta.ToUpper().Trim()))
+                return new ErrorResult("Girilen e-postaya sahip kullanıcı kaydı bulunmaktadır!");
+            var entity = new Kullanici()
+            {
+                AktifMi = model.AktifMi,
+                KullaniciAdi = model.KullaniciAdi,
+                Sifre = model.Sifre,
+                RolId = model.RolId,
+                KullaniciDetayi = new KullaniciDetayi()
+                {
+                    Adres = model.KullaniciDetayi.Adres.Trim(),
+                    Cinsiyet = model.KullaniciDetayi.Cinsiyet,
+                    Eposta = model.KullaniciDetayi.Eposta.Trim(),
+                    SehirId = model.KullaniciDetayi.SehirId.Value,
+                    UlkeId = model.KullaniciDetayi.UlkeId.Value
+                }
+            };
+            Repo.Add(entity);
+            return new SuccessResult();
         }
 
         public Result Update(KullaniciModel model)

@@ -2,6 +2,7 @@
 using DataAccess.Entities;
 using DataAccess.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using System.Text;
 
@@ -23,8 +24,9 @@ namespace MvcWebUI.Controllers
                 var kullaniciEntities = db.Kullanicilar.ToList();
                 db.Kullanicilar.RemoveRange(kullaniciEntities);
 
+                // silmeye gerek yok çünkü eğer rol tablosunda kayıt varsa silip tekrar ekleme işlemi yapılmasın
                 var rolEntities = db.Roller.ToList();
-                db.Roller.RemoveRange(rolEntities);
+                //db.Roller.RemoveRange(rolEntities);
 
                 var sehirEntities = db.Sehirler.ToList();
                 db.Sehirler.RemoveRange(sehirEntities);
@@ -51,6 +53,16 @@ namespace MvcWebUI.Controllers
 
                 var kategoriEntities = db.Kategoriler.ToList();
                 db.Kategoriler.RemoveRange(kategoriEntities);
+
+                // eğer istenirse tablo id'leri 1'den başlatılabilir:
+                // eğer tablolarda veri yoksa id 0'dan başlayabilir, bu durumda bu aksiyon tekrar çalıştırılmalıdır!
+                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretUrunler', RESEED, 0)");
+                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretMagazalar', RESEED, 0)");
+                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretKategoriler', RESEED, 0)");
+                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretKullanicilar', RESEED, 0)");
+                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretSehirler', RESEED, 0)");
+                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretUlkeler', RESEED, 0)");
+                //db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretRoller', RESEED, 0)");
 
                 // verilerin eklenmesi:
                 db.Kategoriler.Add(new Kategori()
@@ -200,10 +212,13 @@ namespace MvcWebUI.Controllers
 
                 db.SaveChanges();
 
-                db.Roller.Add(new Rol()
+                // eğer rol tablosunda kayıt yoksa roller eklensin, varsa mevcut roller korunsun
+                if (rolEntities.Count == 0)
                 {
-                    Adi = "Admin",
-                    Kullanicilar = new List<Kullanici>()
+                    db.Roller.Add(new Rol()
+                    {
+                        Adi = "Admin",
+                        Kullanicilar = new List<Kullanici>()
                     {
                         new Kullanici()
                         {
@@ -220,11 +235,11 @@ namespace MvcWebUI.Controllers
                             }
                         }
                     }
-                });
-                db.Roller.Add(new Rol()
-                {
-                    Adi = "Kullanıcı",
-                    Kullanicilar = new List<Kullanici>()
+                    });
+                    db.Roller.Add(new Rol()
+                    {
+                        Adi = "Kullanıcı",
+                        Kullanicilar = new List<Kullanici>()
                     {
                         new Kullanici()
                         {
@@ -241,7 +256,8 @@ namespace MvcWebUI.Controllers
                             }
                         }
                     }
-                });
+                    });
+                }
 
                 db.SaveChanges();
             }

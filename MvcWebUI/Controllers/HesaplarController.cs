@@ -65,12 +65,30 @@ namespace MvcWebUI.Controllers
 
         public IActionResult Kayit()
         {
-            var result = _ulkeService.List();
+            var result = _ulkeService.UlkeleriGetir();
             if (result.IsSuccessful)
                 ViewBag.UlkeId = new SelectList(result.Data, "Id", "Adi");
             else
                 ViewBag.Mesaj = result.Message;
             return View();
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public IActionResult Kayit(KullaniciKayitModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var kayitSonuc = _hesapService.Kayit(model);
+                if (kayitSonuc.IsSuccessful)
+                    return RedirectToAction(nameof(Giris));
+                ViewBag.Mesaj = kayitSonuc.Message;
+            }
+            var ulkeSonuc = _ulkeService.UlkeleriGetir();
+            ViewBag.UlkeId = new SelectList(ulkeSonuc.Data, "Id", "Adi", model.KullaniciDetayi.UlkeId ?? -1);
+            var sehirSonuc = _sehirService.SehirleriGetir(model.KullaniciDetayi.UlkeId ?? -1);
+            ViewBag.SehirId = new SelectList(sehirSonuc.Data, "Id", "Adi", model.KullaniciDetayi.SehirId ?? -1);
+            return View(model);
         }
     }
 }

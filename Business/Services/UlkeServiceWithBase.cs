@@ -10,7 +10,7 @@ namespace Business.Services
 {
     public interface IUlkeService : IService<UlkeModel, Ulke, ETicaretContext>
     {
-        Result<List<UlkeModel>> List();
+        Result<List<UlkeModel>> UlkeleriGetir();
     }
 
     public class UlkeService : IUlkeService
@@ -65,7 +65,7 @@ namespace Business.Services
         }
         
         // servisler ihtiyaca göre yeni tanımlanan methodlar üzerinden özelleştirilebilir.
-        public Result<List<UlkeModel>> List()
+        public Result<List<UlkeModel>> UlkeleriGetir()
         {
             var ulkeler = Query().ToList();
             if (ulkeler.Count == 0)
