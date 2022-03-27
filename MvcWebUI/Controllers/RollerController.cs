@@ -72,7 +72,7 @@ namespace MvcWebUI.Controllers
             var result = _rolService.RolGetir(id.Value);
             if (!result.IsSuccessful)
             {
-                ViewBag.Sonuc = result.Message;
+                return View("Hata", result.Message);
             }
             return View(result.Data);
         }

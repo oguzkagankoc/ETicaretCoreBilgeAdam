@@ -85,6 +85,7 @@ namespace Business.Services
 
         public Result Delete(int id)
         {
+            //todo
             Repo.Delete(u => u.Id == id);
             return new SuccessResult("Ürün başarıyla silindi.");
         }

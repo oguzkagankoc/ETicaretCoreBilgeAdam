@@ -1,61 +1,47 @@
-﻿@model DataAccess.Entities.Kullanici
+﻿@model KullaniciModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Yeni Kullanıcı";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<h4>Kullanici</h4>
-<hr />
-<div class="row">
-    <div class="col-12">
-        <form asp-action="Create">
-		@Html.AntiForgeryToken()
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="row mb-3">
-                <label asp-for="KullaniciAdi" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="KullaniciAdi" class="form-control" />
-					<span asp-validation-for="KullaniciAdi" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
-                <label asp-for="Sifre" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="Sifre" class="form-control" />
-					<span asp-validation-for="Sifre" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
-				<label asp-for="AktifMi" class="col-2 col-form-label"></label>
-				<div class="col-5" style="padding-top: 7px;">
-					<input class="form-check-input" asp-for="AktifMi" />
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label asp-for="RolId" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<select asp-for="RolId" class="form-control" asp-items="ViewBag.RolId"></select>
-				</div>
-            </div>
-            <div class="row mb-3">
-                <label asp-for="Guid" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="Guid" class="form-control" />
-					<span asp-validation-for="Guid" class="text-danger"></span>
-				</div>
-            </div>
-            <div class="row mb-3">
-				<div class="offset-2 col-5">
-					<input type="submit" value="Save" class="btn btn-primary" />
-					&nbsp;&nbsp;
-                    <button type="reset" class="btn btn-outline-primary">Reset</button>
-					&nbsp;&nbsp;
-					<a asp-action="Index">Back to List</a>
-				</div>
-            </div>
-        </form>
-    </div>
-</div>
+<partial name="_CreateEdit" model="Model" />
 
+@section Scripts
+{
+    <script src="/lib/jquery-ajax-unobstrusive/jquery.unobstrusive-ajax.min.js"></script>
+
+    <script>
+        $(function(){
+             $("#ulkeler").off("change");
+             $("#ulkeler").change(function() {
+                $("#sehirler").empty();
+                $("#ulkelermesaj").text("");
+                var seciliUlkeId = $("#ulkeler").val();
+                if (seciliUlkeId === "") {
+                    $("#ulkelermesaj").text("Lütfen ülke seçiniz...");
+                    $("#sehirler").append('<option value="">-- Ülke Seçiniz --</option>');
+                } else {
+                    $.ajax({
+                        cache: false,
+                        dataType: "json",
+                        // POST isteği:
+                        url: "/SehirlerAjax/SehirlerPost",
+                        type: "post",
+                        data: { ulkeId: seciliUlkeId },
+                        success: function(sehirler) {
+                            $("#sehirler").append('<option value="">-- Şehir Seçiniz --</option>');
+                            for (var i = 0; i < sehirler.length; i++) {
+                                $("#sehirler").append('<option value="' + sehirler[i].id + '">' + sehirler[i].adi + '</option>');
+                            }
+                        },
+                        error: function() {
+                            alert("AJAX isteği sonucunda hata meydana geldi!");
+                        }
+                    });
+                }
+             });
+        });
+    </script>
+}

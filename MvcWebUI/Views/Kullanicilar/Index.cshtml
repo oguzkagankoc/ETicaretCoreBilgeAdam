@@ -46,11 +46,33 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.AktifDisplay)
                 </td>
-                <td>
+                <td style="text-align: right;">
                     <a asp-action="Details" asp-route-id="@item.Id">Detay</a>&nbsp;|&nbsp;
-                    <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>&nbsp;|&nbsp;
+                    <a href="#" onclick="kullaniciSil(@item.Id);">Sil</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+    @* https://alertifyjs.com/ *@
+    <link href="~/lib/AlertifyJS/css/alertify.min.css" rel="stylesheet" />
+    <script src="~/lib/AlertifyJS/alertify.min.js"></script>
+
+    <script>
+        function kullaniciSil(id) {
+            alertify.confirm("Uyarı!",
+                "Bu kullanıcıyı silmek istediğinize emin misiniz?",
+                function () { // OK
+                    //alertify.success("Silme başarılı.");
+                    window.location.href = "/Kullanicilar/Delete/" + id;
+                },
+                function () { // Cancel
+                    //alertify.error("Silme iptal edildi.");
+                }
+            ).set('labels', { ok: 'Evet', cancel: 'Hayır' });
+        }
+    </script>
+}

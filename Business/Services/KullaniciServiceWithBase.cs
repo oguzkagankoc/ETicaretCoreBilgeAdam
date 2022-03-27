@@ -5,7 +5,6 @@ using AppCore.DataAccess.EntityFramework.Bases;
 using Business.Models;
 using DataAccess.Contexts;
 using DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Business.Services
 {
@@ -19,7 +18,7 @@ namespace Business.Services
     {
         public RepoBase<Kullanici, ETicaretContext> Repo { get; set; }
 
-        private readonly ETicaretContext _dbContext;
+        private readonly ETicaretContext _eTicaretContext;
         private readonly RepoBase<KullaniciDetayi, ETicaretContext> _kullaniciDetayiRepo;
         private readonly RepoBase<Rol, ETicaretContext> _rolRepo;
         private readonly RepoBase<Ulke, ETicaretContext> _ulkeRepo;
@@ -27,12 +26,13 @@ namespace Business.Services
 
         public KullaniciService()
         {
-            _dbContext = new ETicaretContext();
-            Repo = new Repo<Kullanici, ETicaretContext>(_dbContext); // Kullanici Repository
-            _kullaniciDetayiRepo = new Repo<KullaniciDetayi, ETicaretContext>(_dbContext);
-            _rolRepo = new Repo<Rol, ETicaretContext>(_dbContext);
-            _ulkeRepo = new Repo<Ulke, ETicaretContext>(_dbContext);
-            _sehirRepo = new Repo<Sehir, ETicaretContext>(_dbContext);
+            // Query'de join'de kullanılan tüm repository'ler aynı DbContext'i kullanmalı, bu yüzden ETicaretContext hepsine enjekte edilmeli
+            _eTicaretContext = new ETicaretContext();
+            Repo = new Repo<Kullanici, ETicaretContext>(_eTicaretContext); // Kullanici Repository
+            _kullaniciDetayiRepo = new Repo<KullaniciDetayi, ETicaretContext>(_eTicaretContext);
+            _rolRepo = new Repo<Rol, ETicaretContext>(_eTicaretContext);
+            _ulkeRepo = new Repo<Ulke, ETicaretContext>(_eTicaretContext);
+            _sehirRepo = new Repo<Sehir, ETicaretContext>(_eTicaretContext);
         }
 
         public IQueryable<KullaniciModel> Query()
@@ -89,7 +89,7 @@ namespace Business.Services
                 AktifMi = model.AktifMi,
                 KullaniciAdi = model.KullaniciAdi,
                 Sifre = model.Sifre,
-                RolId = model.RolId,
+                RolId = model.RolId.Value,
                 KullaniciDetayi = new KullaniciDetayi()
                 {
                     Adres = model.KullaniciDetayi.Adres.Trim(),
@@ -105,12 +105,31 @@ namespace Business.Services
 
         public Result Update(KullaniciModel model)
         {
-            throw new NotImplementedException();
+            if (Repo.Query().Any(k => k.KullaniciAdi.ToUpper() == model.KullaniciAdi.ToUpper().Trim() && k.Id != model.Id))
+                return new ErrorResult("Girilen kullanıcı adına sahip kullanıcı kaydı bulunmaktadır!");
+            if (Repo.Query("KullaniciDetayi").Any(k => k.KullaniciDetayi.Eposta.ToUpper() == model.KullaniciDetayi.Eposta.ToUpper().Trim() && k.Id != model.Id))
+                return new ErrorResult("Girilen e-postaya sahip kullanıcı kaydı bulunmaktadır!");
+            var entity = Repo.Query(k => k.Id == model.Id, "KullaniciDetayi").SingleOrDefault();
+            entity.AktifMi = model.AktifMi;
+            entity.KullaniciAdi = model.KullaniciAdi;
+            entity.Sifre = model.Sifre;
+            entity.RolId = model.RolId.Value;
+            entity.KullaniciDetayi.Cinsiyet = model.KullaniciDetayi.Cinsiyet;
+            entity.KullaniciDetayi.Adres = model.KullaniciDetayi.Adres.Trim();
+            entity.KullaniciDetayi.Cinsiyet = model.KullaniciDetayi.Cinsiyet;
+            entity.KullaniciDetayi.Eposta = model.KullaniciDetayi.Eposta.Trim();
+            entity.KullaniciDetayi.SehirId = model.KullaniciDetayi.SehirId.Value;
+            entity.KullaniciDetayi.UlkeId = model.KullaniciDetayi.UlkeId.Value;
+            Repo.Update(entity);
+            return new SuccessResult();
         }
 
         public Result Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = Repo.Query(k => k.Id == id).SingleOrDefault();
+            _kullaniciDetayiRepo.Delete(kd => kd.KullaniciId == entity.Id, false);
+            Repo.Delete(entity);
+            return new SuccessResult();
         }
 
         public void Dispose()

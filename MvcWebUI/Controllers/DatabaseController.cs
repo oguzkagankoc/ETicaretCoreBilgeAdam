@@ -24,9 +24,8 @@ namespace MvcWebUI.Controllers
                 var kullaniciEntities = db.Kullanicilar.ToList();
                 db.Kullanicilar.RemoveRange(kullaniciEntities);
 
-                // silmeye gerek yok çünkü eğer rol tablosunda kayıt varsa silip tekrar ekleme işlemi yapılmasın
                 var rolEntities = db.Roller.ToList();
-                //db.Roller.RemoveRange(rolEntities);
+                db.Roller.RemoveRange(rolEntities);
 
                 var sehirEntities = db.Sehirler.ToList();
                 db.Sehirler.RemoveRange(sehirEntities);
@@ -62,7 +61,7 @@ namespace MvcWebUI.Controllers
                 db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretKullanicilar', RESEED, 0)");
                 db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretSehirler', RESEED, 0)");
                 db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretUlkeler', RESEED, 0)");
-                //db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretRoller', RESEED, 0)");
+                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretRoller', RESEED, 0)");
 
                 // verilerin eklenmesi:
                 db.Kategoriler.Add(new Kategori()
@@ -212,13 +211,10 @@ namespace MvcWebUI.Controllers
 
                 db.SaveChanges();
 
-                // eğer rol tablosunda kayıt yoksa roller eklensin, varsa mevcut roller korunsun
-                if (rolEntities.Count == 0)
+                db.Roller.Add(new Rol()
                 {
-                    db.Roller.Add(new Rol()
-                    {
-                        Adi = "Admin",
-                        Kullanicilar = new List<Kullanici>()
+                    Adi = "Admin",
+                    Kullanicilar = new List<Kullanici>()
                     {
                         new Kullanici()
                         {
@@ -235,11 +231,11 @@ namespace MvcWebUI.Controllers
                             }
                         }
                     }
-                    });
-                    db.Roller.Add(new Rol()
-                    {
-                        Adi = "Kullanıcı",
-                        Kullanicilar = new List<Kullanici>()
+                });
+                db.Roller.Add(new Rol()
+                {
+                    Adi = "Kullanıcı",
+                    Kullanicilar = new List<Kullanici>()
                     {
                         new Kullanici()
                         {
@@ -256,8 +252,7 @@ namespace MvcWebUI.Controllers
                             }
                         }
                     }
-                    });
-                }
+                });
 
                 db.SaveChanges();
             }

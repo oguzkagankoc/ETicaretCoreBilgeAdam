@@ -85,7 +85,7 @@ namespace MvcWebUI.Controllers
                 ViewBag.Mesaj = kayitSonuc.Message;
             }
             var ulkeSonuc = _ulkeService.UlkeleriGetir();
-            ViewBag.UlkeId = new SelectList(ulkeSonuc.Data, "Id", "Adi", model.KullaniciDetayi.UlkeId ?? -1);
+            ViewBag.UlkeId = new SelectList(ulkeSonuc.Data, "Id", "Adi", model.KullaniciDetayi.UlkeId ?? -1); // eğer UlkeId null'sa -1 kullan
             var sehirSonuc = _sehirService.SehirleriGetir(model.KullaniciDetayi.UlkeId ?? -1);
             ViewBag.SehirId = new SelectList(sehirSonuc.Data, "Id", "Adi", model.KullaniciDetayi.SehirId ?? -1);
             return View(model);

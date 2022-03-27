@@ -92,11 +92,6 @@
 
 @section Scripts
 {
-    @* https://select2.org/ *@
-    <link rel="stylesheet" href="/lib/select2/css/select2.min.css" />
-    <script src="/lib/select2/js/select2.min.js"></script>
-    <script src="/lib/select2/js/i18n/tr.min.js"></script>
-
     <script src="/lib/jquery-ajax-unobstrusive/jquery.unobstrusive-ajax.min.js"></script>
 
     <script>
@@ -116,45 +111,45 @@
                     $("#sehirler").append('<option value="">-- Ülke Seçiniz --</option>');
                 } else {
 
-                    $.ajax({
-                        cache: false,
-                        // ASP.NET Core web uygulamalarında problem çıkarır, .NET Framework web uygulamalarında kullanılabilir.
-                        //contentType: "application/json;charset=utf-8;",
-                        dataType: "json",
-                        // GET isteği 1. yöntem:
-                        //url: "/SehirlerAjax/SehirlerGet/" + seciliUlkeId,
-                        //type: "get",
-                        // GET isteği 2. yöntem:
-                        //url: "/SehirlerAjax/SehirlerGet",
-                        //type: "get",
-                        //data: { ulkeId: seciliUlkeId },
-                        // POST isteği:
-                        url: "/SehirlerAjax/SehirlerPost",
-                        type: "post",
-                        data: { ulkeId: seciliUlkeId },
-                        success: function(sehirler) {
-                            $("#sehirler").append('<option value="">-- Şehir Seçiniz --</option>');
-                            for (var i = 0; i < sehirler.length; i++) {
-                                $("#sehirler").append('<option value="' + sehirler[i].id + '">' + sehirler[i].adi + '</option>');
-                            }
-                        },
-                        error: function() {
-                            alert("AJAX isteği sonucunda hata meydana geldi!");
-                        }
-                    });
-                    //$.getJSON(
-                    //    //"/SehirlerAjax/SehirlerGet/" + seciliUlkeId, // GET isteği 1. yöntem
-                        
-                    //    "/SehirlerAjax/SehirlerGet", // GET isteği 2. yöntem
-                    //    { ulkeId: seciliUlkeId },
-
-                    //    function(sehirler) {
+                    //$.ajax({
+                    //    cache: false,
+                    //    // ASP.NET Core web uygulamalarında problem çıkarır, .NET Framework web uygulamalarında kullanılabilir.
+                    //    //contentType: "application/json;charset=utf-8;",
+                    //    dataType: "json",
+                    //    // GET isteği 1. yöntem:
+                    //    //url: "/SehirlerAjax/SehirlerGet/" + seciliUlkeId,
+                    //    //type: "get",
+                    //    // GET isteği 2. yöntem:
+                    //    //url: "/SehirlerAjax/SehirlerGet",
+                    //    //type: "get",
+                    //    //data: { ulkeId: seciliUlkeId },
+                    //    // POST isteği:
+                    //    url: "/SehirlerAjax/SehirlerPost",
+                    //    type: "post",
+                    //    data: { ulkeId: seciliUlkeId },
+                    //    success: function(sehirler) {
                     //        $("#sehirler").append('<option value="">-- Şehir Seçiniz --</option>');
                     //        for (var i = 0; i < sehirler.length; i++) {
                     //            $("#sehirler").append('<option value="' + sehirler[i].id + '">' + sehirler[i].adi + '</option>');
                     //        }
+                    //    },
+                    //    error: function() {
+                    //        alert("AJAX isteği sonucunda hata meydana geldi!");
                     //    }
-                    //);
+                    //});
+                    $.getJSON(
+                        //"/SehirlerAjax/SehirlerGet/" + seciliUlkeId, // GET isteği 1. yöntem
+                        
+                        "/SehirlerAjax/SehirlerGet", // GET isteği 2. yöntem
+                        { ulkeId: seciliUlkeId },
+
+                        function(sehirler) {
+                            $("#sehirler").append('<option value="">-- Şehir Seçiniz --</option>');
+                            for (var i = 0; i < sehirler.length; i++) {
+                                $("#sehirler").append('<option value="' + sehirler[i].id + '">' + sehirler[i].adi + '</option>');
+                            }
+                        }
+                    );
                 }
              });
         });

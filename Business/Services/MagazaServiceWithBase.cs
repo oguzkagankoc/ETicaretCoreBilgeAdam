@@ -15,7 +15,18 @@ namespace Business.Services
 
     public class MagazaService : IMagazaService
     {
-        public RepoBase<Magaza, ETicaretContext> Repo { get; set; } = new Repo<Magaza, ETicaretContext>();
+        public RepoBase<Magaza, ETicaretContext> Repo { get; set; }
+
+        private readonly RepoBase<UrunMagaza, ETicaretContext> _urunMagazaRepo;
+        private readonly ETicaretContext _eTicaretContext;
+
+        public MagazaService()
+        {
+            // ürün repository ve ürün mağaza repository'nin aynı DbContext üzerinde işlem yapması gerektiğinden ETicaretContext'i iki repository'e de enjekte ediyoruz
+            _eTicaretContext = new ETicaretContext();
+            Repo = new Repo<Magaza, ETicaretContext>(_eTicaretContext);
+            _urunMagazaRepo = new Repo<UrunMagaza, ETicaretContext>(_eTicaretContext);
+        }
 
         public IQueryable<MagazaModel> Query()
         {
@@ -55,19 +66,15 @@ namespace Business.Services
         public Result Delete(int id)
         {
             // önce ürünle ilişkili olan ürün mağaza kayıtları mağaza id'ye göre getirilir ve silinir.
-            using (RepoBase<UrunMagaza, ETicaretContext> urunMagazaRepo = new Repo<UrunMagaza, ETicaretContext>())
-            {
-                // 1. yöntem:
-                //List<UrunMagaza> urunMagazaEntities = urunMagazaRepo.Query(um => um.MagazaId == id).ToList();
-                //foreach (UrunMagaza urunMagazaEntity in urunMagazaEntities)
-                //{
-                //    urunMagazaRepo.Delete(urunMagazaEntity, false); // birden çok ürün mağaza kaydı silinebileceği için save parametresini false gönderip veritabanında silme sorgusunu çalıştırmıyoruz, sadece ürün mağaza kaydını silinecek olarak işaretliyoruz.
-                //}
-                //urunMagazaRepo.Save(); // yukarıda silinecek ürün mağaza kayıtlarını işaretledikten sonra tek seferde veritabanında silme sorgularını çalıştırıyoruz (unit of work).
-                // 2. yöntem:
-                urunMagazaRepo.Delete(um => um.MagazaId == id);
-            }
-            Repo.Delete(m => m.Id == id); // son olarak mağazamızı siliyoruz.
+            // 1. yöntem:
+            //List<UrunMagaza> urunMagazaEntities = urunMagazaRepo.Query(um => um.MagazaId == id).ToList();
+            //foreach (UrunMagaza urunMagazaEntity in urunMagazaEntities)
+            //{
+            //    urunMagazaRepo.Delete(urunMagazaEntity, false); // birden çok ürün mağaza kaydı silinebileceği için save parametresini false gönderip veritabanında silme sorgusunu çalıştırmıyoruz, sadece ürün mağaza kaydını silinecek olarak işaretliyoruz.
+            //}
+            // 2. yöntem:
+            _urunMagazaRepo.Delete(um => um.MagazaId == id, false);
+            Repo.Delete(m => m.Id == id); // son olarak mağazamızı siliyoruz. save parametresi default olarak true gönderildiğinden DbContext'te SaveChanges ile değişiklikler kaydediliyor
             return new SuccessResult();
         }
 

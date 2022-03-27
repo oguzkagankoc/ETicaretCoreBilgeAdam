@@ -1,10 +1,10 @@
-﻿using Business.Services;
+﻿using Business.Models;
+using Business.Services;
 using DataAccess.Contexts;
-using DataAccess.Entities;
+using DataAccess.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace MvcWebUI.Controllers
 {
@@ -14,10 +14,16 @@ namespace MvcWebUI.Controllers
         private readonly ETicaretContext _context;
 
         private readonly IKullaniciService _kullaniciService;
+        private readonly IRolService _rolService;
+        private readonly IUlkeService _ulkeService;
+        private readonly ISehirService _sehirService;
 
-        public KullanicilarController(IKullaniciService kullaniciService)
+        public KullanicilarController(IKullaniciService kullaniciService, IRolService rolService, IUlkeService ulkeService, ISehirService sehirService)
         {
             _kullaniciService = kullaniciService;
+            _rolService = rolService;
+            _ulkeService = ulkeService;
+            _sehirService = sehirService;
         }
 
         // GET: Kullanicilar
@@ -46,8 +52,19 @@ namespace MvcWebUI.Controllers
         // GET: Kullanicilar/Create
         public IActionResult Create()
         {
-            ViewData["RolId"] = new SelectList(_context.Roller, "Id", "Adi");
-            return View();
+            var rolSonuc = _rolService.RolleriGetir();
+            var ulkeSonuc = _ulkeService.UlkeleriGetir();
+            ViewData["RolId"] = new SelectList(rolSonuc.Data, "Id", "Adi");
+            ViewData["UlkeId"] = new SelectList(ulkeSonuc.Data, "Id", "Adi");
+            KullaniciModel model = new KullaniciModel()
+            {
+                AktifMi = true,
+                KullaniciDetayi = new KullaniciDetayiModel()
+                {
+                    Cinsiyet = Cinsiyet.Kadın
+                }
+            };
+            return View(model);
         }
 
         // POST: Kullanicilar/Create
@@ -55,15 +72,22 @@ namespace MvcWebUI.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Kullanici kullanici)
+        public IActionResult Create(KullaniciModel kullanici)
         {
+            ModelState.Remove(nameof(kullanici.Id));
             if (ModelState.IsValid)
             {
-                _context.Add(kullanici);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                var result = _kullaniciService.Add(kullanici);
+                if (result.IsSuccessful)
+                    return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("", result.Message);
             }
-            ViewData["RolId"] = new SelectList(_context.Roller, "Id", "Adi", kullanici.RolId);
+            var rolSonuc = _rolService.RolleriGetir();
+            var ulkeSonuc = _ulkeService.UlkeleriGetir();
+            var sehirSonuc = _sehirService.SehirleriGetir(kullanici.KullaniciDetayi.UlkeId ?? -1);
+            ViewData["RolId"] = new SelectList(rolSonuc.Data, "Id", "Adi", kullanici.RolId);
+            ViewData["UlkeId"] = new SelectList(ulkeSonuc.Data, "Id", "Adi", kullanici.KullaniciDetayi.UlkeId ?? -1);
+            ViewData["SehirId"] = new SelectList(sehirSonuc.Data, "Id", "Adi", kullanici.KullaniciDetayi.SehirId ?? -1);
             return View(kullanici);
         }
 
@@ -72,16 +96,20 @@ namespace MvcWebUI.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Hata", "Id gereklidir!");
             }
-
-            var kullanici = _context.Kullanicilar.Find(id);
-            if (kullanici == null)
+            var result = _kullaniciService.KullaniciGetir(id.Value);
+            if (!result.IsSuccessful)
             {
-                return NotFound();
+                return View("Hata", result.Message);
             }
-            ViewData["RolId"] = new SelectList(_context.Roller, "Id", "Adi", kullanici.RolId);
-            return View(kullanici);
+            var rolSonuc = _rolService.RolleriGetir();
+            var ulkeSonuc = _ulkeService.UlkeleriGetir();
+            var sehirSonuc = _sehirService.SehirleriGetir(result.Data.KullaniciDetayi.UlkeId ?? -1);
+            ViewData["RolId"] = new SelectList(rolSonuc.Data, "Id", "Adi", result.Data.RolId);
+            ViewData["UlkeId"] = new SelectList(ulkeSonuc.Data, "Id", "Adi", result.Data.KullaniciDetayi.UlkeId ?? -1);
+            ViewData["SehirId"] = new SelectList(sehirSonuc.Data, "Id", "Adi", result.Data.KullaniciDetayi.SehirId ?? -1);
+            return View(result.Data);
         }
 
         // POST: Kullanicilar/Edit
@@ -89,15 +117,21 @@ namespace MvcWebUI.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Kullanici kullanici)
+        public IActionResult Edit(KullaniciModel kullanici)
         {
             if (ModelState.IsValid)
             {
-                _context.Update(kullanici);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                var result = _kullaniciService.Update(kullanici);
+                if (result.IsSuccessful)
+                    return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("", result.Message);
             }
-            ViewData["RolId"] = new SelectList(_context.Roller, "Id", "Adi", kullanici.RolId);
+            var rolSonuc = _rolService.RolleriGetir();
+            var ulkeSonuc = _ulkeService.UlkeleriGetir();
+            var sehirSonuc = _sehirService.SehirleriGetir(kullanici.KullaniciDetayi.UlkeId ?? -1);
+            ViewData["RolId"] = new SelectList(rolSonuc.Data, "Id", "Adi", kullanici.RolId);
+            ViewData["UlkeId"] = new SelectList(ulkeSonuc.Data, "Id", "Adi", kullanici.KullaniciDetayi.UlkeId ?? -1);
+            ViewData["SehirId"] = new SelectList(sehirSonuc.Data, "Id", "Adi", kullanici.KullaniciDetayi.SehirId ?? -1);
             return View(kullanici);
         }
 
@@ -106,29 +140,11 @@ namespace MvcWebUI.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Hata", "Id gereklidir!");
             }
-
-            var kullanici = _context.Kullanicilar
-                .Include(k => k.Rol)
-                .SingleOrDefault(m => m.Id == id);
-            if (kullanici == null)
-            {
-                return NotFound();
-            }
-
-            return View(kullanici);
-        }
-
-        // POST: Kullanicilar/Delete
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var kullanici = _context.Kullanicilar.Find(id);
-            _context.Kullanicilar.Remove(kullanici);
-            _context.SaveChanges();
+            var result = _kullaniciService.Delete(id.Value);
+            TempData["Sonuc"] = result.Message;
             return RedirectToAction(nameof(Index));
         }
-	}
+    }
 }

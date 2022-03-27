@@ -1,0 +1,107 @@
+﻿@using DataAccess.Enums
+
+@model KullaniciModel
+
+<h4>Kullanıcı</h4>
+<hr />
+<div class="row">
+    <div class="col-12">
+        @using (Html.BeginForm())
+        {
+		    @Html.AntiForgeryToken()
+            <input asp-for="Id" type="hidden" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row mb-3">
+                <label asp-for="KullaniciAdi" class="col-2 col-form-label"></label>
+				<div class="col-5">
+					<input asp-for="KullaniciAdi" class="form-control" />
+					<span asp-validation-for="KullaniciAdi" class="text-danger"></span>
+				</div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Sifre" class="col-2 col-form-label"></label>
+                <div class="col-5">
+                    <input asp-for="Sifre" class="form-control" />
+                    <span asp-validation-for="Sifre" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="RolId" class="col-2 col-form-label"></label>
+                <div class="col-5">
+                    <select asp-for="RolId" class="form-control" asp-items="ViewBag.RolId">
+                        <option value="">-- Seçiniz --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+				<label asp-for="AktifMi" class="col-2 col-form-label"></label>
+				<div class="col-5" style="padding-top: 7px;">
+					<input class="form-check-input" asp-for="AktifMi" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="KullaniciDetayi.Cinsiyet" class="col-2 col-form-label"></label>
+                <div class="col-5" style="padding-top: 7px;">
+                    @if (Model.KullaniciDetayi.Cinsiyet == Cinsiyet.Kadın)
+                    {
+                        <input asp-for="KullaniciDetayi.Cinsiyet" type="radio" value="@((int)Cinsiyet.Kadın)" checked/> @Cinsiyet.Kadın
+                    }
+                    else
+                    {
+                        <input asp-for="KullaniciDetayi.Cinsiyet" type="radio" value="@((int)Cinsiyet.Kadın)"/> @Cinsiyet.Kadın
+                    }
+                    &nbsp;
+                    @if (Model.KullaniciDetayi.Cinsiyet == Cinsiyet.Erkek)
+                    {
+                        <input asp-for="KullaniciDetayi.Cinsiyet" type="radio" value="@((int)Cinsiyet.Erkek)" checked/> @Cinsiyet.Erkek
+                    }
+                    else
+                    {
+                        <input asp-for="KullaniciDetayi.Cinsiyet" type="radio" value="@((int)Cinsiyet.Erkek)"/> @Cinsiyet.Erkek
+                    }
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="KullaniciDetayi.Eposta" class="col-2 col-form-label"></label>
+	            <div class="col-5">
+		            <input asp-for="KullaniciDetayi.Eposta" class="form-control" type="email" />
+		            <span asp-validation-for="KullaniciDetayi.Eposta" class="text-danger"></span>
+	            </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="KullaniciDetayi.UlkeId" class="col-2 col-form-label"></label>
+                <div class="col-5">
+                    <select asp-for="KullaniciDetayi.UlkeId" class="form-control" asp-items="ViewBag.UlkeId" id="ulkeler">
+                        <option value="">-- Seçiniz --</option>
+                    </select>
+                    <span asp-validation-for="KullaniciDetayi.UlkeId" class="text-danger" id="ulkelermesaj"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="KullaniciDetayi.SehirId" class="col-2 col-form-label"></label>
+                <div class="col-5">
+                    <select asp-for="KullaniciDetayi.SehirId" class="form-control" id="sehirler" asp-items="ViewBag.SehirId">
+                        <option value="">-- Ülke Seçiniz --</option>
+                    </select>
+                    <span asp-validation-for="KullaniciDetayi.SehirId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="KullaniciDetayi.Adres" class="col-2 col-form-label"></label>
+	            <div class="col-5">
+		            <textarea asp-for="KullaniciDetayi.Adres" class="form-control" rows="3"></textarea>
+		            <span asp-validation-for="KullaniciDetayi.Adres" class="text-danger"></span>
+	            </div>
+            </div>
+            <div class="row mb-3">
+	            <div class="offset-2 col-5">
+		            <input type="submit" value="Kaydet" class="btn btn-primary" />
+		            &nbsp;&nbsp;
+                    <button type="reset" class="btn btn-outline-primary">Temizle</button>
+		            &nbsp;&nbsp;
+		            <a asp-action="Index">Kullanıcı Listesi</a>
+	            </div>
+            </div>
+        }
+    </div>
+</div>

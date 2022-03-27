@@ -150,7 +150,7 @@
                     @Html.DisplayFor(modelItem => item.IsDeleted)
                     </td>*@
 
-                <td>
+                <td style="text-align: right;">
                     @if (User.Identity.IsAuthenticated)
                     {
                         <a asp-action="Details" asp-route-id="@item.Id">Detay</a>

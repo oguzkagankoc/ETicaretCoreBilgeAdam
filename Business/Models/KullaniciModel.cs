@@ -22,7 +22,8 @@ namespace Business.Models
         public bool AktifMi { get; set; }
 
         [DisplayName("Rol")]
-        public int RolId { get; set; }
+        [Required(ErrorMessage = "{0} gereklidir!")]
+        public int? RolId { get; set; }
         #endregion
 
         #region Sayfanın ekstra ihtiyacı olan özellikler
