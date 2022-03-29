@@ -35,7 +35,7 @@ namespace MvcWebUI.Controllers
         //    var eTicaretContext = _context.Urunler.Include(u => u.Kategori);
         //    return View(eTicaretContext.ToList());
         //}
-        [AllowAnonymous] // controller üzerindeki Authorize attribute'unu devre dışı bırakarak herkesin aksiyona ulşamasını sağlar
+        [AllowAnonymous] // controller üzerindeki Authorize attribute'unu devre dışı bırakarak herkesin aksiyona ulşamasını sağlar.
         public IActionResult Index()
         {
             List<UrunModel> model = _urunService.Query().ToList();
