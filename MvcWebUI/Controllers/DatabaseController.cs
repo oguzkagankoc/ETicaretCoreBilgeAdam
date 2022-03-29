@@ -54,14 +54,17 @@ namespace MvcWebUI.Controllers
                 db.Kategoriler.RemoveRange(kategoriEntities);
 
                 // eğer istenirse tablo id'leri 1'den başlatılabilir:
-                // eğer tablolarda veri yoksa id 0'dan başlayabilir, bu durumda bu aksiyon tekrar çalıştırılmalıdır!
-                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretUrunler', RESEED, 0)");
-                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretMagazalar', RESEED, 0)");
-                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretKategoriler', RESEED, 0)");
-                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretKullanicilar', RESEED, 0)");
-                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretSehirler', RESEED, 0)");
-                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretUlkeler', RESEED, 0)");
-                db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretRoller', RESEED, 0)");
+                // eğer tablolarda veri yoksa id 0'dan başlayabilir bu yüzden başlangıç tablosu olan Kategoriler tablosunda veri varsa bu kısmı çalıştırıyoruz!
+                if (kategoriEntities.Count > 0)
+                {
+                    db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretUrunler', RESEED, 0)");
+                    db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretMagazalar', RESEED, 0)");
+                    db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretKategoriler', RESEED, 0)");
+                    db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretKullanicilar', RESEED, 0)");
+                    db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretSehirler', RESEED, 0)");
+                    db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretUlkeler', RESEED, 0)");
+                    db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretRoller', RESEED, 0)");
+                }
 
                 // verilerin eklenmesi:
                 db.Kategoriler.Add(new Kategori()
