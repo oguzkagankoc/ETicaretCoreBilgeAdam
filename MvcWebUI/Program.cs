@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Bölgesel ayarýn tüm uygulama için ayarlanmasý, eðer parametresiz CultureInfo constuctor'ý kullanýlýrsa tr-TR üzerinden ayarlanýr.
 // Önce cultureUtil objesi new'lenir, daha sonra AddCulture methoduyla builder servisleri konfigüre edilir, son olarak da aþaðýda olduðu gibi app.UseRequestLocalization methodu içinde UseCulture methodu çaðrýlýr.
-CultureUtilBase cultureUtil = new CultureUtil(); // Ýngilizce için parametre en-US gönderilmelidir
+CultureUtilBase cultureUtil = new CultureUtil(); // Ýngilizce için parametre en-US gönderilmelidir.
 builder.Services.Configure(cultureUtil.AddCulture());
 
 // Add services to the container.
