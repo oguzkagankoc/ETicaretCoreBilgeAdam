@@ -69,7 +69,7 @@ namespace Business.Services
         {
             var ulkeler = Query().ToList();
             if (ulkeler.Count == 0)
-                return new ErrorResult<List<UlkeModel>>("Ülke bulunamadı.");
+                return new ErrorResult<List<UlkeModel>>("Ülke bulunamadı!");
             return new SuccessResult<List<UlkeModel>>(ulkeler);
         }
     }

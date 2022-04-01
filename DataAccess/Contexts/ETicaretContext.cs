@@ -90,6 +90,22 @@ namespace DataAccess.Contexts
                 .HasForeignKey(sehir => sehir.UlkeId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<UrunSiparis>()
+                .ToTable("ETicaretUrunSiparisler")
+                .HasOne(urunSiparis => urunSiparis.Urun)
+                .WithMany(urun => urun.UrunSiparisler)
+                .HasForeignKey(urunSiparis => urunSiparis.UrunId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UrunSiparis>()
+                .HasOne(urunSiparis => urunSiparis.Siparis)
+                .WithMany(siparis => siparis.UrunSiparisler)
+                .HasForeignKey(urunSiparis => urunSiparis.SiparisId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UrunSiparis>()
+                .HasKey(urunSiparis => new { urunSiparis.UrunId, urunSiparis.SiparisId });
+
             modelBuilder.Entity<Ulke>().ToTable("ETicaretUlkeler");
 
             modelBuilder.Entity<Rol>().ToTable("ETicaretRoller");
