@@ -14,7 +14,7 @@
 <p>
     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
     {
-        <a asp-action="Create">Yeni Ürün</a>
+        <a asp-action="Create"><i class="fas fa-plus"></i> Yeni Ürün</a>
     }
 </p>
 

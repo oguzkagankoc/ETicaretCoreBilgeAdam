@@ -8,21 +8,26 @@
     <title>@AppSettings.Baslik | @ViewData["Title"]</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/main.css" rel="stylesheet" />
 </head>
 <body>
     <div class="wrapper">
         <nav id="sidebar">
-            <div class="sidebar-header">
+
+            @*<div class="sidebar-header">*@
+            <div class="sidebar-header baslik">
 
                 @*<h3>E-Ticaret</h3>*@
-                <h3>@AppSettings.Baslik</h3>
+                <a asp-action="Index" asp-controller="Home" class="a-sidebar"><h5><i class="fas fa-shopping-basket"></i> @AppSettings.Baslik</h5></a>
 
             </div>
             <ul class="list-unstyled components">
                 <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Urunler" class="a-sidebar">Ürünler</a>
+                    <a asp-action="Index" asp-controller="Urunler" class="a-sidebar"><i class="fas fa-clipboard-list"></i> Ürünler</a>
                 </li>
                 @if (User.Identity.IsAuthenticated)
                 {
@@ -40,15 +45,15 @@
                             </li>
                     }
                     <li class="nav-item">
-                        <a asp-action="Index" asp-controller="Kategoriler" class="a-sidebar">Kategoriler</a>
+                        <a asp-action="Index" asp-controller="Kategoriler" class="a-sidebar"><i class="fas fa-clipboard-list"></i> Kategoriler</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-action="Index" asp-controller="Magazalar" class="a-sidebar">Mağazalar</a>
+                        <a asp-action="Index" asp-controller="Magazalar" class="a-sidebar"><i class="fas fa-clipboard-list"></i> Mağazalar</a>
                     </li>
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Kullanicilar" class="a-sidebar">Kullanıcılar</a>
+                            <a asp-action="Index" asp-controller="Kullanicilar" class="a-sidebar"><i class="fas fa-users"></i> Kullanıcılar</a>
                         </li>
                     }
                 }
@@ -58,13 +63,13 @@
                 <ul class="list-unstyled admin">
                     <p>Tanımlar</p>
                     <li class="nav-item">
-                        <a asp-action="Index" asp-controller="Ulkeler" class="a-sidebar">Ülkeler</a>
+                        <a asp-action="Index" asp-controller="Ulkeler" class="a-sidebar"><i class="fas fa-bars"></i> Ülkeler</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-action="Index" asp-controller="Sehirler" class="a-sidebar">Şehirler</a>
+                        <a asp-action="Index" asp-controller="Sehirler" class="a-sidebar"><i class="fas fa-bars"></i> Şehirler</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-action="Index" asp-controller="Roller" class="a-sidebar">Roller</a>
+                        <a asp-action="Index" asp-controller="Roller" class="a-sidebar"><i class="fas fa-bars"></i> Roller</a>
                     </li>
                 </ul>
             }
@@ -86,7 +91,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="a-navbar" href="#"> Ana Sayfa</a>
+
+                            @*<a class="a-navbar" href="#"> Ana Sayfa</a>*@
+
                         </li>
                     </ul>
                     <div class="navbar-text">
@@ -94,21 +101,21 @@
                             @if (!User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item">
-                                    <a class="a-navbar" asp-action="Kayit" asp-controller="Hesaplar"> Kayıt</a>
+                                    <a class="a-navbar" asp-action="Kayit" asp-controller="Hesaplar"><i class="far fa-save"></i> Kayıt</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="a-navbar" asp-action="Giris" asp-controller="Hesaplar"> Giriş</a>
+                                    <a class="a-navbar" asp-action="Giris" asp-controller="Hesaplar"><i class="fas fa-sign-in-alt"></i> Giriş</a>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item">
                                     <div class="div-navbar">
-                                        <span class="s-navbar"> @User.Identity.Name</span>
+                                        <span class="s-navbar"><i class="fas fa-user"></i> @User.Identity.Name</span>
                                     </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="a-navbar" asp-action="Cikis" asp-controller="Hesaplar"> Çıkış</a>
+                                    <a class="a-navbar" asp-action="Cikis" asp-controller="Hesaplar"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
                                 </li>
                             }
                         </ul>
@@ -123,6 +130,9 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/lib/font-awesome/js/all.min.js"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/main.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

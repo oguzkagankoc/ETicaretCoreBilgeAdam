@@ -212,3 +212,7 @@ ul.admin {
     .records-count span {
         font-weight: bold;
     }
+
+div.baslik {
+    padding-top: 25px !important;
+}
