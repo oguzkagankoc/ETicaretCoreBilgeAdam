@@ -36,6 +36,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 #endregion
 
+// Tüm veritabaný projelerinde kullanýlmak üzere AppCore altýnda ConnectionConfig class'ýný ve içerisine ConnectionString özelliðini oluþturuyoruz
+// ve appsettings.json altýndaki ConnectionStrings üzerinden set ediyoruz: 
 ConnectionConfig.ConnectionString = builder.Configuration.GetConnectionString("ETicaretContext");
 
 #region IoC Container : Inversion of Control Container (Baðýmlýlýklarýn Yönetimi) 
@@ -66,10 +68,10 @@ builder.Services.AddScoped<IKullaniciService, KullaniciService>();
 builder.Services.AddScoped<IRolService, RolService>();
 #endregion
 
-// ASP.NET Core'da appsettings.json dosyasýnda kendi tanýmladýðýmýz bölümlerin okunmasý:
+// ASP.NET Core'da appsettings.json dosyasýnda kendi tanýmladýðýmýz bölümlerin (AppSettings ismini verdik) okunmasý:
 //IConfigurationSection section = builder.Configuration.GetSection("AppSettings");
 IConfigurationSection section = builder.Configuration.GetSection(nameof(AppSettings));
-section.Bind(new AppSettings());
+section.Bind(new AppSettings()); // AppSettings class'ýný MVC projemizde Settings klasörü altýnda appsettings.json'daki AppSettings section'ý ile ayný yapýda oluþturuyoruz.
 
 var app = builder.Build();
 

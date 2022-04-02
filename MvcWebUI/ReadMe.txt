@@ -49,4 +49,9 @@ Ders içi proje geliştirme aşamaları:
 4.1) Giris Action -> farklı repository'lere tek bir DbContext enjekte edilmesi, inner join kullanımı, MVC SignIn işlemi, asenkron method kullanımı
 4.2) Cikis Action -> MVC SignOut işlemi
 4.3) YetkisizIslem Action
-4.4) Kayit Action -> service interface'lerine ekstra method tanımı, view'da radio button tag helper ve AJAX kullanımı 
+4.4) Kayit Action -> service interface'lerine ekstra method tanımı, view'da radio button tag helper ve AJAX kullanımı
+5) Program.cs
+5.1) AppCore'daki ConnectionConfig.ConnectionString özelliğinin appsettings.json'dan set edilmesi ve DbContext'ten türeyen context class'ında kullanımı
+5.2) MVC projesindeki Settings klasörü altındaki AppSettings class'ı üzerinden appsettings.json'daki AppSettings section'ı içerisindeki özelliklerin okunması
+6) _Layout.cshtml
+6.1) AppSettings class'ındaki özelliklerin kullanımı ile icon'lar için third party js-css kütüphanesinin (FontAwesome) kullanımı
