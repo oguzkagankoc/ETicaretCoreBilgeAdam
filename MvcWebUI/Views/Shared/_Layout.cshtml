@@ -3,7 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-Ticaret | @ViewData["Title"]</title>
+
+    @*<title>E-Ticaret | @ViewData["Title"]</title>*@
+    <title>@AppSettings.Baslik | @ViewData["Title"]</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/main.css" rel="stylesheet" />
@@ -12,7 +15,10 @@
     <div class="wrapper">
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>E-Ticaret</h3>
+
+                @*<h3>E-Ticaret</h3>*@
+                <h3>@AppSettings.Baslik</h3>
+
             </div>
             <ul class="list-unstyled components">
                 <li class="nav-item">

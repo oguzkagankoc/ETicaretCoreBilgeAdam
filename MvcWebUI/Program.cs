@@ -7,11 +7,13 @@
 //}
 
 // kodlar:
+using AppCore.DataAccess.Configs;
 using AppCore.MvcWebUI.Utils;
 using AppCore.MvcWebUI.Utils.Bases;
 using Business.Services;
 using Business.Services.Bases;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MvcWebUI.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +35,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         config.SlidingExpiration = true;
     });
 #endregion
+
+ConnectionConfig.ConnectionString = builder.Configuration.GetConnectionString("ETicaretContext");
 
 #region IoC Container : Inversion of Control Container (Baðýmlýlýklarýn Yönetimi) 
 // Alternatif olarak Autofac ve Ninject gibi kütüphaneler de kullanýlabilir.
@@ -61,6 +65,11 @@ builder.Services.AddScoped<IHesapService, HesapService>();
 builder.Services.AddScoped<IKullaniciService, KullaniciService>();
 builder.Services.AddScoped<IRolService, RolService>();
 #endregion
+
+// ASP.NET Core'da appsettings.json dosyasýnda kendi tanýmladýðýmýz bölümlerin okunmasý:
+//IConfigurationSection section = builder.Configuration.GetSection("AppSettings");
+IConfigurationSection section = builder.Configuration.GetSection(nameof(AppSettings));
+section.Bind(new AppSettings());
 
 var app = builder.Build();
 

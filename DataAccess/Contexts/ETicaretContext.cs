@@ -1,4 +1,5 @@
-﻿using DataAccess.Entities;
+﻿using AppCore.DataAccess.Configs;
+using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Contexts
@@ -22,9 +23,18 @@ namespace DataAccess.Contexts
             //string connectionString = "server=.;database=BA_ETicaretCore;trusted_connection=true;multipleactiveresultsets=true;";
 
             // SQL Server Authentication
-            string connectionString = "server=.\\SQLEXPRESS;database=BA_ETicaretCore;user id=sa;password=sa;multipleactiveresultsets=true;";
+            //string connectionString = "server=.\\SQLEXPRESS;database=BA_ETicaretCore;user id=sa;password=sa;multipleactiveresultsets=true;";
             //string connectionString = "server=.;database=BA_ETicaretCore;user id=sa;password=123;multipleactiveresultsets=true;";
 
+            // appsettings.json'dan gelen connection string kullanımı:
+            string connectionString;
+            if (string.IsNullOrWhiteSpace(ConnectionConfig.ConnectionString)) // Scaffolding işleminde ConnectionConfig.ConnectionString null geldiğinden kendimiz dev veritabanı bağlantı bilgisini kullanıyoruz
+            {
+                //ConnectionConfig.ConnectionString = "server=.\\SQLEXPRESS;database=BA_ETicaretCore;user id=sa;password=sa;multipleactiveresultsets=true;";
+                ConnectionConfig.ConnectionString = "server=.;database=BA_ETicaretCore;user id=sa;password=123;multipleactiveresultsets=true;";
+            }
+            connectionString = ConnectionConfig.ConnectionString;
+            
             optionsBuilder.UseSqlServer(connectionString);
         }
 
