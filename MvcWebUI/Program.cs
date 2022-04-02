@@ -73,6 +73,7 @@ builder.Services.AddScoped<IUlkeService, UlkeService>();
 builder.Services.AddScoped<IHesapService, HesapService>();
 builder.Services.AddScoped<IKullaniciService, KullaniciService>();
 builder.Services.AddScoped<IRolService, RolService>();
+builder.Services.AddScoped<ISiparisService, SiparisService>();
 #endregion
 
 // ASP.NET Core'da appsettings.json dosyasýnda kendi tanýmladýðýmýz bölümlerin (AppSettings ismini verdik) okunmasý:

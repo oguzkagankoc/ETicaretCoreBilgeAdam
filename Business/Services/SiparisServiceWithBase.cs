@@ -121,8 +121,8 @@ namespace Business.Services
                 return new ErrorResult("Kullanıcı daha önce sipariş vermiştir!");
             Siparis entity = new Siparis()
             {
-                Tarih = model.Tarih,
-                Durum = model.Durum,
+                Tarih = DateTime.Now,
+                Durum = SiparisDurum.Alındı,
                 KullaniciId = model.KullaniciId,
                 UrunSiparisler = model.UrunSiparisler.Select(us => new UrunSiparis()
                 {
@@ -171,33 +171,33 @@ namespace Business.Services
             Repo.Dispose();
         }
 
-        Result<List<SiparisModel>> ISiparisService.SiparisleriGetir(SiparisFilterModel filter = null)
+        Result<List<SiparisModel>> ISiparisService.SiparisleriGetir(SiparisFilterModel filtre = null)
         {
             IQueryable<SiparisModel> query = Query();
             List<SiparisModel> list;
-            if (filter != null)
+            if (filtre != null)
             {
-                if (!string.IsNullOrWhiteSpace(filter.SiparisNo))
-                    query = query.Where(q => q.SiparisNo.ToUpper().Contains(filter.SiparisNo.ToUpper().Trim()));
-                if (!string.IsNullOrWhiteSpace(filter.KullaniciAdi))
-                    query = query.Where(q => q.Kullanici.KullaniciAdi.ToUpper().Contains(filter.KullaniciAdi.ToUpper().Trim()));
-                if (!string.IsNullOrWhiteSpace(filter.TarihBaslangic))
+                if (!string.IsNullOrWhiteSpace(filtre.SiparisNo))
+                    query = query.Where(q => q.SiparisNo.ToUpper().Contains(filtre.SiparisNo.ToUpper().Trim()));
+                if (!string.IsNullOrWhiteSpace(filtre.KullaniciAdi))
+                    query = query.Where(q => q.Kullanici.KullaniciAdi.ToUpper().Contains(filtre.KullaniciAdi.ToUpper().Trim()));
+                if (!string.IsNullOrWhiteSpace(filtre.TarihBaslangic))
                 {
-                    DateTime tarihBaslangic = DateTime.Parse(filter.TarihBaslangic + " 00:00:00");
+                    DateTime tarihBaslangic = DateTime.Parse(filtre.TarihBaslangic + " 00:00:00");
                     query = query.Where(q => q.Tarih >= tarihBaslangic);
                 }
-                if (!string.IsNullOrWhiteSpace(filter.TarihBitis))
+                if (!string.IsNullOrWhiteSpace(filtre.TarihBitis))
                 {
-                    DateTime tarihBitis = DateTime.Parse(filter.TarihBitis + " 23:59:59");
+                    DateTime tarihBitis = DateTime.Parse(filtre.TarihBitis + " 23:59:59");
                     query = query.Where(q => q.Tarih <= tarihBitis);
                 }
-                if (filter.SiparisDurumValues != null && filter.SiparisDurumValues.Count > 0)
-                    query = query.Where(q => filter.SiparisDurumValues.Contains((int) q.Durum));
+                if (filtre.SiparisDurumValues != null && filtre.SiparisDurumValues.Count > 0)
+                    query = query.Where(q => filtre.SiparisDurumValues.Contains((int) q.Durum));
             }
             list = query.ToList();
             if (list.Count == 0)
                 return new ErrorResult<List<SiparisModel>>("Sipariş bulunamadı!");
-            return new SuccessResult<List<SiparisModel>>(list);
+            return new SuccessResult<List<SiparisModel>>(list.Count + " adet sipariş bulundu.", list);
         }
     }
 }

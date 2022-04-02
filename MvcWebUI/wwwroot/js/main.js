@@ -3,14 +3,12 @@
 //    $('#sidebarCollapse').on('click', function (event) {
 //        event.preventDefault();
 //        $('#sidebar').toggleClass('active');
-//        var cssClass = $('#i-collapse').attr('class');
-//        if (cssClass.includes('left')) {
-//            $('#i-collapse').removeClass('fa-chevron-left');
-//            $('#i-collapse').addClass('fa-chevron-right');
+//        var text = $('#s-collapse').text();
+//        if (text === '<') {
+//            $('#s-collapse').text('>');
 //            $('#sidebarCollapse').attr('title', 'Open Menu');
 //        } else {
-//            $('#i-collapse').removeClass('fa-chevron-right');
-//            $('#i-collapse').addClass('fa-chevron-left');
+//            $('#s-collapse').text('<');
 //            $('#sidebarCollapse').attr('title', 'Close Menu');
 //        }
 //    });
@@ -25,14 +23,12 @@ $(document).ready(function () {
         sessionStorage.setItem("sidebar", "1");
     }
     if (sideBar === "1") {
-        $('#i-collapse').removeClass('fa-chevron-right');
-        $('#i-collapse').addClass('fa-chevron-left');
+        $('#s-collapse').text('<');
         $('#sidebarCollapse').attr('title', 'Soldaki Menüyü Kapat');
         $('#sidebar').removeAttr("style");
         $('#sidebar').removeClass("active");
     } else {
-        $('#i-collapse').removeClass('fa-chevron-left');
-        $('#i-collapse').addClass('fa-chevron-right');
+        $('#s-collapse').text('>');
         $('#sidebarCollapse').attr('title', 'Soldaki Menüyü Aç');
         $('#sidebar').css("display", "none");
         $('#sidebar').addClass("active");

@@ -7,7 +7,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create">Yeni Şehir</a>
+    <a asp-action="Create"><i class="fas fa-plus"></i> Yeni Şehir</a>
 </p>
 
 <partial name="_Sonuc" />
@@ -49,8 +49,8 @@ else
                     @Html.DisplayFor(modelItem => item.Ulke.Adi)
                 </td>
                 <td style="text-align: right;">
-                    <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>&nbsp;|&nbsp;
-                    <a href="#" onclick="sehirSil(@item.Id);">Sil</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-lg fa-pen-square"></i> Düzenle</a>&nbsp;|&nbsp;
+                    <a href="#" onclick="sehirSil(@item.Id);"><i class="fas fa-lg fa-trash"></i> Sil</a>
                 </td>
             </tr>
         }

@@ -7,7 +7,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create">Yeni Kullanıcı</a>
+    <a asp-action="Create"><i class="fas fa-plus"></i> Yeni Kullanıcı</a>
 </p>
 
 <partial name="_Sonuc" />
@@ -47,9 +47,9 @@
                     @Html.DisplayFor(modelItem => item.AktifDisplay)
                 </td>
                 <td style="text-align: right;">
-                    <a asp-action="Details" asp-route-id="@item.Id">Detay</a>&nbsp;|&nbsp;
-                    <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>&nbsp;|&nbsp;
-                    <a href="#" onclick="kullaniciSil(@item.Id);">Sil</a>
+                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-lg fa-info-circle"></i> Detay</a>&nbsp;|&nbsp;
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-lg fa-pen-square"></i> Düzenle</a>&nbsp;|&nbsp;
+                    <a href="#" onclick="kullaniciSil(@item.Id);"><i class="fas fa-lg fa-trash"></i> Sil</a>
                 </td>
             </tr>
         }

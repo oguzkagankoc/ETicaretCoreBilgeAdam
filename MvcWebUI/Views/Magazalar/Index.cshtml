@@ -9,7 +9,7 @@
 @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
 {
     <p>
-        <a asp-action="Create">Yeni Mağaza</a>
+        <a asp-action="Create"><i class="fas fa-plus"></i> Yeni Mağaza</a>
     </p>
 }
 
@@ -45,13 +45,13 @@ else
                 <td style="text-align: right;">
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
-                        <a asp-action="Details" asp-route-id="@item.Id">Detay</a>
+                        <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-lg fa-info-circle"></i> Detay</a>
                         @:&nbsp;|&nbsp;
-                        <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-lg fa-pen-square"></i> Düzenle</a>
                         @:&nbsp;|&nbsp;
 
                         @*<a asp-action="Delete" asp-route-id="@item.Id">Sil</a>*@
-                        <a href="#" onclick="magazaSil(@item.Id);">Sil</a>
+                        <a href="#" onclick="magazaSil(@item.Id);"><i class="fas fa-lg fa-trash"></i> Sil</a>
                     }
                 </td>
             </tr>

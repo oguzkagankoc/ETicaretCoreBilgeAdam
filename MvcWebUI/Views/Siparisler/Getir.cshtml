@@ -1,0 +1,193 @@
+﻿@using DataAccess.Enums
+
+@model SiparislerGetirViewModel
+
+@{
+    ViewData["Title"] = "Sipariş Listesi";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<form asp-action="Getir" method="get" autocomplete="off">
+    <div class="row">
+        <div class="col-1">
+            @Html.DisplayNameFor(model => model.Filtre.KullaniciAdi)
+        </div>
+        <div class="col-5">
+            @Html.TextBoxFor(model => model.Filtre.KullaniciAdi, new { @class = "form-control" })
+        </div>
+         <div class="col-1">
+            @Html.DisplayNameFor(model => model.Filtre.SiparisDurumValues)
+        </div>
+        <div class="col-5">
+            @Html.ListBoxFor(model => model.Filtre.SiparisDurumValues, Model.SiparisDurumMultiSelectList, new { @class = "form-control durumlar" })
+        </div>
+    </div>
+    <div class="row row-paddingtop">
+        <div class="col-1">
+            <label asp-for="Filtre.TarihBaslangic"></label>
+        </div>
+        <div class="col-5">
+            <div class="input-group">
+                <input asp-for="Filtre.TarihBaslangic" class="form-control tarih" />
+                <span class="input-group-text">-</span>
+                <input asp-for="Filtre.TarihBitis" class="form-control tarih" />
+            </div>
+        </div>
+        <div class="col-1">
+            <label asp-for="Filtre.SiparisNo"></label>
+        </div>
+        <div class="col-5">
+            <input asp-for="Filtre.SiparisNo" class="form-control" />
+        </div>
+    </div>
+    <div class="row row-paddingtop">
+        <div class="offset-1 col-11">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Ara</button>
+            &nbsp;&nbsp;&nbsp;
+            <a asp-action="Getir" class="btn btn-info"><i class="fas fa-sync"></i> Temizle</a>
+        </div>
+    </div>
+</form>
+
+<br />
+
+<partial name="_Sonuc" />
+
+@if (Model.Siparisler != null && Model.Siparisler.Count > 0)
+{
+    <div style="width: 100%; height: 450px; overflow-y: auto; border-style: solid; border-width: 1px;">
+        <table id="siparisler" class="table" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().SiparisNo)
+                    </th>
+                    <th style="width: 8%;">
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.Urun.BirimFiyatiDisplay)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().TarihDisplay)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().Durum)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().Kullanici.KullaniciAdi)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.Urun.Adi)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.Urun.SonKullanmaTarihiDisplay)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.Urun.KategoriAdiDisplay)
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var siparis in Model.Siparisler)
+                {
+                    <tr class="@siparis.SiparisColor">
+                        <td>
+                            @Html.DisplayFor(model => siparis.SiparisNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => siparis.UrunSiparisJoin.Urun.BirimFiyatiDisplay)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => siparis.TarihDisplay)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => siparis.Durum)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => siparis.Kullanici.KullaniciAdi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => siparis.UrunSiparisJoin.Urun.Adi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => siparis.UrunSiparisJoin.Urun.SonKullanmaTarihiDisplay)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => siparis.UrunSiparisJoin.Urun.KategoriAdiDisplay)
+                        </td>
+                        <td>
+                            @if (siparis.Durum == SiparisDurum.Alındı)
+                            {
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin")) @* alınan siparişleri sadece Admin rolündekiler tamamlayabilir *@
+                                {
+                                    <a asp-action="Tamamla" asp-route-id="@siparis.Id" class="text-success" title="Siparişi Tamamla"><i class="fas fa-lg fa-check-circle"></i></a>
+                                    @:&nbsp;| &nbsp;
+                                }
+                                <a href="#" onclick="siparisiIptalEt(@siparis.Id, '@siparis.SiparisNo');" class="text-danger" title="Siparişi İptal Et"><i class="fas fa-lg fa-times-circle"></i></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="bg-dark" style="width: 100%;">
+        <table id="toplam" class="table" style="width: 100%;">
+            <tr class="text-white">
+                <td style="width: 8%;">
+                    <b>Toplam Fiyat</b>
+                </td>
+                <td>
+                    @{
+                        double toplam = Model.Siparisler.Sum(m => m.UrunSiparisJoin.Urun.BirimFiyati ?? 0);
+                    }
+                    @toplam &#x20BA; @* &#x20BA; TL Simgesi'nin HTML kodudur *@
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+
+@section Scripts
+{
+    <link href="~/lib/AlertifyJS/css/alertify.min.css" rel="stylesheet" />
+    <link href="~/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .row-paddingtop {
+            padding-top: 30px;
+        }
+    </style>
+
+    <script src="~/lib/AlertifyJS/alertify.min.js"></script>
+    <script src="~/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script>
+        function siparisiIptalEt(id, siparisNo) {
+            alertify.confirm("Uyarı!",
+                "Sipariş No \"" + siparisNo + "\" olan siparişi iptal etmek istediğinize emin misiniz?",
+                function () { // OK
+                    window.location.href = "/Siparisler/IptalEt/" + id;
+                },
+                function () { // Cancel
+                    
+                }
+            );
+        }
+        $(function(){
+            $('.tarih').datepicker({
+                todayBtn: "linked",
+                clearBtn: true,
+                orientation: "bottom auto",
+                autoclose: true,
+                todayHighlight: true,
+                language: "tr"
+            });
+            $(".durumlar").select2();
+        });
+    </script>
+}

@@ -10,7 +10,7 @@
 
 @*<p>
     <a asp-action="Create">Yeni Ürün</a>
-    </p>*@
+</p>*@
 <p>
     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
     {
@@ -41,11 +41,11 @@
 
             @*<th>
                 @Html.DisplayNameFor(model => model.Aciklamasi)
-                </th>*@
+            </th>*@
 
             @*<th>
                 @Html.DisplayNameFor(model => model.BirimFiyati)
-                </th>*@
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.BirimFiyatiDisplay)
             </th>
@@ -56,29 +56,29 @@
 
             @*<th>
                 @Html.DisplayNameFor(model => model.SonKullanmaTarihi)
-                </th>*@
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.SonKullanmaTarihiDisplay) (yıl-ay-gün)
             </th>
 
             @*<th>
                 @Html.DisplayNameFor(model => model.Guid)
-                </th>
-                <th>
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CreateDate)
-                </th>
-                <th>
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
-                </th>
-                <th>
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.UpdateDate)
-                </th>
-                <th>
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.UpdatedBy)
-                </th>
-                <th>
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.IsDeleted)
-                </th>*@
+            </th>*@
 
             <th></th>
         </tr>
@@ -89,7 +89,7 @@
             <tr>
                 @*<td>
                     @Html.DisplayFor(modelItem => item.Kategori.Adi)
-                    </td>*@
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.KategoriAdiDisplay)
                 </td>
@@ -100,17 +100,18 @@
 
                 @*<td>
                     @Html.DisplayFor(modelItem => item.Aciklamasi)
-                    </td>*@
+                </td>*@
 
                 @*<td>
                     @Html.DisplayFor(modelItem => item.BirimFiyati)
-                    </td>*@
+                </td>*@
                 @* Birim fiyatın formatlanmamış hali (kullanışsız, okunması zor). *@
 
                 @*<td>
                     @Html.DisplayFor(modelItem => item.BirimFiyati.ToString("C2", new CultureInfo("tr-TR")))
-                    </td>*@
-                @* View'larda minimum C# kodu yazılmalı, olabildiğince model verileri kullanılmalı.
+                </td>*@
+                @* 
+                    View'larda minimum C# kodu yazılmalı, olabildiğince model verileri kullanılmalı.
                     Birim fiyatın formatlanması view'da değil ilgili serviste yapılmalı ve formatlanan özellik (BirimFiyatiDisplay) kullanılmalı.
                 *@
 
@@ -119,55 +120,53 @@
                 </td>
                 @* Birim fiyatın ihtiyacımız olan ilgili servis tarafından formatlanmış hali. *@
 
-
                 <td>
                     @Html.DisplayFor(modelItem => item.StokMiktari)
                 </td>
 
                 @*<td>
                     @Html.DisplayFor(modelItem => item.SonKullanmaTarihi)
-                    </td>*@
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.SonKullanmaTarihiDisplay)
                 </td>
 
                 @*<td>
                     @Html.DisplayFor(modelItem => item.Guid)
-                    </td>
-                    <td>
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.CreateDate)
-                    </td>
-                    <td>
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.CreatedBy)
-                    </td>
-                    <td>
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.UpdateDate)
-                    </td>
-                    <td>
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.UpdatedBy)
-                    </td>
-                    <td>
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.IsDeleted)
-                    </td>*@
+                </td>*@
 
-                @* //todo: icon'lar *@
                 <td style="text-align: right;">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a asp-action="Details" asp-route-id="@item.Id">Detay</a>
+                        <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-lg fa-info-circle"></i> Detay</a>
+                        @* fa-lg icon boyutunu 1.5 kez, fa-2x 2 kat, fa-3x 3 kat vb. büyütmek için kullanılır *@
                         if (User.IsInRole("Admin"))
                         {
-                             @:&nbsp;
+                            @:&nbsp;
                             <text>|&nbsp;</text>
                             @* Razor escape işlemleri için ya @: ya da <text> tag'i kullanılır. *@
 
-                            <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>
-                            @:&nbsp;| &nbsp;
-                            <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-lg fa-pen-square"></i> Düzenle</a>
+                            @:&nbsp;|&nbsp;
+                            <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-lg fa-trash"></i> Sil</a>
                         }
-
-                        <a asp-action="Ekle" asp-controller="Sepet" asp-route-urunId="@item.Id"><i class="fas fa-cart-plus"></i> Sepete Ekle</a>
-
+                        @:&nbsp;
+                        <a asp-action="Ekle" asp-controller="Sepet" asp-route-urunId="@item.Id"><i class="fas fa-lg fa-cart-plus"></i> Sepete Ekle</a>
                         if (item.SepeteEklendiMi)
                         {
                             <partial name="_Sonuc"></partial>
@@ -187,18 +186,18 @@
 @section Scripts
 {
     @* https://datatables.net/ *@
-<link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.min.css" />
-<script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
-<script>
-    //$(document).ready(function() { // içerisindeki kodlar sayfanın yüklenmesi tamamlandıktan sonra çalışır
-    $(function() {
-        $('#urunler').DataTable({
-            language: {
-                // Eğer kullanılan metinsel bir dosyada Türkçe karakter sorunu varsa
-                // dosya Notepad ile açılıp kodlama (encoding) UTF-8'e değiştirilerek kaydedilmelidir.
-                url: "/json/datatablesTurkish.json"
-            }
+    <link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.min.css" />
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script>
+        //$(document).ready(function() { // içerisindeki kodlar sayfanın yüklenmesi tamamlandıktan sonra çalışır
+        $(function() {
+            $('#urunler').DataTable({
+                language: {
+                    // Eğer kullanılan metinsel bir dosyada Türkçe karakter sorunu varsa
+                    // dosya Notepad ile açılıp kodlama (encoding) UTF-8'e değiştirilerek kaydedilmelidir.
+                    url: "/json/datatablesTurkish.json"
+                }
+            });
         });
-    });
-</script>
+    </script>
 }
