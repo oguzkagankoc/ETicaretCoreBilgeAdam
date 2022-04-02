@@ -40,9 +40,22 @@ namespace MvcWebUI.Controllers
             };
             sepet.Add(eleman);
             sepetJson = JsonConvert.SerializeObject(sepet);
+            // Session'da asla kullanıcı bilgileri gibi kritik veriler tutulmamalıdır!
             HttpContext.Session.SetString("sepet", sepetJson);
-            TempData["Sonuc"] = eleman.UrunAdi + " sepete eklendi.";
+            int urunAdedi = sepet.Count(s => s.UrunId == urunId);
+            TempData["Sonuc"] = urunAdedi + " adet " + eleman.UrunAdi + " sepete eklendi.";
             return RedirectToAction("Index", "Urunler", new { sepetUrunId = eleman.UrunId });
+        }
+
+        public IActionResult Getir()
+        {
+            List<SepetElemanModel> sepet = new List<SepetElemanModel>();
+            string sepetJson = HttpContext.Session.GetString("sepet");
+            if (!string.IsNullOrWhiteSpace(sepetJson))
+            {
+                sepet = JsonConvert.DeserializeObject<List<SepetElemanModel>>(sepetJson);
+            }
+            return View(sepet);
         }
     }
 }

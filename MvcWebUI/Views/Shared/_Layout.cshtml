@@ -34,7 +34,7 @@
                 {
                     @if (User.IsInRole("Admin"))
                     {
-                            <li class="nav-item">
+                        <li class="nav-item">
                             @* HTML *@
                             @*<a class="a-navbar" href="/Database/Seed"> Verileri Sıfırla</a>*@
 
@@ -43,7 +43,7 @@
 
                             @* Tag Helper MVC Core *@
                             @*<a asp-action="Seed" asp-controller="Database" class="a-navbar">Verileri Sıfırla</a>*@
-                            </li>
+                        </li>
                     }
                     <li class="nav-item">
                         <a asp-action="Index" asp-controller="Kategoriler" class="a-sidebar"><i class="fas fa-clipboard-list"></i> Kategoriler</a>
@@ -94,6 +94,10 @@
                         <li class="nav-item">
 
                             @*<a class="a-navbar" href="#"> Ana Sayfa</a>*@
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a class="a-navbar" asp-action="Getir" asp-controller="Sepet"><i class="fas fa-shopping-cart"></i> Sepet</a>
+                            }
 
                         </li>
                     </ul>

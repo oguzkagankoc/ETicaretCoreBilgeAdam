@@ -1,0 +1,54 @@
+﻿@model IEnumerable<SepetElemanModel>
+
+@{
+    ViewData["Title"] = "Sepet";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Temizle">Sepeti Temizle</a>
+</p>
+
+@if (Model.Count() == 0)
+{
+    <p class="bg-warning text-black">
+        Kayıt bulunamadı
+    </p>
+}
+else
+{
+    <p class="bg-info text-black">
+        @Model.Count() kayıt bulundu
+    </p>
+}
+
+<table class="table">
+    <thead class="thead-primary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UrunAdi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UrunBirimFiyati)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UrunAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UrunBirimFiyati)
+                </td>
+                <td>
+                    <a asp-action="Sil" asp-route-urunId="@item.UrunId" asp-route-kullaniciId="@item.KullaniciId">Sepetten Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
