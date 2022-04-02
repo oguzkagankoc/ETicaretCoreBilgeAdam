@@ -150,6 +150,7 @@
                     @Html.DisplayFor(modelItem => item.IsDeleted)
                     </td>*@
 
+                @* //todo: icon'lar *@
                 <td style="text-align: right;">
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -163,6 +164,13 @@
                             <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>
                             @:&nbsp;| &nbsp;
                             <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
+                        }
+
+                        <a asp-action="Ekle" asp-controller="Sepet" asp-route-urunId="@item.Id"><i class="fas fa-cart-plus"></i> Sepete Ekle</a>
+
+                        if (item.SepeteEklendiMi)
+                        {
+                            <partial name="_Sonuc"></partial>
                         }
                     }
                 </td>

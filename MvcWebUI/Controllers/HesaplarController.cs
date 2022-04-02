@@ -40,7 +40,8 @@ namespace MvcWebUI.Controllers
                     {
                         new Claim(ClaimTypes.Name, result.Data.KullaniciAdi),
                         new Claim(ClaimTypes.Role, result.Data.RolAdiDisplay),
-                        new Claim(ClaimTypes.Email, result.Data.KullaniciDetayi.Eposta)
+                        new Claim(ClaimTypes.Email, result.Data.KullaniciDetayi.Eposta),
+                        new Claim(ClaimTypes.Sid, result.Data.Id.ToString())
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);

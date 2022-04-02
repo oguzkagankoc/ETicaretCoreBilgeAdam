@@ -55,3 +55,5 @@ Ders içi proje geliştirme aşamaları:
 5.2) MVC projesindeki Settings klasörü altındaki AppSettings class'ı üzerinden appsettings.json'daki AppSettings section'ı içerisindeki özelliklerin okunması
 6) _Layout.cshtml
 6.1) AppSettings class'ındaki özelliklerin kullanımı ile icon'lar için third party js-css kütüphanesinin (FontAwesome) kullanımı
+7) SepetController
+7.1) Ekle Action -> Kullanıcı ID'sinin Hesaplar controller'ındaki Giris aksiyonu üzerinden claim olarak eklenmesi (type Sid olarak) ve bu claim'in kullanımı, Session'a veri atanması, herhangi bir aksiyona route değeri gönderilerek redirect yapılması, _Sonuc partial view'ında set edilen ViewBag.Sonuc veya TempData["Sonuc"] mesajının sonundaki . veya !'e göre mesajın yeşil veya kırmızı renklendirilerek gösterilmesi 

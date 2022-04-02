@@ -46,6 +46,9 @@ namespace Business.Models
 
         [DisplayName("Son Kullanma Tarihi")]
         public string SonKullanmaTarihiDisplay { get; set; }
+
+        // Sepet işlemleri için eklendi
+        public bool SepeteEklendiMi { get; set; } = false;
         #endregion
     }
 }

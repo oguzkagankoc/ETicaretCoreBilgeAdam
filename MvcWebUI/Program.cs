@@ -36,6 +36,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 #endregion
 
+#region Session
+builder.Services.AddSession(config =>
+{
+    config.IdleTimeout = TimeSpan.FromMinutes(40); // default: 20 dakika
+});
+#endregion
+
 // Tüm veritabaný projelerinde kullanýlmak üzere AppCore altýnda ConnectionConfig class'ýný ve içerisine ConnectionString özelliðini oluþturuyoruz
 // ve appsettings.json altýndaki ConnectionStrings üzerinden set ediyoruz: 
 ConnectionConfig.ConnectionString = builder.Configuration.GetConnectionString("ETicaretContext");
@@ -98,6 +105,10 @@ app.UseAuthentication(); // sen kimsin?
 #endregion
 
 app.UseAuthorization(); // sen iþlem için yetkili misin?
+
+#region Session
+app.UseSession();
+#endregion
 
 // Þehirler AJAX iþlemi için route tanýmý 1. yöntem, 2. yöntem SehirlerAjaxController.cs altýndadýr.
 // default dýþýnda tanýmlanan tüm yeni route'lar default route tanýmý üzerine yazýlmalýdýr, sýra önemlidir.

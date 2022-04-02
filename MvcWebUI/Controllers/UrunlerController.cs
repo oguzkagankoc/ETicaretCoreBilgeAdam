@@ -36,10 +36,21 @@ namespace MvcWebUI.Controllers
         //    return View(eTicaretContext.ToList());
         //}
         [AllowAnonymous] // controller üzerindeki Authorize attribute'unu devre dışı bırakarak herkesin aksiyona ulşamasını sağlar.
-        public IActionResult Index()
+        // Sepete ekleme işlemi sonucunda eklenen ürün ID'si üzerinden mesaj gösterilmesi için değiştirildi
+        //public IActionResult Index()
+        //{
+        //    List<UrunModel> model = _urunService.Query().ToList();
+        //    return View(model);
+        //}
+        public IActionResult Index(int? sepetUrunId)
         {
-            List<UrunModel> model = _urunService.Query().ToList();
-            return View(model);
+            List<UrunModel> urunler = _urunService.Query().ToList();
+            if (sepetUrunId.HasValue)
+            {
+                UrunModel urun = urunler.SingleOrDefault(u => u.Id == sepetUrunId.Value);
+                urun.SepeteEklendiMi = true;
+            }
+            return View(urunler);
         }
 
         // GET: Urunler/Details/5
