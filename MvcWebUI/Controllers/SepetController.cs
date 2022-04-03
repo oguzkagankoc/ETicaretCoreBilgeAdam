@@ -62,7 +62,24 @@ namespace MvcWebUI.Controllers
             // session'dan alınan sepetin sisteme giriş yapan kullanıcı Id'sine göre filtrelenmesi:
             sepet = sepet.Where(s => s.KullaniciId == Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Sid).Value)).ToList();
 
-            return View(sepet);
+            List<SepetElemanGroupByModel> sepetGroupBy = (from s in sepet
+                                                              //group s by s.UrunAdi // tek bir özellik gruplanıyorsa kullanılır
+                                                          group s by new { s.UrunId, s.KullaniciId, s.UrunAdi } // birden çok özellik gruplanıyorsa kullanılır
+                                                         into sGroupBy
+                                                          select new SepetElemanGroupByModel()
+                                                          {
+                                                              UrunId = sGroupBy.Key.UrunId,
+                                                              KullaniciId = sGroupBy.Key.KullaniciId,
+                                                              UrunAdi = sGroupBy.Key.UrunAdi,
+                                                              ToplamUrunBirimFiyati = sGroupBy.Sum(sgb => sgb.UrunBirimFiyati),
+                                                              ToplamUrunBirimFiyatiDisplay = sGroupBy.Sum(sgb => sgb.UrunBirimFiyati).ToString("C2"),
+                                                              ToplamUrunAdedi = sGroupBy.Count()
+                                                          }).ToList();
+
+            sepetGroupBy = sepetGroupBy.OrderBy(s => s.UrunAdi).ToList();
+
+            //return View(sepet);
+            return View("GetirGroupBy", sepetGroupBy);
         }
 
         public IActionResult Temizle()

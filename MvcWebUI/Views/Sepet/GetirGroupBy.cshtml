@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SepetElemanModel>
+﻿@model IEnumerable<SepetElemanGroupByModel>
 
 @{
     ViewData["Title"] = "Sepet";
@@ -12,19 +12,6 @@
 
 <partial name="_Sonuc" />
 
-@if (Model.Count() == 0)
-{
-    <p class="bg-warning text-black">
-        Kayıt bulunamadı
-    </p>
-}
-else
-{
-    <p class="bg-info text-black">
-        @Model.Count() kayıt bulundu
-    </p>
-}
-
 <table class="table">
     <thead class="thead-primary">
         <tr>
@@ -32,7 +19,10 @@ else
                 @Html.DisplayNameFor(model => model.UrunAdi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UrunBirimFiyati)
+                @Html.DisplayNameFor(model => model.ToplamUrunBirimFiyatiDisplay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToplamUrunAdedi)
             </th>
             <th></th>
         </tr>
@@ -45,7 +35,10 @@ else
                     @Html.DisplayFor(modelItem => item.UrunAdi)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UrunBirimFiyati)
+                    @Html.DisplayFor(modelItem => item.ToplamUrunBirimFiyatiDisplay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ToplamUrunAdedi) adet
                 </td>
                 <td>
                     <a asp-action="Sil" asp-route-urunId="@item.UrunId" asp-route-kullaniciId="@item.KullaniciId">Sepetten Sil</a>
@@ -56,18 +49,30 @@ else
         @* Toplam fiyat: *@
         <tr>
             <td>
-                <b>Toplam Fiyat</b>
+                <b>Toplam</b>
             </td>
-            <td colspan="2">
+            <td>
                 @{
-                    double toplam = Model.Sum(m => m.UrunBirimFiyati);
+                    double toplam = Model.Sum(m => m.ToplamUrunBirimFiyati);
                 }
 
                 @*@toplam &#x20BA;*@ @* TL HTML kodu *@
                 @toplam.ToString("C2") 
 
             </td>
+            <td colspan="2">
+                @Model.Sum(m => m.ToplamUrunAdedi) adet
+            </td>
         </tr>
+
+        @if (Model.Count() > 0)
+        {
+            <tr>
+                <td colspan="4" style="text-align: right;">
+                    <a asp-action="Ekle" asp-controller="Siparisler" class="btn btn-outline-success"><i class="far fa-credit-card"> Alışverişi Tamamla</a>
+                </td>
+            </tr>
+        }
 
     </tbody>
 </table>
