@@ -213,7 +213,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("KullaniciId");
 
-                    b.ToTable("Siparis");
+                    b.ToTable("ETicaretSiparisler", (string)null);
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Ulke", b =>
@@ -259,6 +259,10 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Guid")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImajDosyaYolu")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("KategoriId")
                         .HasColumnType("int");

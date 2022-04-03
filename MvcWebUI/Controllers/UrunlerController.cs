@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MvcWebUI.Settings;
 
 namespace MvcWebUI.Controllers
 {
@@ -121,7 +122,8 @@ namespace MvcWebUI.Controllers
         //    return View(urun);
         //}
         [Authorize(Roles = "Admin")]
-        public IActionResult Create(UrunModel urun)
+        //public IActionResult Create(UrunModel urun) // form üzerinden gönderilen imaj dosyasını kullanabilmek için değiştirildi (form'daki input type file HTML elemanının name attribute'una dikkat!)
+        public IActionResult Create(UrunModel urun, IFormFile imaj)
         {
             if (ModelState.IsValid)
             {
@@ -135,6 +137,31 @@ namespace MvcWebUI.Controllers
             }
             ViewBag.KategoriId = new SelectList(_kategoriService.Query().ToList(), "Id", "Adi", urun.KategoriId);
             return View(urun);
+        }
+
+        private bool ImajKaydedilecekMi(IFormFile imaj)
+        {
+            bool sonuc = true; // flag
+            string dosyaAdi = null, dosyaUzantisi = null;
+            if (imaj != null && imaj.Length > 0) // imaj verisi varsa
+            {
+                dosyaAdi = imaj.FileName; // asusrog.jpg
+                dosyaUzantisi = Path.GetExtension(dosyaAdi); // .jpg
+                string[] imajDosyaUzantilari = AppSettings.ImajDosyaUzantilari.Split(',');
+                foreach (string imajDosyaUzantisi in imajDosyaUzantilari)
+                {
+                   if (dosyaUzantisi.ToLower() != imajDosyaUzantisi.ToLower().Trim())
+                    {
+                        sonuc = false;
+                        break;
+                    }
+                }
+            }
+            else // imaj verisi yoksa
+            {
+                sonuc = false;
+            }
+            return sonuc;
         }
 
         // GET: Urunler/Edit/5

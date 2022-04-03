@@ -23,6 +23,9 @@ namespace DataAccess.Entities
         public int KategoriId { get; set; }
         public Kategori Kategori { get; set; }
 
+        [StringLength(255)]
+        public string ImajDosyaYolu { get; set; }
+
         public List<UrunMagaza> UrunMagazalar { get; set; }
 
         // UrunSipari ile Urun arasında Many to Many ilişki olduğu için Urun ve Siparis'de List of UrunSiparis, UrunSiparis'de de UrunId (primary key olarak) ve Urun ile SiparisId (primary key olarak) ve Siparis tanımlanmalıdır.

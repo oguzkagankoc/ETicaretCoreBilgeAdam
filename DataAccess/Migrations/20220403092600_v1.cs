@@ -156,6 +156,28 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ETicaretSiparisler",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Tarih = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Durum = table.Column<int>(type: "int", nullable: false),
+                    KullaniciId = table.Column<int>(type: "int", nullable: false),
+                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ETicaretSiparisler", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ETicaretSiparisler_ETicaretKullanicilar_KullaniciId",
+                        column: x => x.KullaniciId,
+                        principalTable: "ETicaretKullanicilar",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ETicaretKullaniciDetaylari",
                 columns: table => new
                 {
@@ -183,6 +205,28 @@ namespace DataAccess.Migrations
                         name: "FK_ETicaretKullaniciDetaylari_ETicaretUlkeler_UlkeId",
                         column: x => x.UlkeId,
                         principalTable: "ETicaretUlkeler",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ETicaretUrunSiparisler",
+                columns: table => new
+                {
+                    UrunId = table.Column<int>(type: "int", nullable: false),
+                    SiparisId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ETicaretUrunSiparisler", x => new { x.UrunId, x.SiparisId });
+                    table.ForeignKey(
+                        name: "FK_ETicaretUrunSiparisler_ETicaretSiparisler_SiparisId",
+                        column: x => x.SiparisId,
+                        principalTable: "ETicaretSiparisler",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ETicaretUrunSiparisler_ETicaretUrunler_UrunId",
+                        column: x => x.UrunId,
+                        principalTable: "ETicaretUrunler",
                         principalColumn: "Id");
                 });
 
@@ -219,6 +263,11 @@ namespace DataAccess.Migrations
                 column: "UlkeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ETicaretSiparisler_KullaniciId",
+                table: "ETicaretSiparisler",
+                column: "KullaniciId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ETicaretUrunler_Adi",
                 table: "ETicaretUrunler",
                 column: "Adi");
@@ -232,6 +281,11 @@ namespace DataAccess.Migrations
                 name: "IX_ETicaretUrunMagazalar_MagazaId",
                 table: "ETicaretUrunMagazalar",
                 column: "MagazaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ETicaretUrunSiparisler_SiparisId",
+                table: "ETicaretUrunSiparisler",
+                column: "SiparisId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -243,7 +297,7 @@ namespace DataAccess.Migrations
                 name: "ETicaretUrunMagazalar");
 
             migrationBuilder.DropTable(
-                name: "ETicaretKullanicilar");
+                name: "ETicaretUrunSiparisler");
 
             migrationBuilder.DropTable(
                 name: "ETicaretSehirler");
@@ -252,16 +306,22 @@ namespace DataAccess.Migrations
                 name: "ETicaretMagazalar");
 
             migrationBuilder.DropTable(
-                name: "ETicaretUrunler");
+                name: "ETicaretSiparisler");
 
             migrationBuilder.DropTable(
-                name: "ETicaretRoller");
+                name: "ETicaretUrunler");
 
             migrationBuilder.DropTable(
                 name: "ETicaretUlkeler");
 
             migrationBuilder.DropTable(
+                name: "ETicaretKullanicilar");
+
+            migrationBuilder.DropTable(
                 name: "ETicaretKategoriler");
+
+            migrationBuilder.DropTable(
+                name: "ETicaretRoller");
         }
     }
 }

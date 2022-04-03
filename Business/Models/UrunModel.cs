@@ -32,12 +32,16 @@ namespace Business.Models
         [DisplayName("Kategori")]
         [Required(ErrorMessage = "{0} gereklidir!")]
         public int? KategoriId { get; set; }
+
+        [StringLength(255)]
+        [DisplayName("İmaj")]
+        public string ImajDosyaYolu { get; set; }
         #endregion
 
         #region Sayfanın ekstra ihtiyacı olan özellikler
         // eğer ürün model üzerinden bir kategorinin adı dışında diğer özellikleri (Id, Aciklamasi, vb.) de kullanılmak isteniyorsa bu şekilde referans tanımlanabilir ve bu referans ilgili serviste new'lenerek set edilebilir.
         //public KategoriModel KategoriDisplay { get; set; } 
-        
+
         [DisplayName("Kategori")]
         public string KategoriAdiDisplay { get; set; }
 

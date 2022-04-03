@@ -120,6 +120,8 @@ namespace DataAccess.Contexts
 
             modelBuilder.Entity<Rol>().ToTable("ETicaretRoller");
 
+            modelBuilder.Entity<Siparis>().ToTable("ETicaretSiparisler");
+
             modelBuilder.Entity<Urun>().HasIndex(urun => urun.Adi);
 
             modelBuilder.Entity<Kullanici>().HasIndex(kullanici => kullanici.KullaniciAdi).IsUnique();

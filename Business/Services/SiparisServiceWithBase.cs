@@ -126,7 +126,7 @@ namespace Business.Services
                 KullaniciId = model.KullaniciId,
                 UrunSiparisler = model.UrunSiparisler.Select(us => new UrunSiparis()
                 {
-                    UrunId = us.UrunId
+                    UrunId = us.UrunId,
                 }).ToList()
             };
             Repo.Add(entity);
