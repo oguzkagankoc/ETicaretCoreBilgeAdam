@@ -27,19 +27,31 @@ namespace MvcWebUI.Controllers
             List<SepetElemanModel> sepet = JsonConvert.DeserializeObject<List<SepetElemanModel>>(sepetJson);
 
             // session'dan alınan sepetin sisteme giriş yapan kullanıcı Id'sine göre filtrelenmesi:
-            sepet = sepet.Where(s => s.KullaniciId == Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Sid).Value)).ToList();
-
-            // session'dan sepetin temizlenmesi:
-            HttpContext.Session.Remove("sepet");
+            List<SepetElemanModel> kullaniciSepeti = sepet.Where(s => s.KullaniciId == Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Sid).Value)).ToList();
 
             SiparisModel siparis = new SiparisModel()
             {
-                KullaniciId = sepet.FirstOrDefault().KullaniciId, // sepetteki tüm elemanlar aynı kullanıcı Id'ye sahip olduğundan ilk elemanın kullanıcı Id'sini kullanıyoruz
-                UrunSiparisler = sepet.Select(s => new UrunSiparisModel()
+                KullaniciId = kullaniciSepeti.FirstOrDefault().KullaniciId, // kullanıcı sepetindeki tüm elemanlar aynı kullanıcı Id'ye sahip olduğundan ilk elemanın kullanıcı Id'sini kullanıyoruz
+                UrunSiparisler = kullaniciSepeti.Select(s => new UrunSiparisModel()
                 {
                     UrunId = s.UrunId
-                }).ToList()
+                }).DistinctBy(us => us.UrunId).ToList()
             };
+            /*
+                UrunSiparis entity'sinde UrunId ve SiparisId primary key olduğundan UrunId ve SiparisId her bir kayıt için birlikte tekil olmalıdır.
+                Burada yeni UrunSiparisModel tipinde ilişkili veriler ekleyeceğimizden siparis'in Id'si ve UrunSiparis entity'sindeki SiparisId 
+                Entity Framework tarafından kayıtlar eklendikten sonra otomatik oluşturulacaktır, bu yüzden set etmeye gerek yoktur.
+                Ancak UrunId session'dan aldığımız SepetElemanModel kolleksiyonunda çoklayabileceği için UrunId üzerinden DistinctBy LINQ methodu ile çoklayanları teke düşürmeliyiz.
+            */
+
+            // session'dan kullanıcıya ait sepetin temizlenmesi:
+            foreach (SepetElemanModel eleman in kullaniciSepeti)
+            {
+                sepet.Remove(eleman);
+            }
+            sepetJson = JsonConvert.SerializeObject(sepet);
+            HttpContext.Session.SetString("sepet", sepetJson);
+
             var result = _siparisService.Add(siparis);
             TempData["Sonuc"] = result.Message;
             return RedirectToAction(nameof(Getir));
@@ -49,7 +61,7 @@ namespace MvcWebUI.Controllers
         {
             var result = _siparisService.SiparisleriGetir(filtre);
             List<SiparisModel> siparisler = result.Data;
-            TempData["Sonuc"] = result.Message;
+            ViewBag.Sonuc = result.Message;
             SiparislerGetirViewModel viewModel = new SiparislerGetirViewModel()
             {
                 Siparisler = siparisler,

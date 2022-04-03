@@ -17,7 +17,7 @@ namespace Business.Services
 
     public class SiparisService : ISiparisService
     {
-        public RepoBase<Siparis, ETicaretContext> Repo { get; set; }// Siparis Repository
+        public RepoBase<Siparis, ETicaretContext> Repo { get; set; } // Siparis Repository
 
         private readonly RepoBase<KullaniciDetayi, ETicaretContext> _kullaniciDetayiRepo;
         private readonly RepoBase<Urun, ETicaretContext> _urunRepo;
@@ -126,7 +126,7 @@ namespace Business.Services
                 KullaniciId = model.KullaniciId,
                 UrunSiparisler = model.UrunSiparisler.Select(us => new UrunSiparis()
                 {
-                    UrunId = us.UrunId,
+                    UrunId = us.UrunId
                 }).ToList()
             };
             Repo.Add(entity);
@@ -155,15 +155,12 @@ namespace Business.Services
         /// <returns></returns>
         public Result Delete(int id)
         {
-            SiparisModel model = new SiparisModel()
-            {
-                Id = id,
-                Durum = SiparisDurum.İptal
-            };
-            var result = Update(model);
-            if (result.IsSuccessful)
-                result.Message = "Sipariş başarıyla iptal edildi.";
-            return result;
+            Siparis entity = Repo.Query(s => s.Id == id).SingleOrDefault();
+            if (entity == null)
+                return new ErrorResult("Sipariş bulunamadı!");
+            entity.Durum = SiparisDurum.İptal;
+            Repo.Update(entity);
+            return new SuccessResult("Sipariş başarıyla iptal edildi.");
         }
 
         public void Dispose()
@@ -197,7 +194,7 @@ namespace Business.Services
             list = query.ToList();
             if (list.Count == 0)
                 return new ErrorResult<List<SiparisModel>>("Sipariş bulunamadı!");
-            return new SuccessResult<List<SiparisModel>>(list.Count + " adet sipariş bulundu.", list);
+            return new SuccessResult<List<SiparisModel>>(list.DistinctBy(l => l.SiparisNo).Count() + " adet sipariş bulundu.", list);
         }
     }
 }

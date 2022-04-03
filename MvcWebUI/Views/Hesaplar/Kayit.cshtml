@@ -27,17 +27,23 @@
             </div>
             <div class="row mb-3">
                 <label asp-for="Sifre" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="Sifre" class="form-control" type="password" />
-					<span asp-validation-for="Sifre" class="text-danger"></span>
-				</div>
+                <div class="col-4">
+                    <input asp-for="Sifre" class="form-control" type="password" id="sifre" />
+                    <span asp-validation-for="Sifre" class="text-danger"></span>
+                </div>
+                <div class="col-1">
+                    <a id="sifregostergizle" href="#" title="Şifre Göster / Gizle"><i class="far fa-eye"></i></a>
+                </div>
             </div>
             <div class="row mb-3">
                 <label asp-for="SifreOnay" class="col-2 col-form-label"></label>
-				<div class="col-5">
-					<input asp-for="SifreOnay" class="form-control" type="password" />
-					<span asp-validation-for="SifreOnay" class="text-danger"></span>
-				</div>
+                <div class="col-4">
+                    <input asp-for="SifreOnay" class="form-control" type="password" id="sifreonay" />
+                    <span asp-validation-for="SifreOnay" class="text-danger"></span>
+                </div>
+                <div class="col-1">
+                    <a id="sifreonaygostergizle" href="#" title="Şifre Onay Göster / Gizle"><i class="far fa-eye"></i></a>
+                </div>
             </div>
             <div class="row mb-3">
                 <label asp-for="KullaniciDetayi.Cinsiyet" class="col-2 col-form-label"></label>
@@ -92,10 +98,10 @@
 
 @section Scripts
 {
-    <script src="/lib/jquery-ajax-unobstrusive/jquery.unobstrusive-ajax.min.js"></script>
+    <script src="/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
 
     <script>
-        $(function(){
+        $(function() {
              // ajax: asynchronous javascript and xml, json: javascript object notification
              $("#ulkeler").off("change"); // daha önce tanımlanmış event'in kaldırılmasını sağlar
              $("#ulkeler").change(function() {
@@ -151,6 +157,26 @@
                         }
                     );
                 }
+             });
+
+             var sifreGoster = false;
+             $(document).on('click', '#sifregostergizle', function(event) {
+                 event.preventDefault();
+                 sifreGoster = !sifreGoster;
+                 if (sifreGoster)
+                     $("#sifre").prop("type", "text");
+                 else
+                     $("#sifre").prop("type", "password");
+             });
+
+             var sifreOnayGoster = false;
+             $(document).on('click', '#sifreonaygostergizle', function(event) {
+                 event.preventDefault();
+                 sifreOnayGoster = !sifreOnayGoster;
+                 if (sifreOnayGoster)
+                     $("#sifreonay").prop("type", "text");
+                 else
+                     $("#sifreonay").prop("type", "password");
              });
         });
     </script>

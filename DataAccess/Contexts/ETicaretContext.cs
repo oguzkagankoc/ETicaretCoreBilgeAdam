@@ -16,6 +16,8 @@ namespace DataAccess.Contexts
         public DbSet<Rol> Roller { get; set; }
         public DbSet<Ulke> Ulkeler { get; set; }
         public DbSet<Sehir> Sehirler { get; set; }
+        public DbSet<Siparis> Siparisler { get; set; }
+        public DbSet<UrunSiparis> UrunSiparisler { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

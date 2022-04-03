@@ -6,10 +6,10 @@
 //        var text = $('#s-collapse').text();
 //        if (text === '<') {
 //            $('#s-collapse').text('>');
-//            $('#sidebarCollapse').attr('title', 'Open Menu');
+//            $('#sidebarCollapse').attr('title', 'Soldaki Menüyü Aç');
 //        } else {
 //            $('#s-collapse').text('<');
-//            $('#sidebarCollapse').attr('title', 'Close Menu');
+//            $('#sidebarCollapse').attr('title', 'Soldaki Menüyü Kapat');
 //        }
 //    });
 //});

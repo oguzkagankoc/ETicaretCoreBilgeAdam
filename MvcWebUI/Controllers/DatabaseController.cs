@@ -18,6 +18,12 @@ namespace MvcWebUI.Controllers
             using (ETicaretContext db = new ETicaretContext())
             {
                 // verilerin silinmesi:
+                var urunSiparisEntities = db.UrunSiparisler.ToList();
+                db.UrunSiparisler.RemoveRange(urunSiparisEntities);
+
+                var siparisEntities = db.Siparisler.ToList();
+                db.Siparisler.RemoveRange(siparisEntities);
+
                 var kullaniciDetayiEntities = db.KullaniciDetaylari.ToList();
                 db.KullaniciDetaylari.RemoveRange(kullaniciDetayiEntities);
 
@@ -64,6 +70,7 @@ namespace MvcWebUI.Controllers
                     db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretSehirler', RESEED, 0)");
                     db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretUlkeler', RESEED, 0)");
                     db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretRoller', RESEED, 0)");
+                    db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ETicaretSiparisler', RESEED, 0)");
                 }
 
                 // verilerin eklenmesi:

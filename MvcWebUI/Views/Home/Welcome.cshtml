@@ -13,7 +13,7 @@
 
     @if (User.Identity.IsAuthenticated)
     {
-        <p>Hoşgeldiniz @User.Identity.Name.</p>
+        <p>Hoşgeldiniz <small>@User.Identity.Name</small>.</p>
     }
     else
     {
