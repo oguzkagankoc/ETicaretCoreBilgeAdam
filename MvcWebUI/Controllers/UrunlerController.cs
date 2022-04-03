@@ -127,39 +127,53 @@ namespace MvcWebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = _urunService.Add(urun);
-                if (result.IsSuccessful)
+                bool? imajKaydedilecekMi = ImajKaydedilecekMi(imaj);
+                if (imajKaydedilecekMi == false) // imaj uzantı ve boyut validasyonlarını geçememiş demektir
                 {
-                    TempData["Success"] = result.Message;
-                    return RedirectToAction(nameof(Index));
+                    ModelState.AddModelError("", $"Yüklenen imaj uzantıları {AppSettings.ImajDosyaUzantilari} uzantılarından biri ve boyutu maksimum {AppSettings.ImajMaksimumDosyaBoyutu} mega byte olmalıdır!");
                 }
-                ModelState.AddModelError("", result.Message);
+                else
+                {
+                    var result = _urunService.Add(urun);
+                    if (result.IsSuccessful)
+                    {
+                        TempData["Success"] = result.Message;
+                        return RedirectToAction(nameof(Index));
+                    }
+                    ModelState.AddModelError("", result.Message);
+                }
             }
             ViewBag.KategoriId = new SelectList(_kategoriService.Query().ToList(), "Id", "Adi", urun.KategoriId);
             return View(urun);
         }
 
-        private bool ImajKaydedilecekMi(IFormFile imaj)
+        private bool? ImajKaydedilecekMi(IFormFile yuklenenImaj)
         {
-            bool sonuc = true; // flag
-            string dosyaAdi = null, dosyaUzantisi = null;
-            if (imaj != null && imaj.Length > 0) // imaj verisi varsa
+            bool? sonuc = null; // flag, sonuc'un null dönmesi demek kullanıcının dosya seçip yüklememesi demek
+            string yuklenenDosyaAdi = null, yuklenenDosyaUzantisi = null;
+            if (yuklenenImaj != null && yuklenenImaj.Length > 0) // yüklenen imaj verisi varsa
             {
-                dosyaAdi = imaj.FileName; // asusrog.jpg
-                dosyaUzantisi = Path.GetExtension(dosyaAdi); // .jpg
+                sonuc = false;
+                yuklenenDosyaAdi = yuklenenImaj.FileName; // asusrog.jpg
+                yuklenenDosyaUzantisi = Path.GetExtension(yuklenenDosyaAdi); // .jpg
                 string[] imajDosyaUzantilari = AppSettings.ImajDosyaUzantilari.Split(',');
                 foreach (string imajDosyaUzantisi in imajDosyaUzantilari)
                 {
-                   if (dosyaUzantisi.ToLower() != imajDosyaUzantisi.ToLower().Trim())
+                    if (yuklenenDosyaUzantisi.ToLower() == imajDosyaUzantisi.ToLower().Trim())
                     {
-                        sonuc = false;
+                        sonuc = true;
                         break;
                     }
                 }
-            }
-            else // imaj verisi yoksa
-            {
-                sonuc = false;
+                if (sonuc == true)
+                {
+                    // 1 byte = 8 bits
+                    // 1 kilobyte = 1024 bytes
+                    // 1 megabyte = 1024 kilobytes = 1024 * 1024 bytes = 1.048.576 bytes
+                    double imajDosyaBoyutu = AppSettings.ImajMaksimumDosyaBoyutu * Math.Pow(1024, 2); // bytes
+                    if (yuklenenImaj.Length > imajDosyaBoyutu)
+                        sonuc = false;
+                }
             }
             return sonuc;
         }
