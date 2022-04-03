@@ -24,13 +24,10 @@ namespace MvcWebUI.Controllers
             UrunModel urun = _urunService.Query().SingleOrDefault(u => u.Id == urunId);
             if (urun == null)
                 return View("Hata", "Ürün bulunamadı!");
-            List<SepetElemanModel> sepet = new List<SepetElemanModel>();
             SepetElemanModel eleman;
-            string sepetJson = HttpContext.Session.GetString("sepet");
-            if (!string.IsNullOrWhiteSpace(sepetJson)) // byte[], int veya string olarak session'da veri kullanılabilir
-            {
-                sepet = JsonConvert.DeserializeObject<List<SepetElemanModel>>(sepetJson);
-            }
+            List<SepetElemanModel> sepet;
+            string sepetJson;
+            sepet = SessiondanSepetiGetir();
             eleman = new SepetElemanModel()
             {
                 UrunId = urunId.Value,
@@ -47,15 +44,65 @@ namespace MvcWebUI.Controllers
             return RedirectToAction("Index", "Urunler", new { sepetUrunId = eleman.UrunId });
         }
 
+        private List<SepetElemanModel> SessiondanSepetiGetir()
+        {
+            List<SepetElemanModel> sepet = new List<SepetElemanModel>();
+            string sepetJson = HttpContext.Session.GetString("sepet");
+            if (!string.IsNullOrWhiteSpace(sepetJson)) // byte[], int veya string olarak session'da veri kullanılabilir
+            {
+                sepet = JsonConvert.DeserializeObject<List<SepetElemanModel>>(sepetJson);
+            }
+            return sepet;
+        }
+
         public IActionResult Getir()
         {
+            List<SepetElemanModel> sepet = SessiondanSepetiGetir();
+
+            // session'dan alınan sepetin sisteme giriş yapan kullanıcı Id'sine göre filtrelenmesi:
+            sepet = sepet.Where(s => s.KullaniciId == Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Sid).Value)).ToList();
+
+            return View(sepet);
+        }
+
+        public IActionResult Temizle()
+        {
+            // kullanıcıdan bağımsız session'daki sepet anahtarına sahip tüm verilerin silinmesi:
+            //HttpContext.Session.Remove("sepet");
+
+            // kullanıcıya ait session'daki sepet anahtarına sahip verilerin silinmesi:
             List<SepetElemanModel> sepet = new List<SepetElemanModel>();
             string sepetJson = HttpContext.Session.GetString("sepet");
             if (!string.IsNullOrWhiteSpace(sepetJson))
             {
                 sepet = JsonConvert.DeserializeObject<List<SepetElemanModel>>(sepetJson);
             }
-            return View(sepet);
+            // session'dan alınan sepetin sisteme giriş yapan kullanıcı Id'sine göre filtrelenmesi:
+            List<SepetElemanModel> kullaniciSepeti = sepet.Where(s => s.KullaniciId == Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Sid).Value)).ToList();
+            foreach (SepetElemanModel eleman in kullaniciSepeti)
+            {
+                sepet.Remove(eleman);
+            }
+            sepetJson = JsonConvert.SerializeObject(sepet);
+            HttpContext.Session.SetString("sepet", sepetJson);
+
+            TempData["Sonuc"] = "Sepet temizlendi.";
+            return RedirectToAction(nameof(Getir));
+        }
+
+        public IActionResult Sil(int? urunId, int? kullaniciId)
+        {
+            if (!urunId.HasValue || !kullaniciId.HasValue)
+                return View("Hata", "Ürün Id ve Kullanıcı Id gereklidir!");
+            List<SepetElemanModel> sepet = SessiondanSepetiGetir();
+            SepetElemanModel eleman = sepet.FirstOrDefault(s => s.UrunId == urunId.Value && s.KullaniciId == kullaniciId.Value);
+            if (eleman != null)
+            {
+                sepet.Remove(eleman);
+                HttpContext.Session.SetString("sepet", JsonConvert.SerializeObject(sepet));
+                TempData["Sonuc"] = "Ürün sepetten silindi.";
+            }
+            return RedirectToAction(nameof(Getir));
         }
     }
 }
