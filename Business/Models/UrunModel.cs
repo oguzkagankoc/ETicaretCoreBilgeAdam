@@ -53,6 +53,12 @@ namespace Business.Models
 
         // Sepet işlemleri için eklendi
         public bool SepeteEklendiMi { get; set; } = false;
+
+        [DisplayName("Mağaza")]
+        public List<int> MagazaIdleri { get; set; }
+
+        [DisplayName("Mağaza")]
+        public List<string> MagazalarDisplay { get; set; }
         #endregion
     }
 }

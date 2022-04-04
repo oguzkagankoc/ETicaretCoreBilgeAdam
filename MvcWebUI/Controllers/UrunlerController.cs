@@ -24,10 +24,14 @@ namespace MvcWebUI.Controllers
         private readonly IUrunService _urunService;
         private readonly IKategoriService _kategoriService;
 
-        public UrunlerController(IUrunService urunService, IKategoriService kategoriService)
+        private readonly IMagazaService _magazaService;
+
+        public UrunlerController(IUrunService urunService, IKategoriService kategoriService, IMagazaService magazaService)
         {
             _urunService = urunService;
             _kategoriService = kategoriService;
+            
+            _magazaService = magazaService;
         }
 
         // GET: Urunler
@@ -95,6 +99,8 @@ namespace MvcWebUI.Controllers
             List<KategoriModel> kategoriler = _kategoriService.Query().ToList();
             ViewBag.KategoriId = new SelectList(kategoriler, "Id", "Adi");
 
+            ViewBag.Magazalar = new MultiSelectList(_magazaService.Query().ToList(), "Id", "Adi");
+
             // model üzerinden bazı ilk verilerin atanması
             //return View();
             UrunModel model = new UrunModel()
@@ -144,6 +150,9 @@ namespace MvcWebUI.Controllers
                 }
             }
             ViewBag.KategoriId = new SelectList(_kategoriService.Query().ToList(), "Id", "Adi", urun.KategoriId);
+
+            ViewBag.Magazalar = new MultiSelectList(_magazaService.Query().ToList(), "Id", "Adi", urun.MagazaIdleri);
+
             return View(urun);
         }
 
@@ -203,6 +212,9 @@ namespace MvcWebUI.Controllers
             if (model == null)
                 return View("Hata", "Kayıt bulunamadı!");
             ViewBag.KategoriId = new SelectList(_kategoriService.Query().ToList(), "Id", "Adi", model.KategoriId);
+
+            ViewBag.Magazalar = new MultiSelectList(_magazaService.Query().ToList(), "Id", "Adi", model.MagazaIdleri);
+
             return View(model);
         }
 
@@ -236,6 +248,9 @@ namespace MvcWebUI.Controllers
                 ModelState.AddModelError("", result.Message);
             }
             ViewBag.KategoriId = new SelectList(_kategoriService.Query().ToList(), "Id", "Adi", model.KategoriId);
+
+            ViewBag.Magazalar = new MultiSelectList(_magazaService.Query().ToList(), "Id", "Adi", model.MagazaIdleri);
+
             return View(model);
         }
 

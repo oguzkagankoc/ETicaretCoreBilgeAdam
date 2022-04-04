@@ -15,11 +15,23 @@ namespace Business.Services
 
     public class UrunService : IUrunService
     {
-        public RepoBase<Urun, ETicaretContext> Repo { get; set; } = new Repo<Urun, ETicaretContext>();
+        public RepoBase<Urun, ETicaretContext> Repo { get; set; }
+
+        private readonly RepoBase<UrunMagaza, ETicaretContext> _urunMagazaRepo;
+        private readonly RepoBase<UrunSiparis, ETicaretContext> _urunSiparisRepo;
+        private readonly ETicaretContext _eTicaretContext;
+
+        public UrunService()
+        {
+            _eTicaretContext = new ETicaretContext();
+            Repo = new Repo<Urun, ETicaretContext>(_eTicaretContext);
+            _urunSiparisRepo = new Repo<UrunSiparis, ETicaretContext>(_eTicaretContext);
+            _urunMagazaRepo = new Repo<UrunMagaza, ETicaretContext>(_eTicaretContext);
+        }
 
         public IQueryable<UrunModel> Query()
         {
-            return Repo.Query("Kategori").OrderBy(u => u.Kategori.Adi).ThenBy(u => u.Adi).Select(u => new UrunModel()
+            return Repo.Query("Kategori", "UrunMagazalar").OrderBy(u => u.Kategori.Adi).ThenBy(u => u.Adi).Select(u => new UrunModel()
             {
                 Id = u.Id,
                 Adi = u.Adi,
@@ -47,7 +59,10 @@ namespace Business.Services
 
                 //SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToString("dd.MM.yyyy") : "" // Türkçe tarih formatı
                 //SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToShortDateString() : "" // Kısa tarih formatı
-                SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToString("yyyy-MM-dd") : "" // SQL tarih formatı, tarihin doğru bir şekilde sıralanması için
+                SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToString("yyyy-MM-dd") : "", // SQL tarih formatı, tarihin doğru bir şekilde sıralanması için
+
+                MagazaIdleri = u.UrunMagazalar.Select(um => um.MagazaId).ToList(),
+                MagazalarDisplay = u.UrunMagazalar.Select(um => um.Magaza.Adi + " (" + (um.Magaza.SanalMi ? "Sanal Mağaza" : "Gerçek Mağaza") + ")").ToList()
             });
         }
 
@@ -62,7 +77,12 @@ namespace Business.Services
                 BirimFiyati = model.BirimFiyati.Value,
                 StokMiktari = model.StokMiktari.Value,
                 SonKullanmaTarihi = model.SonKullanmaTarihi,
-                KategoriId = model.KategoriId.Value
+                KategoriId = model.KategoriId.Value,
+
+                UrunMagazalar = model.MagazaIdleri?.Select(mId => new UrunMagaza()
+                {
+                    MagazaId = mId
+                }).ToList()
             };
             Repo.Add(entity);
             return new SuccessResult("Ürün başarıyla eklendi.");
@@ -72,20 +92,41 @@ namespace Business.Services
         {
             if (Repo.Query().Any(u => u.Adi.ToUpper() == model.Adi.ToUpper().Trim() && u.Id != model.Id))
                 return new ErrorResult("Girdiğiniz ürün adına sahip kayıt bulunmaktadır!");
-            Urun entity = Repo.Query(u => u.Id == model.Id).SingleOrDefault();
+
+            Urun entity = Repo.Query(u => u.Id == model.Id, "UrunMagazalar").SingleOrDefault();
+            
+            // önce eğer ürüne bağlı ilişkili ürün mağaza kayıtları varsa onları siliyoruz
+            foreach (UrunMagaza urunMagazaEntity in entity.UrunMagazalar)
+            {
+                _urunMagazaRepo.Delete(urunMagazaEntity, false);
+            }
+
             entity.Adi = model.Adi.Trim();
             entity.Aciklamasi = model.Aciklamasi?.Trim();
             entity.BirimFiyati = model.BirimFiyati.Value;
             entity.StokMiktari = model.StokMiktari.Value;
             entity.SonKullanmaTarihi = model.SonKullanmaTarihi;
             entity.KategoriId = model.KategoriId.Value;
+
+            // sonra ürün model üzerinden kullanıcının seçtiği mağazalara göre ilişkili ürün mağaza entity'lerini oluşturuyoruz
+            entity.UrunMagazalar = model.MagazaIdleri?.Select(mId => new UrunMagaza()
+            {
+                MagazaId = mId
+            }).ToList();
+
             Repo.Update(entity);
             return new SuccessResult("Ürün başarıyla güncellendi.");
         }
 
         public Result Delete(int id)
         {
-            
+            // önce eğer ürüne bağlı ilişkili sipariş kayıtları varsa onları siliyoruz
+            _urunSiparisRepo.Delete(us => us.UrunId == id, false);
+
+            // önce eğer ürüne bağlı ilişkili ürün mağaza kayıtları varsa onları siliyoruz
+            _urunMagazaRepo.Delete(um => um.UrunId == id, false);
+
+            // sonra ürünü siliyoruz
             Repo.Delete(u => u.Id == id);
             return new SuccessResult("Ürün başarıyla silindi.");
         }

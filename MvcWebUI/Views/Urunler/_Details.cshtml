@@ -102,5 +102,18 @@
         <dd class="col-10">
             @Html.DisplayFor(model => model.IsDeleted)
         </dd>*@
+        
+        @* Ürün mağazaları: *@
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.MagazalarDisplay)
+        </dt>
+        <dd class="col-10">
+            <ol style="padding: 0;">
+                @foreach (string magaza in Model.MagazalarDisplay)
+                {
+                    <li>@magaza</li>
+                }
+            </ol>
+        </dd>
     </dl>
 </div>
