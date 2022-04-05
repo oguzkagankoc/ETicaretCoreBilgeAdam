@@ -30,6 +30,11 @@ namespace Business.Models
         public UrunSiparisModel UrunSiparisJoin { get; set; }
 
         public string SiparisColor { get; set; }
+
+        public double ToplamUrunBirimFiyati { get; set; }
+
+        [DisplayName("Toplam Ürün Birim Fiyatı")]
+        public string ToplamUrunBirimFiyatiDisplay { get; set; }
         #endregion
     }
 }

@@ -16,5 +16,7 @@ namespace DataAccess.Entities
         public int SiparisId { get; set; }
 
         public Siparis Siparis { get; set; }
+
+        public int UrunAdedi { get; set; }
     }
 }

@@ -24,6 +24,14 @@ namespace MvcWebUI.Controllers
             UrunModel urun = _urunService.Query().SingleOrDefault(u => u.Id == urunId);
             if (urun == null)
                 return View("Hata", "Ürün bulunamadı!");
+
+            // eğer stokta ürün varsa sepete eklenebilsin
+            if (urun.StokMiktari == 0)
+            {
+                TempData["Sonuc"] = "Sepete eklenmek istenen ürün stokta bulunmamaktadır!";
+                return RedirectToAction("Index", "Urunler", new { sepetUrunId = urun.Id });
+            }
+
             SepetElemanModel eleman;
             List<SepetElemanModel> sepet;
             string sepetJson;
@@ -36,11 +44,21 @@ namespace MvcWebUI.Controllers
                 UrunBirimFiyati = urun.BirimFiyati ?? 0
             };
             sepet.Add(eleman);
-            sepetJson = JsonConvert.SerializeObject(sepet);
-            // Session'da asla kullanıcı bilgileri gibi kritik veriler tutulmamalıdır!
-            HttpContext.Session.SetString("sepet", sepetJson);
             int urunAdedi = sepet.Count(s => s.UrunId == urunId);
-            TempData["Sonuc"] = urunAdedi + " adet " + eleman.UrunAdi + " sepete eklendi.";
+
+            // eklenen ürünün adedi ürün stok miktarini aşmamalı
+            if (urunAdedi > urun.StokMiktari)
+            {
+                TempData["Sonuc"] = "Sepete eklenen ürün adedi ürün stok miktarından fazladır!";
+            }
+            else
+            {
+                sepetJson = JsonConvert.SerializeObject(sepet);
+                // Session'da asla kullanıcı bilgileri gibi kritik veriler tutulmamalıdır!
+                HttpContext.Session.SetString("sepet", sepetJson);
+                TempData["Sonuc"] = urunAdedi + " adet " + eleman.UrunAdi + " sepete eklendi.";
+            }
+            
             return RedirectToAction("Index", "Urunler", new { sepetUrunId = eleman.UrunId });
         }
 

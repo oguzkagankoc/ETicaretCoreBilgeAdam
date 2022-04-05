@@ -1,4 +1,6 @@
-﻿namespace Business.Models
+﻿using System.ComponentModel;
+
+namespace Business.Models
 {
     public class UrunSiparisModel
     {
@@ -9,5 +11,8 @@
         public int SiparisId { get; set; }
 
         public SiparisModel Siparis { get; set; }
+
+        [DisplayName("Adet")]
+        public int UrunAdedi { get; set; }
     }
 }

@@ -101,8 +101,11 @@ namespace Business.Services
                                     SonKullanmaTarihi = urun.SonKullanmaTarihi,
                                     SonKullanmaTarihiDisplay = urun.SonKullanmaTarihi.HasValue ? urun.SonKullanmaTarihi.Value.ToShortDateString() : "",
                                     KategoriAdiDisplay = kategori.Adi
-                                }
-                            }
+                                },
+                                UrunAdedi = urunSiparis.UrunAdedi
+                            },
+                            ToplamUrunBirimFiyati = urunSiparis.UrunAdedi * urun.BirimFiyati,
+                            ToplamUrunBirimFiyatiDisplay = (urunSiparis.UrunAdedi * urun.BirimFiyati).ToString("C2")
                         };
             query = query.OrderBy(q => q.Kullanici.KullaniciAdi).ThenByDescending(q => q.Tarih).ThenBy(q => q.Durum)
                 .ThenBy(q => q.UrunSiparisJoin.Urun.KategoriAdiDisplay).ThenBy(q => q.UrunSiparisJoin.Urun.Adi);
@@ -124,10 +127,18 @@ namespace Business.Services
                 Tarih = DateTime.Now,
                 Durum = SiparisDurum.Alındı,
                 KullaniciId = model.KullaniciId,
-                UrunSiparisler = model.UrunSiparisler.Select(us => new UrunSiparis()
+                UrunSiparisler = model.UrunSiparisler.DistinctBy(urunSiparisModelDistinct => urunSiparisModelDistinct.UrunId).Select(urunSiparisModelSelect => new UrunSiparis()
                 {
-                    UrunId = us.UrunId
+                    UrunId = urunSiparisModelSelect.UrunId,
+                    UrunAdedi = model.UrunSiparisler.Where(urunSiparisModelWhere => urunSiparisModelWhere.UrunId == urunSiparisModelSelect.UrunId).Count()
                 }).ToList()
+                /*
+                UrunSiparis entity'sinde UrunId ve SiparisId primary key olduğundan UrunId ve SiparisId her bir kayıt için birlikte tekil olmalıdır.
+                Burada yeni UrunSiparisModel tipinde ilişkili veriler ekleyeceğimizden entitylerden Siparis'in Id'si ile UrunSiparis'in SiparisId'si 
+                Entity Framework tarafından kayıtlar eklendikten sonra otomatik oluşturulacaktır, bu yüzden set etmeye gerek yoktur.
+                Ancak UrunId UrunSiparisModel tipindeki kolleksiyonda çoklayabileceği için UrunId üzerinden DistinctBy LINQ methodu ile çoklayanları teke düşürmeliyiz.
+                Ayrıca her bir UrunSiparis entity kaydında kaç adet ürün bulunduğunu UrunSiparisModel tipindeki kolleksiyon üzerinden UrunId'ye göre filtreleyerek set etmeliyiz.
+                */
             };
             Repo.Add(entity);
             return new SuccessResult("Sipariş başarıyla alındı.");
@@ -140,12 +151,33 @@ namespace Business.Services
         /// <returns></returns>
         public Result Update(SiparisModel model)
         {
-            Siparis entity = Repo.Query(s => s.Id == model.Id).SingleOrDefault();
+            Siparis entity = Repo.Query(s => s.Id == model.Id, "UrunSiparisler").SingleOrDefault();
             if (entity == null)
                 return new ErrorResult("Sipariş bulunamadı!");
             entity.Durum = SiparisDurum.Tamamlandı;
             Repo.Update(entity);
+
+            UrunuStoktanDus(entity);
+
             return new SuccessResult("Sipariş başarıyla tamamlandı.");
+        }
+
+        /// <summary>
+        /// Sipariş tamamlandığında sipariş içindeki ürünler stoktan düşülmelidir.
+        /// </summary>
+        /// <param name="siparis"></param>
+        private void UrunuStoktanDus(Siparis siparis)
+        {
+            List<int> urunIdleri = siparis.UrunSiparisler.Select(us => us.UrunId).ToList();
+            List<Urun> urunler = _urunRepo.Query(u => urunIdleri.Contains(u.Id)).ToList();
+            int urunAdedi;
+            foreach (Urun urun in urunler)
+            {
+                urunAdedi = urun.UrunSiparisler.SingleOrDefault(us => us.SiparisId == siparis.Id && us.UrunId == urun.Id).UrunAdedi;
+                urun.StokMiktari -= urunAdedi;
+                _urunRepo.Update(urun, false);
+            }
+            _urunRepo.Save();
         }
 
         /// <summary>

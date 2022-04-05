@@ -57,15 +57,15 @@
 
 @if (Model.Siparisler != null && Model.Siparisler.Count > 0)
 {
-    <div style="width: 100%; height: 450px; overflow-y: auto; border-style: solid; border-width: 1px; border-color: #0275d8;">
+    <div style="width: 100%; height: 400px; overflow-y: auto; border-style: solid; border-width: 1px; border-color: #0275d8;">
         <table id="siparisler" class="table table-hover" style="width: 100%;">
             <thead class="table-primary">
                 <tr>
                     <th style="width: 8%;">
                         @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().SiparisNo)
                     </th>
-                    <th style="width: 8%;">
-                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.Urun.BirimFiyatiDisplay)
+                    <th>
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().Kullanici.KullaniciAdi)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().TarihDisplay)
@@ -74,16 +74,22 @@
                         @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().Durum)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().Kullanici.KullaniciAdi)
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.Urun.KategoriAdiDisplay)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.Urun.Adi)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.Urun.SonKullanmaTarihiDisplay)
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.Urun.BirimFiyatiDisplay)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.Urun.KategoriAdiDisplay)
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.UrunAdedi)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().ToplamUrunBirimFiyatiDisplay)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Siparisler.FirstOrDefault().UrunSiparisJoin.Urun.SonKullanmaTarihiDisplay)
                     </th>
                     <th>
 
@@ -98,7 +104,7 @@
                             @Html.DisplayFor(model => siparis.SiparisNo)
                         </td>
                         <td>
-                            @Html.DisplayFor(model => siparis.UrunSiparisJoin.Urun.BirimFiyatiDisplay)
+                            @Html.DisplayFor(model => siparis.Kullanici.KullaniciAdi)
                         </td>
                         <td>
                             @Html.DisplayFor(model => siparis.TarihDisplay)
@@ -107,16 +113,22 @@
                             @Html.DisplayFor(model => siparis.Durum)
                         </td>
                         <td>
-                            @Html.DisplayFor(model => siparis.Kullanici.KullaniciAdi)
+                            @Html.DisplayFor(model => siparis.UrunSiparisJoin.Urun.KategoriAdiDisplay)
                         </td>
                         <td>
                             @Html.DisplayFor(model => siparis.UrunSiparisJoin.Urun.Adi)
                         </td>
                         <td>
-                            @Html.DisplayFor(model => siparis.UrunSiparisJoin.Urun.SonKullanmaTarihiDisplay)
+                            @Html.DisplayFor(model => siparis.UrunSiparisJoin.Urun.BirimFiyatiDisplay)
                         </td>
                         <td>
-                            @Html.DisplayFor(model => siparis.UrunSiparisJoin.Urun.KategoriAdiDisplay)
+                            @Html.DisplayFor(model => siparis.UrunSiparisJoin.UrunAdedi) adet
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => siparis.ToplamUrunBirimFiyatiDisplay)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => siparis.UrunSiparisJoin.Urun.SonKullanmaTarihiDisplay)
                         </td>
                         <td>
                             @if (siparis.Durum == SiparisDurum.Alındı)
@@ -142,9 +154,24 @@
                 </td>
                 <td>
                     @{
-                        double toplam = Model.Siparisler.Sum(m => m.UrunSiparisJoin.Urun.BirimFiyati ?? 0);
+                        double toplamFiyat = Model.Siparisler.Sum(m => m.ToplamUrunBirimFiyati);
                     }
-                    @toplam &#x20BA; @* &#x20BA; TL Simgesi'nin HTML kodudur *@
+
+                    @*@toplamFiyat &#x20BA;*@ 
+                    @toplamFiyat.ToString("C2")
+                    @* &#x20BA; TL Simgesi'nin HTML kodudur *@
+
+                </td>
+            </tr>
+            <tr class="text-white">
+                <td style="width: 8%;">
+                    <b>Toplam Adet</b>
+                </td>
+                <td>
+                    @{
+                        double toplamAdet = Model.Siparisler.Sum(m => m.UrunSiparisJoin.UrunAdedi);
+                    }
+                    @toplamAdet
                 </td>
             </tr>
         </table>

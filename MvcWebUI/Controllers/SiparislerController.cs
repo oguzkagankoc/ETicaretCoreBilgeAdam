@@ -35,15 +35,9 @@ namespace MvcWebUI.Controllers
                 UrunSiparisler = kullaniciSepeti.Select(s => new UrunSiparisModel()
                 {
                     UrunId = s.UrunId
-                }).DistinctBy(us => us.UrunId).ToList()
+                }).ToList()
             };
-            /*
-                UrunSiparis entity'sinde UrunId ve SiparisId primary key olduğundan UrunId ve SiparisId her bir kayıt için birlikte tekil olmalıdır.
-                Burada yeni UrunSiparisModel tipinde ilişkili veriler ekleyeceğimizden siparis'in Id'si ve UrunSiparis entity'sindeki SiparisId 
-                Entity Framework tarafından kayıtlar eklendikten sonra otomatik oluşturulacaktır, bu yüzden set etmeye gerek yoktur.
-                Ancak UrunId session'dan aldığımız SepetElemanModel kolleksiyonunda çoklayabileceği için UrunId üzerinden DistinctBy LINQ methodu ile çoklayanları teke düşürmeliyiz.
-            */
-
+            
             // session'dan kullanıcıya ait sepetin temizlenmesi:
             foreach (SepetElemanModel eleman in kullaniciSepeti)
             {

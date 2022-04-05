@@ -153,6 +153,18 @@
                 <td style="text-align: right;">
                     @if (User.Identity.IsAuthenticated)
                     {
+                        
+                        if (item.SepeteEklendiMi)
+                        {
+                            <partial name="_Sonuc"></partial>
+                        }
+
+                        if (item.StokMiktari > 0) // eğer stokta ürün varsa sepete eklenebilsin
+                        {
+                            <a asp-action="Ekle" asp-controller="Sepet" asp-route-urunId="@item.Id"><i class="fas fa-lg fa-cart-plus"></i> Sepete Ekle</a>
+                            @:&nbsp;|&nbsp;
+                        }
+
                         <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-lg fa-info-circle"></i> Detay</a>
                         @* fa-lg icon boyutunu 1.5 kez, fa-2x 2 kat, fa-3x 3 kat vb. büyütmek için kullanılır *@
                         if (User.IsInRole("Admin"))
@@ -164,12 +176,6 @@
                             <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-lg fa-pen-square"></i> Düzenle</a>
                             @:&nbsp;|&nbsp;
                             <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-lg fa-trash"></i> Sil</a>
-                        }
-                        @:&nbsp;
-                        <a asp-action="Ekle" asp-controller="Sepet" asp-route-urunId="@item.Id"><i class="fas fa-lg fa-cart-plus"></i> Sepete Ekle</a>
-                        if (item.SepeteEklendiMi)
-                        {
-                            <partial name="_Sonuc"></partial>
                         }
                     }
                 </td>
