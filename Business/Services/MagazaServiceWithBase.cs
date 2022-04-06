@@ -18,14 +18,13 @@ namespace Business.Services
         public RepoBase<Magaza, ETicaretContext> Repo { get; set; }
 
         private readonly RepoBase<UrunMagaza, ETicaretContext> _urunMagazaRepo;
-        private readonly ETicaretContext _eTicaretContext;
 
         public MagazaService()
         {
             // ürün repository ve ürün mağaza repository'nin aynı DbContext üzerinde işlem yapması gerektiğinden ETicaretContext'i iki repository'e de enjekte ediyoruz
-            _eTicaretContext = new ETicaretContext();
-            Repo = new Repo<Magaza, ETicaretContext>(_eTicaretContext);
-            _urunMagazaRepo = new Repo<UrunMagaza, ETicaretContext>(_eTicaretContext);
+            ETicaretContext eTicaretContext = new ETicaretContext();
+            Repo = new Repo<Magaza, ETicaretContext>(eTicaretContext);
+            _urunMagazaRepo = new Repo<UrunMagaza, ETicaretContext>(eTicaretContext);
         }
 
         public IQueryable<MagazaModel> Query()

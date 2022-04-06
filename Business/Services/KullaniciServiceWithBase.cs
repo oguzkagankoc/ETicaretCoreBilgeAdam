@@ -18,7 +18,6 @@ namespace Business.Services
     {
         public RepoBase<Kullanici, ETicaretContext> Repo { get; set; }
 
-        private readonly ETicaretContext _eTicaretContext;
         private readonly RepoBase<KullaniciDetayi, ETicaretContext> _kullaniciDetayiRepo;
         private readonly RepoBase<Rol, ETicaretContext> _rolRepo;
         private readonly RepoBase<Ulke, ETicaretContext> _ulkeRepo;
@@ -27,12 +26,12 @@ namespace Business.Services
         public KullaniciService()
         {
             // Query'de join'de kullanılan tüm repository'ler aynı DbContext'i kullanmalı, bu yüzden ETicaretContext hepsine enjekte edilmeli
-            _eTicaretContext = new ETicaretContext();
-            Repo = new Repo<Kullanici, ETicaretContext>(_eTicaretContext); // Kullanici Repository
-            _kullaniciDetayiRepo = new Repo<KullaniciDetayi, ETicaretContext>(_eTicaretContext);
-            _rolRepo = new Repo<Rol, ETicaretContext>(_eTicaretContext);
-            _ulkeRepo = new Repo<Ulke, ETicaretContext>(_eTicaretContext);
-            _sehirRepo = new Repo<Sehir, ETicaretContext>(_eTicaretContext);
+            ETicaretContext eTicaretContext = new ETicaretContext();
+            Repo = new Repo<Kullanici, ETicaretContext>(eTicaretContext); // Kullanici Repository
+            _kullaniciDetayiRepo = new Repo<KullaniciDetayi, ETicaretContext>(eTicaretContext);
+            _rolRepo = new Repo<Rol, ETicaretContext>(eTicaretContext);
+            _ulkeRepo = new Repo<Ulke, ETicaretContext>(eTicaretContext);
+            _sehirRepo = new Repo<Sehir, ETicaretContext>(eTicaretContext);
         }
 
         public IQueryable<KullaniciModel> Query()
@@ -126,19 +125,24 @@ namespace Business.Services
 
         public Result Delete(int id)
         {
-            var entity = Repo.Query(k => k.Id == id).SingleOrDefault();
+            var entity = Repo.Query(k => k.Id == id, "Siparisler").SingleOrDefault();
+
+            // eğer kullanıcıya bağlı ilişkili sipariş kayıtları varsa kullanıcı kaydını sildirmiyoruz
+            if (entity.Siparisler != null && entity.Siparisler.Count > 0)
+                return new ErrorResult("Silinmek istenen kullanıcıya ait siparişler bulunmaktadır!");
+
+            // önce eğer kullanıcıya bağlı ilişkili kullanıcı detayı kayıtları varsa onları siliyoruz
             _kullaniciDetayiRepo.Delete(kd => kd.KullaniciId == entity.Id, false);
+
+            // sonra kullanıcıyı siliyoruz
             Repo.Delete(entity);
+
             return new SuccessResult();
         }
 
         public void Dispose()
         {
             Repo.Dispose();
-            _kullaniciDetayiRepo.Dispose();
-            _rolRepo.Dispose();
-            _ulkeRepo.Dispose();
-            _sehirRepo.Dispose();
         }
 
         public Result<List<KullaniciModel>> KullanicilariGetir()

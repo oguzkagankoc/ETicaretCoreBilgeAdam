@@ -10,7 +10,7 @@ namespace Business.Services
 {
     public interface IUrunService : IService<UrunModel, Urun, ETicaretContext>
     {
-
+        
     }
 
     public class UrunService : IUrunService
@@ -18,15 +18,12 @@ namespace Business.Services
         public RepoBase<Urun, ETicaretContext> Repo { get; set; }
 
         private readonly RepoBase<UrunMagaza, ETicaretContext> _urunMagazaRepo;
-        private readonly RepoBase<UrunSiparis, ETicaretContext> _urunSiparisRepo;
-        private readonly ETicaretContext _eTicaretContext;
 
         public UrunService()
         {
-            _eTicaretContext = new ETicaretContext();
-            Repo = new Repo<Urun, ETicaretContext>(_eTicaretContext);
-            _urunSiparisRepo = new Repo<UrunSiparis, ETicaretContext>(_eTicaretContext);
-            _urunMagazaRepo = new Repo<UrunMagaza, ETicaretContext>(_eTicaretContext);
+            ETicaretContext eTicaretContext = new ETicaretContext();
+            Repo = new Repo<Urun, ETicaretContext>(eTicaretContext);
+            _urunMagazaRepo = new Repo<UrunMagaza, ETicaretContext>(eTicaretContext);
         }
 
         public IQueryable<UrunModel> Query()
@@ -120,14 +117,16 @@ namespace Business.Services
 
         public Result Delete(int id)
         {
-            // önce eğer ürüne bağlı ilişkili sipariş kayıtları varsa onları siliyoruz
-            _urunSiparisRepo.Delete(us => us.UrunId == id, false);
+            Urun urun = Repo.Query(u => u.Id == id, "UrunSiparisler").SingleOrDefault();
+            if (urun.UrunSiparisler != null && urun.UrunSiparisler.Count > 0)
+                return new ErrorResult("Silinmek istenen ürüne ait siparişler bulunmaktadır!");
 
             // önce eğer ürüne bağlı ilişkili ürün mağaza kayıtları varsa onları siliyoruz
             _urunMagazaRepo.Delete(um => um.UrunId == id, false);
 
             // sonra ürünü siliyoruz
             Repo.Delete(u => u.Id == id);
+
             return new SuccessResult("Ürün başarıyla silindi.");
         }
 

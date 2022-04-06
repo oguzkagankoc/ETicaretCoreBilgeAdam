@@ -27,20 +27,17 @@ namespace Business.Services
         private readonly RepoBase<Kategori, ETicaretContext> _kategoriRepo;
         private readonly RepoBase<UrunSiparis, ETicaretContext> _urunSiparisRepo;
 
-        private readonly ETicaretContext _eTicaretContext;
-
-        public SiparisService()
+        public SiparisService(IUrunService urunService)
         {
-            _eTicaretContext = new ETicaretContext();
-
-            Repo = new Repo<Siparis, ETicaretContext>(_eTicaretContext);
-            _kullaniciDetayiRepo = new Repo<KullaniciDetayi, ETicaretContext>(_eTicaretContext);
-            _urunRepo = new Repo<Urun, ETicaretContext>(_eTicaretContext);
-            _kullaniciRepo = new Repo<Kullanici, ETicaretContext>(_eTicaretContext);
-            _ulkeRepo = new Repo<Ulke, ETicaretContext>(_eTicaretContext);
-            _sehirRepo = new Repo<Sehir, ETicaretContext>(_eTicaretContext);
-            _kategoriRepo = new Repo<Kategori, ETicaretContext>(_eTicaretContext);
-            _urunSiparisRepo = new Repo<UrunSiparis, ETicaretContext>(_eTicaretContext);
+            ETicaretContext eTicaretContext = new ETicaretContext();
+            Repo = new Repo<Siparis, ETicaretContext>(eTicaretContext);
+            _kullaniciDetayiRepo = new Repo<KullaniciDetayi, ETicaretContext>(eTicaretContext);
+            _urunRepo = new Repo<Urun, ETicaretContext>(eTicaretContext);
+            _kullaniciRepo = new Repo<Kullanici, ETicaretContext>(eTicaretContext);
+            _ulkeRepo = new Repo<Ulke, ETicaretContext>(eTicaretContext);
+            _sehirRepo = new Repo<Sehir, ETicaretContext>(eTicaretContext);
+            _kategoriRepo = new Repo<Kategori, ETicaretContext>(eTicaretContext);
+            _urunSiparisRepo = new Repo<UrunSiparis, ETicaretContext>(eTicaretContext);
         }
 
 
