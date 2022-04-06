@@ -23,6 +23,9 @@ namespace Business.Services
         private readonly RepoBase<Ulke, ETicaretContext> _ulkeRepo;
         private readonly RepoBase<Sehir, ETicaretContext> _sehirRepo;
 
+        private readonly RepoBase<Siparis, ETicaretContext> _siparisRepo;
+        private readonly RepoBase<UrunSiparis, ETicaretContext> _urunSiparisRepo;
+
         public KullaniciService()
         {
             // Query'de join'de kullanılan tüm repository'ler aynı DbContext'i kullanmalı, bu yüzden ETicaretContext hepsine enjekte edilmeli
@@ -32,6 +35,9 @@ namespace Business.Services
             _rolRepo = new Repo<Rol, ETicaretContext>(eTicaretContext);
             _ulkeRepo = new Repo<Ulke, ETicaretContext>(eTicaretContext);
             _sehirRepo = new Repo<Sehir, ETicaretContext>(eTicaretContext);
+
+            _siparisRepo = new Repo<Siparis, ETicaretContext>(eTicaretContext);
+            _urunSiparisRepo = new Repo<UrunSiparis, ETicaretContext>(eTicaretContext);
         }
 
         public IQueryable<KullaniciModel> Query()
@@ -127,14 +133,17 @@ namespace Business.Services
         {
             var entity = Repo.Query(k => k.Id == id, "Siparisler").SingleOrDefault();
 
-            // eğer kullanıcıya bağlı ilişkili sipariş kayıtları varsa kullanıcı kaydını sildirmiyoruz
-            if (entity.Siparisler != null && entity.Siparisler.Count > 0)
-                return new ErrorResult("Silinmek istenen kullanıcıya ait siparişler bulunmaktadır!");
-
             // önce eğer kullanıcıya bağlı ilişkili kullanıcı detayı kayıtları varsa onları siliyoruz
             _kullaniciDetayiRepo.Delete(kd => kd.KullaniciId == entity.Id, false);
 
-            // sonra kullanıcıyı siliyoruz
+            // daha sonra eğer kullanıcıya bağlı ilişkili siparişlerin ürün sipariş kayıtları varsa onları siliyoruz
+            List<int> siparisIdleri = entity.Siparisler.Select(s => s.Id).ToList();
+            _urunSiparisRepo.Delete(us => siparisIdleri.Contains(us.SiparisId), false);
+
+            // daha sonra eğer kullanıcıya bağlı ilişkili sipariş kayıtları varsa onları siliyoruz
+            _siparisRepo.Delete(s => siparisIdleri.Contains(s.Id), false);
+
+            // en son kullanıcıyı siliyoruz
             Repo.Delete(entity);
 
             return new SuccessResult();

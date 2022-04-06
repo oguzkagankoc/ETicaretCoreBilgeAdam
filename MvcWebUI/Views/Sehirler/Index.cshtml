@@ -39,20 +39,23 @@ else
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model)
+        @if (Model != null && Model.Count() > 0)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Adi)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ulke.Adi)
-                </td>
-                <td style="text-align: right;">
-                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-lg fa-pen-square"></i> Düzenle</a>&nbsp;|&nbsp;
-                    <a href="#" onclick="sehirSil(@item.Id);"><i class="fas fa-lg fa-trash"></i> Sil</a>
-                </td>
-            </tr>
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Adi)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ulke.Adi)
+                    </td>
+                    <td style="text-align: right;">
+                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-lg fa-pen-square"></i> Düzenle</a>&nbsp;|&nbsp;
+                        <a href="#" onclick="sehirSil(@item.Id);"><i class="fas fa-lg fa-trash"></i> Sil</a>
+                    </td>
+                </tr>
+            }
         }
         </tbody>
     </table>

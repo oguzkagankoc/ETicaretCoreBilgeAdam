@@ -13,6 +13,8 @@ namespace Business.Models.Filters
         [DisplayName("Kullanıcı")]
         public string KullaniciAdi { get; set; }
 
+        public int? KullaniciId { get; set; }
+
         List<SiparisDurumModel> _siparisDurumlar;
         public List<SiparisDurumModel> SiparisDurumlar
         {

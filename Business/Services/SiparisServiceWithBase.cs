@@ -74,6 +74,7 @@ namespace Business.Services
                             TarihDisplay = siparis.Tarih.ToShortDateString(),
                             Durum = siparis.Durum,
                             SiparisColor = siparis.Durum == SiparisDurum.Alındı ? "bg-warning" : (siparis.Durum == SiparisDurum.Tamamlandı ? "bg-success text-white" : "bg-danger text-white"),
+                            KullaniciId = kullanici.Id,
                             Kullanici = new KullaniciModel()
                             {
                                 KullaniciAdi = kullanici.KullaniciAdi,
@@ -219,6 +220,8 @@ namespace Business.Services
                 }
                 if (filtre.SiparisDurumValues != null && filtre.SiparisDurumValues.Count > 0)
                     query = query.Where(q => filtre.SiparisDurumValues.Contains((int) q.Durum));
+                if (filtre.KullaniciId.HasValue)
+                    query = query.Where(q => q.KullaniciId == filtre.KullaniciId.Value);
             }
             list = query.ToList();
             if (list.Count == 0)

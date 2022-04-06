@@ -56,4 +56,9 @@ Ders içi proje geliştirme aşamaları:
 6) _Layout.cshtml
 6.1) AppSettings class'ındaki özelliklerin kullanımı ile icon'lar için third party js-css kütüphanesinin (FontAwesome) kullanımı
 7) SepetController
-7.1) Ekle Action -> Kullanıcı ID'sinin Hesaplar controller'ındaki Giris aksiyonu üzerinden claim olarak eklenmesi (type Sid olarak) ve bu claim'in kullanımı, Session'a veri atanması, herhangi bir aksiyona route değeri gönderilerek redirect yapılması, _Sonuc partial view'ında set edilen ViewBag.Sonuc veya TempData["Sonuc"] mesajının sonundaki . veya !'e göre mesajın yeşil veya kırmızı renklendirilerek gösterilmesi 
+7.1) Ekle Action -> Kullanıcı ID'sinin Hesaplar controller'ındaki Giris aksiyonu üzerinden claim olarak eklenmesi (type Sid olarak) ve bu claim'in kullanımı, JSON serialize - deserialize işlemleri, Session'a JSON string formatında veri atanması, herhangi bir aksiyona route değeri gönderilerek redirect yapılması, _Sonuc partial view'ında set edilen ViewBag.Sonuc veya TempData["Sonuc"] mesajının sonundaki . veya !'e göre mesajın yeşil veya kırmızı renklendirilerek gösterilmesi 
+7.2) Getir Action -> Session'dan JSON string formatında veri alınması, Session'dan alınan verinin sisteme giriş yapmış kullanıcının Id'sine göre filtrelenmesi, bir kolleksiyon üzerinde GroupBy kullanımı, Razor ile view'da sayısal bir özelliğin toplamının hesaplanıp yazdırılması
+7.3) Temizle Action -> Session'dan sisteme giriş yapmış kullanıcının Id'sine göre verilerin silinmesi
+7.4) Sil Action -> Session'dan kullanıcı ve ürün Id'lerine göre verilerin silinmesi
+8) UrunlerController -> Dosya işlemleri eklendi
+8.1) Create Action -> Sunucuya fiziksel olarak dosya yükleme ve veritabanında yüklenen dosya yolunun saklanması işlemi

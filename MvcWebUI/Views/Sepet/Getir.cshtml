@@ -38,7 +38,9 @@ else
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+    @if (Model != null && Model.Count() > 0)
+    {
+        foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -52,22 +54,23 @@ else
                 </td>
             </tr>
         }
+    }
 
-        @* Toplam fiyat: *@
-        <tr>
-            <td>
-                <b>Toplam Fiyat</b>
-            </td>
-            <td colspan="2">
-                @{
-                    double toplam = Model.Sum(m => m.UrunBirimFiyati);
-                }
+    @* Toplam fiyat: *@
+    <tr>
+        <td>
+            <b>Toplam Fiyat</b>
+        </td>
+        <td colspan="2">
+            @{
+                double toplam = Model.Sum(m => m.UrunBirimFiyati);
+            }
 
-                @*@toplam &#x20BA;*@ @* TL HTML kodu *@
-                @toplam.ToString("C2") 
+            @*@toplam &#x20BA;*@ @* TL HTML kodu *@
+            @toplam.ToString("C2")
 
-            </td>
-        </tr>
+        </td>
+    </tr>
 
     </tbody>
 </table>

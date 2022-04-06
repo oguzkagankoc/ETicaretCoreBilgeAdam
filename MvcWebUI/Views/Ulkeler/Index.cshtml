@@ -36,7 +36,9 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+        @if (Model != null && Model.Count() > 0)
+        {
+            foreach (var item in Model)
             {
                 <tr>
                     <td>
@@ -48,6 +50,7 @@ else
                     </td>
                 </tr>
             }
+        }
         </tbody>
     </table>
 </div>

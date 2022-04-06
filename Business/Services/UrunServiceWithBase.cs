@@ -18,12 +18,14 @@ namespace Business.Services
         public RepoBase<Urun, ETicaretContext> Repo { get; set; }
 
         private readonly RepoBase<UrunMagaza, ETicaretContext> _urunMagazaRepo;
+        private readonly RepoBase<UrunSiparis, ETicaretContext> _urunSiparisRepo;
 
         public UrunService()
         {
             ETicaretContext eTicaretContext = new ETicaretContext();
             Repo = new Repo<Urun, ETicaretContext>(eTicaretContext);
             _urunMagazaRepo = new Repo<UrunMagaza, ETicaretContext>(eTicaretContext);
+            _urunSiparisRepo = new Repo<UrunSiparis, ETicaretContext>(eTicaretContext);
         }
 
         public IQueryable<UrunModel> Query()
@@ -117,14 +119,15 @@ namespace Business.Services
 
         public Result Delete(int id)
         {
-            Urun urun = Repo.Query(u => u.Id == id, "UrunSiparisler").SingleOrDefault();
-            if (urun.UrunSiparisler != null && urun.UrunSiparisler.Count > 0)
-                return new ErrorResult("Silinmek istenen ürüne ait siparişler bulunmaktadır!");
+            Urun urun = Repo.Query(u => u.Id == id).SingleOrDefault();
 
-            // önce eğer ürüne bağlı ilişkili ürün mağaza kayıtları varsa onları siliyoruz
+            // önce eğer ürüne bağlı ilişkili sipariş kayıtları varsa onları siliyoruz
+            _urunSiparisRepo.Delete(us => us.UrunId == id, false);
+
+            // daha sonra eğer ürüne bağlı ilişkili ürün mağaza kayıtları varsa onları siliyoruz
             _urunMagazaRepo.Delete(um => um.UrunId == id, false);
 
-            // sonra ürünü siliyoruz
+            // en son ürünü siliyoruz
             Repo.Delete(u => u.Id == id);
 
             return new SuccessResult("Ürün başarıyla silindi.");

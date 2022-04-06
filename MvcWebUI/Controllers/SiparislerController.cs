@@ -53,6 +53,13 @@ namespace MvcWebUI.Controllers
 
         public IActionResult Getir(SiparisFilterModel filtre = null)
         {
+            if (User.IsInRole("Kullanıcı")) // eğer Kullanıcı rolündeyse kullanıcının sadece kendi siparişlerini görebilmesi için yeni bir filtre oluştur ve KullaniciId'yi User'dan ata
+            {
+                if (filtre == null) // filtre null is new'le
+                    filtre = new SiparisFilterModel();
+                filtre.KullaniciId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Sid).Value); 
+            }
+
             var result = _siparisService.SiparisleriGetir(filtre);
             List<SiparisModel> siparisler = result.Data;
             ViewBag.Sonuc = result.Message;
