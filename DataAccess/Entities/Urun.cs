@@ -23,8 +23,8 @@ namespace DataAccess.Entities
         public int KategoriId { get; set; }
         public Kategori Kategori { get; set; }
 
-        [StringLength(255)]
-        public string ImajDosyaYolu { get; set; }
+        [StringLength(75)]
+        public string ImajDosyaAdi { get; set; }
 
         public List<UrunMagaza> UrunMagazalar { get; set; }
 

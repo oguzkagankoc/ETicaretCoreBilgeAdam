@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ETicaretContext))]
-    [Migration("20220405163443_v1")]
+    [Migration("20220409065833_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -310,6 +310,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("SiparisId")
                         .HasColumnType("int")
                         .HasColumnOrder(1);
+
+                    b.Property<int>("UrunAdedi")
+                        .HasColumnType("int");
 
                     b.HasKey("UrunId", "SiparisId");
 

@@ -1,4 +1,5 @@
-﻿using Business.Models;
+﻿using AppCore.Business.Models.Results;
+using Business.Models;
 using Business.Services;
 using Business.Services.Bases;
 using DataAccess.Contexts;
@@ -30,7 +31,7 @@ namespace MvcWebUI.Controllers
         {
             _urunService = urunService;
             _kategoriService = kategoriService;
-            
+
             _magazaService = magazaService;
         }
 
@@ -133,8 +134,8 @@ namespace MvcWebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool? imajKaydedilecekMi = ImajKaydedilecekMi(imaj);
-                if (imajKaydedilecekMi == false) // imaj uzantı ve boyut validasyonlarını geçememiş demektir
+                bool? imajKaydetSonuc = ImajKaydet(imaj);
+                if (imajKaydetSonuc == false) // imaj uzantı ve boyut validasyonlarını geçememiş demektir
                 {
                     ModelState.AddModelError("", $"Yüklenen imaj uzantıları {AppSettings.ImajDosyaUzantilari} uzantılarından biri ve boyutu maksimum {AppSettings.ImajMaksimumDosyaBoyutu} mega byte olmalıdır!");
                 }
@@ -156,13 +157,14 @@ namespace MvcWebUI.Controllers
             return View(urun);
         }
 
-        private bool? ImajKaydedilecekMi(IFormFile yuklenenImaj)
+        private bool? ImajKaydet(IFormFile yuklenenImaj)
         {
+            #region Dosya validasyonu
             bool? sonuc = null; // flag, sonuc'un null dönmesi demek kullanıcının dosya seçip yüklememesi demek
             string yuklenenDosyaAdi = null, yuklenenDosyaUzantisi = null;
             if (yuklenenImaj != null && yuklenenImaj.Length > 0) // yüklenen imaj verisi varsa
             {
-                sonuc = false;
+                sonuc = false; // validasyonu geçemedi ilk değer ataması
                 yuklenenDosyaAdi = yuklenenImaj.FileName; // asusrog.jpg
                 yuklenenDosyaUzantisi = Path.GetExtension(yuklenenDosyaAdi); // .jpg
                 string[] imajDosyaUzantilari = AppSettings.ImajDosyaUzantilari.Split(',');
@@ -170,20 +172,35 @@ namespace MvcWebUI.Controllers
                 {
                     if (yuklenenDosyaUzantisi.ToLower() == imajDosyaUzantisi.ToLower().Trim())
                     {
-                        sonuc = true;
+                        sonuc = true; // imaj uzantısı validasyonunu geçti
                         break;
                     }
                 }
-                if (sonuc == true)
+                if (sonuc == true) // eğer imaj uzantısı validasyonunu geçtiyse imaj boyutunu valide edelim
                 {
                     // 1 byte = 8 bits
                     // 1 kilobyte = 1024 bytes
                     // 1 megabyte = 1024 kilobytes = 1024 * 1024 bytes = 1.048.576 bytes
                     double imajDosyaBoyutu = AppSettings.ImajMaksimumDosyaBoyutu * Math.Pow(1024, 2); // bytes
                     if (yuklenenImaj.Length > imajDosyaBoyutu)
-                        sonuc = false;
+                        sonuc = false; // imaj boyutu validasyonunu geçemedi
                 }
             }
+            #endregion
+
+            #region Dosyanın kaydedilmesi
+            if (sonuc == true)
+            {
+                // Sanal dosya yolu (virtual path): ~/wwwroot/dosyalar/urunler/asusrog.jpg
+                string dosyaYolu = Path.Combine("wwwroot", "dosyalar", "urunler", yuklenenDosyaAdi);
+                // Fiziksel dosya yolu (absolute path): C:\çağıl\ETicaretCoreBilgeAdam\MvcWebUI\wwwroot\dosyalar\urunler\asusrog.jpg
+                
+                using (FileStream fileStream = new FileStream(dosyaYolu, FileMode.Create))
+                {
+                    yuklenenImaj.CopyTo(fileStream);
+                }
+            }
+            #endregion
             return sonuc;
         }
 

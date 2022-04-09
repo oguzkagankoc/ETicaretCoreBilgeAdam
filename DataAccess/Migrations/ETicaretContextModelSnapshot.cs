@@ -260,9 +260,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("Guid")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImajDosyaYolu")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<string>("ImajDosyaAdi")
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<int>("KategoriId")
                         .HasColumnType("int");

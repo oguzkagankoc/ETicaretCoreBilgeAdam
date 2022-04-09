@@ -214,7 +214,8 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     UrunId = table.Column<int>(type: "int", nullable: false),
-                    SiparisId = table.Column<int>(type: "int", nullable: false)
+                    SiparisId = table.Column<int>(type: "int", nullable: false),
+                    UrunAdedi = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
