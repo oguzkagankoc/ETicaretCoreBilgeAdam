@@ -61,7 +61,10 @@ namespace Business.Services
                 SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToString("yyyy-MM-dd") : "", // SQL tarih formatı, tarihin doğru bir şekilde sıralanması için
 
                 MagazaIdleri = u.UrunMagazalar.Select(um => um.MagazaId).ToList(),
-                MagazalarDisplay = u.UrunMagazalar.Select(um => um.Magaza.Adi + " (" + (um.Magaza.SanalMi ? "Sanal Mağaza" : "Gerçek Mağaza") + ")").ToList()
+                MagazalarDisplay = u.UrunMagazalar.Select(um => um.Magaza.Adi + " (" + (um.Magaza.SanalMi ? "Sanal Mağaza" : "Gerçek Mağaza") + ")").ToList(),
+
+                ImajDosyaUzantisi = u.ImajDosyaUzantisi,
+                ImajDosyaAdiDisplay = u.Id + u.ImajDosyaUzantisi
             });
         }
 
@@ -117,6 +120,8 @@ namespace Business.Services
             {
                 MagazaId = mId
             }).ToList();
+
+            entity.ImajDosyaUzantisi = model.ImajDosyaUzantisi;
 
             Repo.Update(entity);
             return new SuccessResult("Ürün başarıyla güncellendi.");

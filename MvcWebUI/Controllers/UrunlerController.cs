@@ -135,7 +135,7 @@ namespace MvcWebUI.Controllers
             if (ModelState.IsValid)
             {
                 // İmaj dosya adları olarak ürünün Id'si ile yüklenen imajın dosya uzantısını kullanacağımızdan Id veritabanında ekleme işlemi sonucunda otomatik oluşacaktır, ancak dosya uzantısını servise göndermek ve dolayısıyla da tabloya kaydetmek zorundayız.
-                urun.ImajDosyaUzantisi = imaj != null && imaj.Length > 0 ? Path.GetExtension(imaj.FileName) : null;
+                urun.ImajDosyaUzantisi = imaj != null && imaj.Length > 0 ? Path.GetExtension(imaj.FileName) : null; // kullanıcının yeni yüklediği dosyanın uzantısı
 
                 var result = _urunService.Add(urun);
                 if (result.IsSuccessful)
@@ -157,7 +157,7 @@ namespace MvcWebUI.Controllers
             return View(urun);
         }
 
-        private bool? ImajKaydet(IFormFile yuklenenImaj, int urunId, bool uzerineYazilsinMi = false)
+        private bool? ImajKaydet(IFormFile yuklenenImaj, int urunId, string eskiImajDosyaUzantisi = null, bool uzerineYazilsinMi = false)
         {
             #region Dosya validasyonu
             bool? sonuc = null; // flag, sonuc'un null dönmesi demek kullanıcının dosya seçip yüklememesi demek
@@ -199,6 +199,18 @@ namespace MvcWebUI.Controllers
                 using (FileStream fileStream = new FileStream(dosyaYolu, uzerineYazilsinMi ? FileMode.Create : FileMode.CreateNew)) // CreateNew: eğer aynı isimde dosya varsa hata verir, Create ise üzerine yazar
                 {
                     yuklenenImaj.CopyTo(fileStream);
+                }
+            }
+            #endregion
+
+            #region Eğer varsa aynı ad ve farklı uzantıya sahip dosyanın silinmesi
+            if (sonuc == true)
+            {
+                if (!string.IsNullOrWhiteSpace(eskiImajDosyaUzantisi) && eskiImajDosyaUzantisi != yuklenenDosyaUzantisi)
+                {
+                    string dosyaYolu = Path.Combine("wwwroot", "dosyalar", "urunler", urunId + eskiImajDosyaUzantisi);
+                    if (System.IO.File.Exists(dosyaYolu))
+                        System.IO.File.Delete(dosyaYolu);
                 }
             }
             #endregion
@@ -253,13 +265,22 @@ namespace MvcWebUI.Controllers
         //    return View(urun);
         //}
         [Authorize(Roles = "Admin")]
-        public IActionResult Edit(UrunModel model)
+        //public IActionResult Edit(UrunModel model) // form üzerinden gönderilen imaj dosyasını kullanabilmek için değiştirildi (form'daki input type file HTML elemanının name attribute'una dikkat!)
+        public IActionResult Edit(UrunModel model, IFormFile imaj)
         {
             if (ModelState.IsValid)
             {
+                string eskiImajDosyaUzantisi = string.IsNullOrWhiteSpace(model.ImajDosyaAdiDisplay) ? null : Path.GetExtension(model.ImajDosyaAdiDisplay); // view'da gizli olarak tuttuğumuz (ImajDosyaAdiDisplay) kullanıcının daha önce yüklemiş olduğu dosyanın uzantısı
+                model.ImajDosyaUzantisi = imaj != null && imaj.Length > 0 ? Path.GetExtension(imaj.FileName) : eskiImajDosyaUzantisi; // kullanıcının yeni yüklediği dosyanın uzantısı
+                
                 var result = _urunService.Update(model);
                 if (result.IsSuccessful)
                 {
+                    bool? imajKaydetSonuc = ImajKaydet(imaj, model.Id, eskiImajDosyaUzantisi, true);
+                    if (imajKaydetSonuc == false) // imaj uzantı ve boyut validasyonlarını geçememiş demektir
+                    {
+                        result.Message += $" İmaj yüklenemedi! Yüklenen imaj uzantıları {AppSettings.ImajDosyaUzantilari} uzantılarından biri ve boyutu maksimum {AppSettings.ImajMaksimumDosyaBoyutu} mega byte olmalıdır!";
+                    }
                     TempData["Success"] = result.Message;
                     return RedirectToAction(nameof(Index));
                 }
