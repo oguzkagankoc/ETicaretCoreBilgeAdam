@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ETicaretContext))]
-    [Migration("20220409113524_v1")]
+    [Migration("20220409232500_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,6 +135,13 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Guid")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Imaj")
+                        .HasColumnType("image");
+
+                    b.Property<string>("ImajDosyaUzantisi")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<bool>("SanalMi")
                         .HasColumnType("bit");

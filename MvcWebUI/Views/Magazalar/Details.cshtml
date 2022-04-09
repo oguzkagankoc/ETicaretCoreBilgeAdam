@@ -22,6 +22,17 @@
         <dd class="col-10">
             @Html.DisplayFor(model => model.SanalMiDisplay)
         </dd>
+
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.ImajSrcDisplay)
+        </dt>
+        <dd class="col-3">
+            @if (!string.IsNullOrWhiteSpace(Model.ImajSrcDisplay))
+            {
+                <img src="@Model.ImajSrcDisplay" class="img-fluid "/>
+            }
+        </dd>
+
     </dl>
 </div>
 <div>

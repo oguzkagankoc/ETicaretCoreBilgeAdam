@@ -60,5 +60,10 @@ Ders içi proje geliştirme aşamaları:
 7.2) Getir Action -> Session'dan JSON string formatında veri alınması, Session'dan alınan verinin sisteme giriş yapmış kullanıcının Id'sine göre filtrelenmesi, bir kolleksiyon üzerinde GroupBy kullanımı, Razor ile view'da sayısal bir özelliğin toplamının hesaplanıp yazdırılması
 7.3) Temizle Action -> Session'dan sisteme giriş yapmış kullanıcının Id'sine göre verilerin silinmesi
 7.4) Sil Action -> Session'dan kullanıcı ve ürün Id'lerine göre verilerin silinmesi
-8) UrunlerController -> Dosya işlemleri eklendi
-8.1) Create Action -> Sunucuya fiziksel olarak dosya yükleme ve veritabanında yüklenen dosya yolunun saklanması işlemi
+8) UrunlerController -> Dosya yükleme işlemleri eklendi
+8.1) Create Action -> Sunucuya fiziksel olarak dosya yükleme ve veritabanında yüklenen dosya uzantısının saklanarak dosya adının Id.DosyaUzantısı şeklinde kullanılması işlemi
+8.2) Edit Action -> Sunucuya fiziksel olarak dosya yükleme, duruma göre dosya silme ve veritabanında yüklenen dosya uzantısının saklanarak dosya adının Id.DosyaUzantısı şeklinde kullanılması işlemi
+8.3) Delete Action -> Sunucudan fiziksel olarak dosya silme işlemi
+8.4) DeleteImage Action -> Sunucudan fiziksel olarak dosya silme ve veritabanında ilgili dosya uzantısının null olarak güncellenmesi işlemi
+8.5) Details Action -> Sunucudaki fiziksel olarak yüklenmiş dosyanın Id.DosyaUzantısı şeklinde kullanıması
+8.6) Index Action -> Sunucudaki fiziksel olarak yüklenmiş dosyanın Id.DosyaUzantısı şeklinde kullanıması

@@ -9,7 +9,7 @@
 <hr />
 <div class="row">
     <div class="col-12">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
 		@Html.AntiForgeryToken()
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="row mb-3">
@@ -19,13 +19,21 @@
 					<span asp-validation-for="Adi" class="text-danger"></span>
 				</div>
             </div>
-            <div class="row mb-3">
-				<label asp-for="SanalMi" class="col-2 col-form-label"></label>
-				<div class="col-5" style="padding-top: 7px;">
-					<input class="form-check-input" asp-for="SanalMi" />
-                </div>
+        <div class="row mb-3">
+            <label asp-for="SanalMi" class="col-2 col-form-label"></label>
+            <div class="col-5" style="padding-top: 7px;">
+                <input class="form-check-input" asp-for="SanalMi" />
             </div>
-            <div class="row mb-3">
+        </div>
+        
+        <div class="row mb-3">
+            <label asp-for="Imaj" class="col-2 col-form-label"></label>
+            <div class="col-5">
+                <input type="file" class="form-control" name="imaj" accept="@AppSettings.ImajDosyaUzantilari" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
 				<div class="offset-2 col-5">
 					<input type="submit" value="Kaydet" class="btn btn-primary" />
 					&nbsp;&nbsp;

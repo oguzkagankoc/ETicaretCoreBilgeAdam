@@ -32,6 +32,8 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Adi = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     SanalMi = table.Column<bool>(type: "bit", nullable: false),
+                    Imaj = table.Column<byte[]>(type: "image", nullable: true),
+                    ImajDosyaUzantisi = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
                     Guid = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>

@@ -134,6 +134,13 @@ namespace DataAccess.Migrations
                     b.Property<string>("Guid")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Imaj")
+                        .HasColumnType("image");
+
+                    b.Property<string>("ImajDosyaUzantisi")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
                     b.Property<bool>("SanalMi")
                         .HasColumnType("bit");
 

@@ -34,7 +34,11 @@ namespace Business.Services
                 Id = m.Id,
                 Adi = m.Adi,
                 SanalMi = m.SanalMi,
-                SanalMiDisplay = m.SanalMi ? "Evet" : "Hayır"
+                SanalMiDisplay = m.SanalMi ? "Evet" : "Hayır",
+
+                Imaj = m.Imaj,
+                ImajSrcDisplay = m.Imaj != null ? (m.ImajDosyaUzantisi == ".jpg" || m.ImajDosyaUzantisi == ".jpeg" ? "data:image/jpeg;base64," : "data:image/png;base64,") + Convert.ToBase64String(m.Imaj) : null,
+                ImajDosyaUzantisi = m.ImajDosyaUzantisi
             });
         }
 
@@ -45,7 +49,10 @@ namespace Business.Services
             Magaza entity = new Magaza()
             {
                 Adi = model.Adi.Trim(),
-                SanalMi = model.SanalMi
+                SanalMi = model.SanalMi,
+
+                Imaj = model.Imaj,
+                ImajDosyaUzantisi = model.ImajDosyaUzantisi?.ToLower()
             };
             Repo.Add(entity);
             return new SuccessResult();
@@ -58,6 +65,10 @@ namespace Business.Services
             Magaza entity = Repo.Query(m => m.Id == model.Id).SingleOrDefault();
             entity.Adi = model.Adi.Trim();
             entity.SanalMi = model.SanalMi;
+
+            entity.Imaj = model.Imaj;
+            entity.ImajDosyaUzantisi = model.ImajDosyaUzantisi?.ToLower();
+
             Repo.Update(entity);
             return new SuccessResult();
         }

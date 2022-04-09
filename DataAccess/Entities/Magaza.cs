@@ -1,5 +1,6 @@
 ﻿using AppCore.Records.Bases;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Entities
 {
@@ -10,6 +11,12 @@ namespace DataAccess.Entities
         public string Adi { get; set; }
 
         public bool SanalMi { get; set; }
+
+        [Column(TypeName="image")]
+        public byte[] Imaj { get; set; }
+
+        [StringLength(5)]
+        public string ImajDosyaUzantisi { get; set; }
 
         public List<UrunMagaza> UrunMagazalar { get; set; }
     }

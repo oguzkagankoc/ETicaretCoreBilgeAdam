@@ -29,9 +29,14 @@ else
 <table class="table">
     <thead>
         <tr>
-            <th style="width:70%;">
+            <th style="width:60%;">
                 @Html.DisplayNameFor(model => model.Adi)
             </th>
+            
+            <th style="width:10%;">
+                @Html.DisplayNameFor(model => model.ImajSrcDisplay)
+            </th>
+
             <th></th>
         </tr>
     </thead>
@@ -44,6 +49,14 @@ else
                 <td>
                     @Html.DisplayFor(modelItem => item.Adi)
                 </td>
+                
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(item.ImajSrcDisplay))
+                    {
+                        <img src="@item.ImajSrcDisplay" class="img-thumbnail "/>
+                    }
+                </td>
+
                 <td style="text-align: right;">
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
