@@ -33,9 +33,8 @@ namespace Business.Models
         [Required(ErrorMessage = "{0} gereklidir!")]
         public int? KategoriId { get; set; }
 
-        [StringLength(255)]
-        [DisplayName("İmaj")]
-        public string ImajDosyaYolu { get; set; }
+        [StringLength(5)]
+        public string ImajDosyaUzantisi { get; set; }
         #endregion
 
         #region Sayfanın ekstra ihtiyacı olan özellikler
@@ -59,6 +58,9 @@ namespace Business.Models
 
         [DisplayName("Mağaza")]
         public List<string> MagazalarDisplay { get; set; }
+
+        [DisplayName("İmaj")]
+        public string ImajDosyaAdiDisplay { get; set; }
         #endregion
     }
 }

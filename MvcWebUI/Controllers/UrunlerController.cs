@@ -134,21 +134,21 @@ namespace MvcWebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool? imajKaydetSonuc = ImajKaydet(imaj);
-                if (imajKaydetSonuc == false) // imaj uzantı ve boyut validasyonlarını geçememiş demektir
+                // İmaj dosya adları olarak ürünün Id'si ile yüklenen imajın dosya uzantısını kullanacağımızdan Id veritabanında ekleme işlemi sonucunda otomatik oluşacaktır, ancak dosya uzantısını servise göndermek ve dolayısıyla da tabloya kaydetmek zorundayız.
+                urun.ImajDosyaUzantisi = imaj != null && imaj.Length > 0 ? Path.GetExtension(imaj.FileName) : null;
+
+                var result = _urunService.Add(urun);
+                if (result.IsSuccessful)
                 {
-                    ModelState.AddModelError("", $"Yüklenen imaj uzantıları {AppSettings.ImajDosyaUzantilari} uzantılarından biri ve boyutu maksimum {AppSettings.ImajMaksimumDosyaBoyutu} mega byte olmalıdır!");
-                }
-                else
-                {
-                    var result = _urunService.Add(urun);
-                    if (result.IsSuccessful)
+                    bool? imajKaydetSonuc = ImajKaydet(imaj, urun.Id);
+                    if (imajKaydetSonuc == false) // imaj uzantı ve boyut validasyonlarını geçememiş demektir
                     {
-                        TempData["Success"] = result.Message;
-                        return RedirectToAction(nameof(Index));
+                         result.Message += $" İmaj yüklenemedi! Yüklenen imaj uzantıları {AppSettings.ImajDosyaUzantilari} uzantılarından biri ve boyutu maksimum {AppSettings.ImajMaksimumDosyaBoyutu} mega byte olmalıdır!";
                     }
-                    ModelState.AddModelError("", result.Message);
+                    TempData["Success"] = result.Message;
+                    return RedirectToAction(nameof(Index));
                 }
+                ModelState.AddModelError("", result.Message);
             }
             ViewBag.KategoriId = new SelectList(_kategoriService.Query().ToList(), "Id", "Adi", urun.KategoriId);
 
@@ -157,7 +157,7 @@ namespace MvcWebUI.Controllers
             return View(urun);
         }
 
-        private bool? ImajKaydet(IFormFile yuklenenImaj)
+        private bool? ImajKaydet(IFormFile yuklenenImaj, int urunId, bool uzerineYazilsinMi = false)
         {
             #region Dosya validasyonu
             bool? sonuc = null; // flag, sonuc'un null dönmesi demek kullanıcının dosya seçip yüklememesi demek
@@ -192,10 +192,11 @@ namespace MvcWebUI.Controllers
             if (sonuc == true)
             {
                 // Sanal dosya yolu (virtual path): ~/wwwroot/dosyalar/urunler/asusrog.jpg
+                yuklenenDosyaAdi = urunId + yuklenenDosyaUzantisi; // 1.jpg
                 string dosyaYolu = Path.Combine("wwwroot", "dosyalar", "urunler", yuklenenDosyaAdi);
                 // Fiziksel dosya yolu (absolute path): C:\çağıl\ETicaretCoreBilgeAdam\MvcWebUI\wwwroot\dosyalar\urunler\asusrog.jpg
-                
-                using (FileStream fileStream = new FileStream(dosyaYolu, FileMode.Create))
+
+                using (FileStream fileStream = new FileStream(dosyaYolu, uzerineYazilsinMi ? FileMode.Create : FileMode.CreateNew)) // CreateNew: eğer aynı isimde dosya varsa hata verir, Create ise üzerine yazar
                 {
                     yuklenenImaj.CopyTo(fileStream);
                 }

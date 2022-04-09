@@ -81,9 +81,14 @@ namespace Business.Services
                 UrunMagazalar = model.MagazaIdleri?.Select(mId => new UrunMagaza()
                 {
                     MagazaId = mId
-                }).ToList()
+                }).ToList(),
+
+                ImajDosyaUzantisi = model.ImajDosyaUzantisi
             };
             Repo.Add(entity);
+
+            model.Id = entity.Id; // Entity Framework insert işleminden sonra tabloda oluşan Id'yi entity'de referans parametresi olduğu için günceller ve biz de bu Id'yi bu methoda gelen model referans parametresi üzerinde set edip methodu çağırdığımız yerde kullanabiliriz.
+
             return new SuccessResult("Ürün başarıyla eklendi.");
         }
 

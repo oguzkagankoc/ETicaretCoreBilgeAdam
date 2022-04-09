@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\dosyalar\urunler\" />
     <Folder Include="wwwroot\plugins\bootstrap-datepicker\" />
   </ItemGroup>
 

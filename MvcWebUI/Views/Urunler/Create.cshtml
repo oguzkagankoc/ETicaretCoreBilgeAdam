@@ -74,14 +74,13 @@
             </div>
 
             <div class="row mb-3">
-                <label asp-for="ImajDosyaYolu" class="col-2 col-form-label"></label>
+                <label asp-for="ImajDosyaAdiDisplay" class="col-2 col-form-label"></label>
                 <div class="col-5">
 
                     @*<input asp-for="ImajDosyaYolu" class="form-control" type="file" accept=".jpg, .jpeg, .png" />*@
                     @*<input asp-for="ImajDosyaYolu" class="form-control" type="file" accept="@AppSettings.ImajDosyaUzantilari" />*@
                     <input name="imaj" class="form-control" type="file" accept="@AppSettings.ImajDosyaUzantilari" />
 
-                    <span asp-validation-for="ImajDosyaYolu" class="text-danger"></span>
                 </div>
             </div>
 
