@@ -135,12 +135,12 @@ namespace MvcWebUI.Controllers
             if (ModelState.IsValid)
             {
                 // İmaj dosya adları olarak ürünün Id'si ile yüklenen imajın dosya uzantısını kullanacağımızdan Id veritabanında ekleme işlemi sonucunda otomatik oluşacaktır, ancak dosya uzantısını servise göndermek ve dolayısıyla da tabloya kaydetmek zorundayız.
-                urun.ImajDosyaUzantisi = imaj != null && imaj.Length > 0 ? Path.GetExtension(imaj.FileName) : null; // kullanıcının yeni yüklediği dosyanın uzantısı
+                ImajDosyaUzantisiniGuncelle(urun, imaj); // urun parametresi referans tip olduğu için method içinde güncellenecek ve sonucu urun üzerinden dışarıya yansıyacaktır
 
                 var result = _urunService.Add(urun);
                 if (result.IsSuccessful)
                 {
-                    bool? imajKaydetSonuc = ImajKaydet(imaj, urun.Id);
+                    bool? imajKaydetSonuc = ImajKaydet(urun, imaj);
                     if (imajKaydetSonuc == false) // imaj uzantı ve boyut validasyonlarını geçememiş demektir
                     {
                          result.Message += $" İmaj yüklenemedi! Yüklenen imaj uzantıları {AppSettings.ImajDosyaUzantilari} uzantılarından biri ve boyutu maksimum {AppSettings.ImajMaksimumDosyaBoyutu} mega byte olmalıdır!";
@@ -157,7 +157,7 @@ namespace MvcWebUI.Controllers
             return View(urun);
         }
 
-        private bool? ImajKaydet(IFormFile yuklenenImaj, int urunId, string eskiImajDosyaUzantisi = null, bool uzerineYazilsinMi = false)
+        private bool? ImajKaydet(UrunModel model, IFormFile yuklenenImaj, bool uzerineYazilsinMi = false)
         {
             #region Dosya validasyonu
             bool? sonuc = null; // flag, sonuc'un null dönmesi demek kullanıcının dosya seçip yüklememesi demek
@@ -192,7 +192,7 @@ namespace MvcWebUI.Controllers
             if (sonuc == true)
             {
                 // Sanal dosya yolu (virtual path): ~/wwwroot/dosyalar/urunler/asusrog.jpg
-                yuklenenDosyaAdi = urunId + yuklenenDosyaUzantisi; // 1.jpg
+                yuklenenDosyaAdi = model.Id + yuklenenDosyaUzantisi; // 1.jpg
                 string dosyaYolu = Path.Combine("wwwroot", "dosyalar", "urunler", yuklenenDosyaAdi);
                 // Fiziksel dosya yolu (absolute path): C:\çağıl\ETicaretCoreBilgeAdam\MvcWebUI\wwwroot\dosyalar\urunler\asusrog.jpg
 
@@ -206,15 +206,22 @@ namespace MvcWebUI.Controllers
             #region Eğer varsa aynı ad ve farklı uzantıya sahip dosyanın silinmesi
             if (sonuc == true)
             {
+                string eskiImajDosyaUzantisi = string.IsNullOrWhiteSpace(model.ImajDosyaYoluDisplay) ? null : Path.GetExtension(model.ImajDosyaYoluDisplay); // view'da gizli olarak tuttuğumuz (ImajDosyaYoluDisplay) üzerinden kullanıcının daha önce yüklemiş olduğu dosyanın uzantısı
                 if (!string.IsNullOrWhiteSpace(eskiImajDosyaUzantisi) && eskiImajDosyaUzantisi != yuklenenDosyaUzantisi)
                 {
-                    string dosyaYolu = Path.Combine("wwwroot", "dosyalar", "urunler", urunId + eskiImajDosyaUzantisi);
+                    string dosyaYolu = Path.Combine("wwwroot", "dosyalar", "urunler", model.Id + eskiImajDosyaUzantisi);
                     if (System.IO.File.Exists(dosyaYolu))
                         System.IO.File.Delete(dosyaYolu);
                 }
             }
             #endregion
             return sonuc;
+        }
+
+        private void ImajDosyaUzantisiniGuncelle(UrunModel model, IFormFile imaj)
+        {
+            string eskiImajDosyaUzantisi = string.IsNullOrWhiteSpace(model.ImajDosyaYoluDisplay) ? null : Path.GetExtension(model.ImajDosyaYoluDisplay); // view'da gizli olarak tuttuğumuz (ImajDosyaYoluDisplay) üzerinden kullanıcının daha önce yüklemiş olduğu dosyanın uzantısı
+            model.ImajDosyaUzantisi = imaj != null && imaj.Length > 0 ? Path.GetExtension(imaj.FileName) : eskiImajDosyaUzantisi; // kullanıcının yeni yüklediği dosyanın uzantısı
         }
 
         // GET: Urunler/Edit/5
@@ -270,13 +277,12 @@ namespace MvcWebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                string eskiImajDosyaUzantisi = string.IsNullOrWhiteSpace(model.ImajDosyaYoluDisplay) ? null : Path.GetExtension(model.ImajDosyaYoluDisplay); // view'da gizli olarak tuttuğumuz (ImajDosyaAdiDisplay) kullanıcının daha önce yüklemiş olduğu dosyanın uzantısı
-                model.ImajDosyaUzantisi = imaj != null && imaj.Length > 0 ? Path.GetExtension(imaj.FileName) : eskiImajDosyaUzantisi; // kullanıcının yeni yüklediği dosyanın uzantısı
+                ImajDosyaUzantisiniGuncelle(model, imaj);
                 
                 var result = _urunService.Update(model);
                 if (result.IsSuccessful)
                 {
-                    bool? imajKaydetSonuc = ImajKaydet(imaj, model.Id, eskiImajDosyaUzantisi, true);
+                    bool? imajKaydetSonuc = ImajKaydet(model, imaj, true);
                     if (imajKaydetSonuc == false) // imaj uzantı ve boyut validasyonlarını geçememiş demektir
                     {
                         result.Message += $" İmaj yüklenemedi! Yüklenen imaj uzantıları {AppSettings.ImajDosyaUzantilari} uzantılarından biri ve boyutu maksimum {AppSettings.ImajMaksimumDosyaBoyutu} mega byte olmalıdır!";
