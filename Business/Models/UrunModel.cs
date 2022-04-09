@@ -60,7 +60,7 @@ namespace Business.Models
         public List<string> MagazalarDisplay { get; set; }
 
         [DisplayName("İmaj")]
-        public string ImajDosyaAdiDisplay { get; set; }
+        public string ImajDosyaYoluDisplay { get; set; }
         #endregion
     }
 }

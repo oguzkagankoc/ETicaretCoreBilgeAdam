@@ -64,7 +64,7 @@ namespace Business.Services
                 MagazalarDisplay = u.UrunMagazalar.Select(um => um.Magaza.Adi + " (" + (um.Magaza.SanalMi ? "Sanal Mağaza" : "Gerçek Mağaza") + ")").ToList(),
 
                 ImajDosyaUzantisi = u.ImajDosyaUzantisi,
-                ImajDosyaAdiDisplay = u.Id + u.ImajDosyaUzantisi
+                ImajDosyaYoluDisplay = string.IsNullOrWhiteSpace(u.ImajDosyaUzantisi) ? null : "/dosyalar/urunler/" + u.Id + u.ImajDosyaUzantisi // /dosyalar/urunler/1.jpg
             });
         }
 

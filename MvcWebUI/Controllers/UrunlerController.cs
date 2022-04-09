@@ -270,7 +270,7 @@ namespace MvcWebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                string eskiImajDosyaUzantisi = string.IsNullOrWhiteSpace(model.ImajDosyaAdiDisplay) ? null : Path.GetExtension(model.ImajDosyaAdiDisplay); // view'da gizli olarak tuttuğumuz (ImajDosyaAdiDisplay) kullanıcının daha önce yüklemiş olduğu dosyanın uzantısı
+                string eskiImajDosyaUzantisi = string.IsNullOrWhiteSpace(model.ImajDosyaYoluDisplay) ? null : Path.GetExtension(model.ImajDosyaYoluDisplay); // view'da gizli olarak tuttuğumuz (ImajDosyaAdiDisplay) kullanıcının daha önce yüklemiş olduğu dosyanın uzantısı
                 model.ImajDosyaUzantisi = imaj != null && imaj.Length > 0 ? Path.GetExtension(imaj.FileName) : eskiImajDosyaUzantisi; // kullanıcının yeni yüklediği dosyanın uzantısı
                 
                 var result = _urunService.Update(model);
