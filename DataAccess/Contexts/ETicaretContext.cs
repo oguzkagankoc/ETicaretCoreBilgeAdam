@@ -32,8 +32,8 @@ namespace DataAccess.Contexts
             string connectionString;
             if (string.IsNullOrWhiteSpace(ConnectionConfig.ConnectionString)) // Scaffolding işleminde ConnectionConfig.ConnectionString null geldiğinden kendimiz dev veritabanı bağlantı bilgisini kullanıyoruz
             {
-                ConnectionConfig.ConnectionString = "server=.\\SQLEXPRESS;database=BA_ETicaretCore;user id=sa;password=sa;multipleactiveresultsets=true;";
-                //ConnectionConfig.ConnectionString = "server=.;database=BA_ETicaretCore;user id=sa;password=123;multipleactiveresultsets=true;";
+                //ConnectionConfig.ConnectionString = "server=.\\SQLEXPRESS;database=BA_ETicaretCore;user id=sa;password=sa;multipleactiveresultsets=true;";
+                ConnectionConfig.ConnectionString = "server=.;database=BA_ETicaretCore;user id=sa;password=123;multipleactiveresultsets=true;";
             }
             connectionString = ConnectionConfig.ConnectionString;
             

@@ -91,6 +91,9 @@
     <form asp-action="Delete">
 	@Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
+
+        <input type="hidden" asp-for="ImajDosyaYoluDisplay" />
+
         <input type="submit" value="Evet" class="btn btn-danger" />&nbsp;&nbsp;
         <a asp-action="Index" class="btn btn-success">Hayır</a>
     </form>

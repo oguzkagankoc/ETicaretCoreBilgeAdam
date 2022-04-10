@@ -120,6 +120,8 @@
                 <div class="col-5">
                     @if (!string.IsNullOrWhiteSpace(Model.ImajDosyaYoluDisplay))
                     {
+                        @* thumbnail: küçük dosya ön izlemesi, mesela listelemede kullanılabilir *@
+                        @*<img src="@Model.ImajDosyaYoluDisplay" class="img-thumbnail" />*@
                         <img src="@Model.ImajDosyaYoluDisplay" class="img-fluid" />
                     }
                     <input name="imaj" class="form-control" type="file" accept="@AppSettings.ImajDosyaUzantilari" />

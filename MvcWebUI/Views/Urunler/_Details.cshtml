@@ -19,10 +19,10 @@
 
         @*<dt class="col-2">
             @Html.DisplayNameFor(model => model.BirimFiyati)
-        </dt>
-        <dd class="col-10">
+            </dt>
+            <dd class="col-10">
             @Html.DisplayFor(model => model.BirimFiyati)
-        </dd>*@
+            </dd>*@
         <dt class="col-2">
             @Html.DisplayNameFor(model => model.BirimFiyatiDisplay)
         </dt>
@@ -39,10 +39,10 @@
 
         @*<dt class="col-2">
             @Html.DisplayNameFor(model => model.SonKullanmaTarihi)
-        </dt>
-        <dd class="col-10">
+            </dt>
+            <dd class="col-10">
             @Html.DisplayFor(model => model.SonKullanmaTarihi)
-        </dd>*@
+            </dd>*@
         @if (!string.IsNullOrWhiteSpace(Model.SonKullanmaTarihiDisplay))
         {
             <dt class="col-2">
@@ -55,10 +55,10 @@
 
         @*<dt class="col-2">
             @Html.DisplayNameFor(model => model.Kategori)
-        </dt>
-        <dd class="col-10">
+            </dt>
+            <dd class="col-10">
             @Html.DisplayFor(model => model.Kategori.Adi)
-        </dd>*@
+            </dd>*@
         <dt class="col-2">
             @Html.DisplayNameFor(model => model.KategoriAdiDisplay)
         </dt>
@@ -68,41 +68,53 @@
 
         @*<dt class="col-2">
             @Html.DisplayNameFor(model => model.Guid)
-        </dt>
-        <dd class="col-10">
+            </dt>
+            <dd class="col-10">
             @Html.DisplayFor(model => model.Guid)
-        </dd>
-        <dt class="col-2">
+            </dd>
+            <dt class="col-2">
             @Html.DisplayNameFor(model => model.CreateDate)
-        </dt>
-        <dd class="col-10">
+            </dt>
+            <dd class="col-10">
             @Html.DisplayFor(model => model.CreateDate)
-        </dd>
-        <dt class="col-2">
+            </dd>
+            <dt class="col-2">
             @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd class="col-10">
+            </dt>
+            <dd class="col-10">
             @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-        <dt class="col-2">
+            </dd>
+            <dt class="col-2">
             @Html.DisplayNameFor(model => model.UpdateDate)
-        </dt>
-        <dd class="col-10">
+            </dt>
+            <dd class="col-10">
             @Html.DisplayFor(model => model.UpdateDate)
-        </dd>
-        <dt class="col-2">
+            </dd>
+            <dt class="col-2">
             @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-        <dd class="col-10">
+            </dt>
+            <dd class="col-10">
             @Html.DisplayFor(model => model.UpdatedBy)
-        </dd>
-        <dt class="col-2">
+            </dd>
+            <dt class="col-2">
             @Html.DisplayNameFor(model => model.IsDeleted)
+            </dt>
+            <dd class="col-10">
+            @Html.DisplayFor(model => model.IsDeleted)
+            </dd>*@
+
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.ImajDosyaYoluDisplay)
         </dt>
         <dd class="col-10">
-            @Html.DisplayFor(model => model.IsDeleted)
-        </dd>*@
-        
+            @if (!string.IsNullOrWhiteSpace(Model.ImajDosyaYoluDisplay))
+            {
+                <div style="width:40%;">
+                    <img src="@Model.ImajDosyaYoluDisplay" class="img-fluid" />
+                </div>
+            }
+        </dd>
+
         @* Ürün mağazaları: *@
         <dt class="col-2">
             @Html.DisplayNameFor(model => model.MagazalarDisplay)

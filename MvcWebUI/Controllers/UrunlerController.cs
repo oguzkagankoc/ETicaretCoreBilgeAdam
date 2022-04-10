@@ -143,7 +143,7 @@ namespace MvcWebUI.Controllers
                     bool? imajKaydetSonuc = ImajKaydet(urun, imaj);
                     if (imajKaydetSonuc == false) // imaj uzantı ve boyut validasyonlarını geçememiş demektir
                     {
-                         result.Message += $" İmaj yüklenemedi! Yüklenen imaj uzantıları {AppSettings.ImajDosyaUzantilari} uzantılarından biri ve boyutu maksimum {AppSettings.ImajMaksimumDosyaBoyutu} mega byte olmalıdır!";
+                        result.Message += $" İmaj yüklenemedi! Yüklenen imaj uzantıları {AppSettings.ImajDosyaUzantilari} uzantılarından biri ve boyutu maksimum {AppSettings.ImajMaksimumDosyaBoyutu} mega byte olmalıdır!";
                     }
                     TempData["Success"] = result.Message;
                     return RedirectToAction(nameof(Index));
@@ -206,16 +206,21 @@ namespace MvcWebUI.Controllers
             #region Eğer varsa aynı ad ve farklı uzantıya sahip dosyanın silinmesi
             if (sonuc == true)
             {
-                string eskiImajDosyaUzantisi = string.IsNullOrWhiteSpace(model.ImajDosyaYoluDisplay) ? null : Path.GetExtension(model.ImajDosyaYoluDisplay); // view'da gizli olarak tuttuğumuz (ImajDosyaYoluDisplay) üzerinden kullanıcının daha önce yüklemiş olduğu dosyanın uzantısı
-                if (!string.IsNullOrWhiteSpace(eskiImajDosyaUzantisi) && eskiImajDosyaUzantisi != yuklenenDosyaUzantisi)
-                {
-                    string dosyaYolu = Path.Combine("wwwroot", "dosyalar", "urunler", model.Id + eskiImajDosyaUzantisi);
-                    if (System.IO.File.Exists(dosyaYolu))
-                        System.IO.File.Delete(dosyaYolu);
-                }
+                ImajSil(model, yuklenenDosyaUzantisi);
             }
             #endregion
             return sonuc;
+        }
+
+        private void ImajSil(UrunModel model, string yuklenenDosyaUzantisi = null) // eğer güncelleme işlemi ise yüklenen dosya uzantısı dolu geleceğinden dosya uzantısı değiştiyse eski dosya uzantısına sahip dosya silinir, eğer silme işlemi ise yüklenen dosya uzantısı null olacağından direkt mevcut dosya uzantısına sahip dosya silinir
+        {
+            string eskiImajDosyaUzantisi = string.IsNullOrWhiteSpace(model.ImajDosyaYoluDisplay) ? null : Path.GetExtension(model.ImajDosyaYoluDisplay); // view'da gizli olarak tuttuğumuz (ImajDosyaYoluDisplay) üzerinden kullanıcının daha önce yüklemiş olduğu dosyanın uzantısı
+            if (string.IsNullOrWhiteSpace(yuklenenDosyaUzantisi) || (!string.IsNullOrWhiteSpace(eskiImajDosyaUzantisi) && eskiImajDosyaUzantisi != yuklenenDosyaUzantisi)) // eğer dosya yüklenmemişse (silme işlemi) veya eski imajın dosya uzantısı yüklenen dosya uzantısından farklıysa (güncelleme işlemi) dosya sunucudan silinir
+            {
+                string dosyaYolu = Path.Combine("wwwroot", "dosyalar", "urunler", model.Id + eskiImajDosyaUzantisi);
+                if (System.IO.File.Exists(dosyaYolu))
+                    System.IO.File.Delete(dosyaYolu);
+            }
         }
 
         private void ImajDosyaUzantisiniGuncelle(UrunModel model, IFormFile imaj)
@@ -278,7 +283,7 @@ namespace MvcWebUI.Controllers
             if (ModelState.IsValid)
             {
                 ImajDosyaUzantisiniGuncelle(model, imaj);
-                
+
                 var result = _urunService.Update(model);
                 if (result.IsSuccessful)
                 {
@@ -339,11 +344,20 @@ namespace MvcWebUI.Controllers
         //    return RedirectToAction(nameof(Index));
         //}
         [Authorize(Roles = "Admin")]
-        public IActionResult DeleteConfirmed(int id)
+        //public IActionResult DeleteConfirmed(int id) // dosya silme işlemi için değiştirildi
+        public IActionResult DeleteConfirmed(int id, string imajDosyaYoluDisplay)
         {
             var result = _urunService.Delete(id);
             //if (result.IsSuccessful) // Delete methodu her zaman başarılı sonucunu döneceğinden if'le kontrole gerek yok
             //{
+
+            UrunModel model = new UrunModel()
+            {
+                Id = id,
+                ImajDosyaYoluDisplay = imajDosyaYoluDisplay
+            };
+            ImajSil(model);
+
             TempData["Success"] = result.Message;
             return RedirectToAction(nameof(Index));
             //}
