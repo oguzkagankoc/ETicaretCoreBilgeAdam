@@ -362,5 +362,21 @@ namespace MvcWebUI.Controllers
             return RedirectToAction(nameof(Index));
             //}
         }
+
+        // imaj silme:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteImage(UrunModel model)
+        {
+            if (!string.IsNullOrWhiteSpace(model.ImajDosyaYoluDisplay))
+            {
+                UrunModel existingModel = _urunService.Query().SingleOrDefault(u => u.Id == model.Id);
+                existingModel.ImajDosyaUzantisi = null;
+                var result = _urunService.Update(existingModel);
+                if (result.IsSuccessful)
+                    ImajSil(model);
+            }
+            return RedirectToAction(nameof(Details), new { id = model.Id });
+        }
     }
 }
