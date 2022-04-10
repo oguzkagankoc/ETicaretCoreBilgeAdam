@@ -31,6 +31,7 @@ View <-> Controller (Başlangıç noktası) <-> Service (model) <-> Repository (
 HTML - CSS - Javascript örnekleri projede wwwroot -> HTML_Javascript_CSS_Intro klasörü altındadır.
 
 Ders içi proje geliştirme aşamaları:
+MVC:
 1) DatabaseController
 1.1) Seed Action -> İlk verileri doldurma, DbContext objesinin new'lenerek kullanılması, _Layout.cshtml'de HTML ve Tag helper'lar üzerinden link oluşturulması
 2) KategorilerController -> Servislerin constructor üzerinden enjekte edilmesi, action'lardan IActionResult tipi üzerinden farklı tiplerin dönülmesi 
@@ -67,6 +68,9 @@ Ders içi proje geliştirme aşamaları:
 8.4) Details Action -> Sunucudaki fiziksel olarak yüklenmiş dosyanın Id.DosyaUzantısı şeklinde kullanılması
 8.5) DeleteImage Action -> Sunucudan fiziksel olarak dosya silme ve veritabanında ilgili dosya uzantısının null olarak güncellenmesi işlemi
 9) UrunlerRaporController
+9.1) Index Action -> Left outer join kullanımı, ViewComponent kullanımı
 
 Ekstra:
 10) MagazalarController -> Imaj verilerinin veritabanında saklanması ve kullanılması
+
+WebApi:
