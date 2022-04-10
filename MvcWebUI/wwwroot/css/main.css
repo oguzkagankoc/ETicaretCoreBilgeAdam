@@ -181,7 +181,7 @@ ul ul a {
 
 ul.admin {
     padding-top: 5px;
-	border-bottom: 1px solid #47748b;
+    border-bottom: 1px solid #47748b;
 }
 
     ul.admin a {
@@ -216,3 +216,15 @@ ul.admin {
 div.baslik {
     padding-top: 25px !important;
 }
+
+.ul-kategoriler {
+    text-align: left;
+}
+
+    .ul-kategoriler li a {
+        color: blue;
+    }
+
+    .ul-kategoriler li.active a {
+        color: red;
+    }

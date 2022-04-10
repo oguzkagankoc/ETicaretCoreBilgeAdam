@@ -3,6 +3,7 @@ using AppCore.Business.Services.Bases;
 using AppCore.DataAccess.EntityFramework;
 using AppCore.DataAccess.EntityFramework.Bases;
 using Business.Models;
+using Business.Models.Reports;
 using DataAccess.Contexts;
 using DataAccess.Entities;
 
@@ -10,15 +11,18 @@ namespace Business.Services
 {
     public interface IUrunService : IService<UrunModel, Urun, ETicaretContext>
     {
-        
+        Result<List<UrunRaporModel>> RaporGetir();
     }
 
     public class UrunService : IUrunService
     {
-        public RepoBase<Urun, ETicaretContext> Repo { get; set; }
+        public RepoBase<Urun, ETicaretContext> Repo { get; set; } // Ürün repository
 
         private readonly RepoBase<UrunMagaza, ETicaretContext> _urunMagazaRepo;
         private readonly RepoBase<UrunSiparis, ETicaretContext> _urunSiparisRepo;
+
+        private readonly RepoBase<Kategori, ETicaretContext> _kategoriRepo;
+        private readonly RepoBase<Magaza, ETicaretContext> _magazaRepo;
 
         public UrunService()
         {
@@ -26,6 +30,9 @@ namespace Business.Services
             Repo = new Repo<Urun, ETicaretContext>(eTicaretContext);
             _urunMagazaRepo = new Repo<UrunMagaza, ETicaretContext>(eTicaretContext);
             _urunSiparisRepo = new Repo<UrunSiparis, ETicaretContext>(eTicaretContext);
+
+            _kategoriRepo = new Repo<Kategori, ETicaretContext>(eTicaretContext);
+            _magazaRepo = new Repo<Magaza, ETicaretContext>(eTicaretContext);
         }
 
         public IQueryable<UrunModel> Query()
@@ -146,6 +153,60 @@ namespace Business.Services
         public void Dispose()
         {
             Repo.Dispose();
+        }
+
+        /*
+        select k.Aciklamasi KategoriAciklamasi, k.Adi KategoriAdi, k.Id KategoriId,
+        u.SonKullanmaTarihi UrunSonKullanmaTarihi, u.Aciklamasi UrunAciklamasi,
+        u.Adi UrunAdi, u.StokMiktari UrunStokMiktari, u.BirimFiyati UrunBirimFiyati,
+        m.Adi MagazaAdi, m.Id MagazaId
+        from ETicaretUrunler u 
+        left outer join ETicaretKategoriler k
+        on u.KategoriId = k.Id
+        left outer join ETicaretUrunMagazalar um
+        on u.Id = um.UrunId
+        left outer join ETicaretMagazalar m
+        on um.MagazaId = m.Id
+        */
+        public Result<List<UrunRaporModel>> RaporGetir()
+        {
+            List<UrunRaporModel> list;
+
+            var urunQuery = Repo.Query();
+            var kategoriQuery = _kategoriRepo.Query();
+            var urunMagazaQuery = _urunMagazaRepo.Query();
+            var magazaQuery = _magazaRepo.Query();
+
+            var query = from urun in urunQuery
+                        join kategori in kategoriQuery
+                        on urun.KategoriId equals kategori.Id into kategoriler
+                        from subKategoriler in kategoriler.DefaultIfEmpty()
+                        join urunMagaza in urunMagazaQuery
+                        on urun.Id equals urunMagaza.UrunId into urunMagazalar
+                        from subUrunMagazalar in urunMagazalar.DefaultIfEmpty()
+                        join magaza in magazaQuery
+                        on subUrunMagazalar.MagazaId equals magaza.Id into magazalar
+                        from subMagazalar in magazalar.DefaultIfEmpty()
+                        //orderby subKategoriler.Adi, urun.Adi
+                        //where subKategoriler.Id == 7
+                        select new UrunRaporModel()
+                        {
+                            KategoriAciklamasi = subKategoriler.Aciklamasi,
+                            KategoriAdi = subKategoriler.Adi,
+                            KategoriId = subKategoriler.Id,
+                            MagazaAdi = subMagazalar.Adi,
+                            MagazaId = subMagazalar.Id,
+                            UrunAciklamasi = urun.Aciklamasi,
+                            UrunAdi = urun.Adi,
+                            UrunBirimFiyatiDisplay = urun.BirimFiyati.ToString("C2"),
+                            UrunSonKullanmaTarihiDisplay = urun.SonKullanmaTarihi.HasValue ? urun.SonKullanmaTarihi.Value.ToShortDateString() : "",
+                            UrunStokMiktari = urun.StokMiktari
+                        };
+
+            list = query.ToList();
+            if (list.Count == 0)
+                return new ErrorResult<List<UrunRaporModel>>("Kayıt bulunamadı!");
+            return new SuccessResult<List<UrunRaporModel>>(list.Count + " kayıt bulundu.", list);
         }
     }
 }

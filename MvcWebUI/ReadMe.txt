@@ -64,5 +64,9 @@ Ders içi proje geliştirme aşamaları:
 8.1) Create Action -> Sunucuya fiziksel olarak dosya yükleme ve veritabanında yüklenen dosya uzantısının saklanarak dosya adının Id.DosyaUzantısı şeklinde kullanılması işlemi
 8.2) Edit Action -> Sunucuya fiziksel olarak dosya yükleme, duruma göre dosya silme ve veritabanında yüklenen dosya uzantısının saklanarak dosya adının Id.DosyaUzantısı şeklinde kullanılması işlemi, view'da birden çok farklı aksiyona veri gönderen form kullanımı
 8.3) Delete Action -> Sunucudan fiziksel olarak dosya silme işlemi
-8.4) DeleteImage Action -> Sunucudan fiziksel olarak dosya silme ve veritabanında ilgili dosya uzantısının null olarak güncellenmesi işlemi
-8.5) Details Action -> Sunucudaki fiziksel olarak yüklenmiş dosyanın Id.DosyaUzantısı şeklinde kullanılması
+8.4) Details Action -> Sunucudaki fiziksel olarak yüklenmiş dosyanın Id.DosyaUzantısı şeklinde kullanılması
+8.5) DeleteImage Action -> Sunucudan fiziksel olarak dosya silme ve veritabanında ilgili dosya uzantısının null olarak güncellenmesi işlemi
+9) UrunlerRaporController
+
+Ekstra:
+10) MagazalarController -> Imaj verilerinin veritabanında saklanması ve kullanılması

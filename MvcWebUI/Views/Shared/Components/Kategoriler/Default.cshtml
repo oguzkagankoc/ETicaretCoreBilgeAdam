@@ -1,0 +1,25 @@
+﻿@model List<KategoriModel>
+
+<h5>Kategoriler</h5>
+<hr />
+
+@if (Model != null && Model.Count > 0)
+{
+    <ul class="navbar-nav ul-kategoriler">
+        <li class="active">
+            <a asp-action="Index" asp-controller="UrunlerRapor">Tüm Kategoriler</a>
+        </li>
+        @foreach (KategoriModel kategori in Model)
+        {
+            <li>
+                 <a asp-action="Index" asp-controller="UrunlerRapor">@kategori.Adi</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p class="text-danger">
+        Kategori bulunamadı!
+    </p>
+}
