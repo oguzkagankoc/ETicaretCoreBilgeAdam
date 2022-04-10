@@ -73,4 +73,4 @@ MVC:
 Ekstra:
 10) MagazalarController -> Imaj verilerinin veritabanında saklanması ve kullanılması
 
-WebApi:
+WebApi
