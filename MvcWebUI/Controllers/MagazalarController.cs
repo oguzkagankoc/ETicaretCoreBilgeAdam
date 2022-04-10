@@ -134,10 +134,17 @@ namespace MvcWebUI.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(MagazaModel magaza)
+        public IActionResult Edit(MagazaModel magaza, IFormFile imaj)
         {
             if (ModelState.IsValid)
             {
+                bool? imajKaydetSonuc = ImajDosyasiniGuncelle(magaza, imaj);
+                if (imajKaydetSonuc == false) // imaj uzantı ve boyut validasyonlarını geçememiş demektir
+                {
+                    ModelState.AddModelError("", $" İmaj yüklenemedi! Yüklenen imaj uzantıları {AppSettings.ImajDosyaUzantilari} uzantılarından biri ve boyutu maksimum {AppSettings.ImajMaksimumDosyaBoyutu} mega byte olmalıdır!");
+                    return View(magaza);
+                }
+
                 var result = _magazaService.Update(magaza);
                 if (result.IsSuccessful)
                     return RedirectToAction(nameof(Index));
@@ -155,6 +162,16 @@ namespace MvcWebUI.Controllers
             }
             _magazaService.Delete(id.Value);
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult DeleteImage(int? id)
+        {
+            if (id == null)
+            {
+                return View("Hata", "Id gereklidir!");
+            }
+            _magazaService.DeleteImage(id.Value);
+            return RedirectToAction(nameof(Details), new { id = id.Value });
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Business.Services
 {
     public interface IMagazaService : IService<MagazaModel, Magaza, ETicaretContext>
     {
-
+        Result DeleteImage(int id);
     }
 
     public class MagazaService : IMagazaService
@@ -66,8 +66,11 @@ namespace Business.Services
             entity.Adi = model.Adi.Trim();
             entity.SanalMi = model.SanalMi;
 
-            entity.Imaj = model.Imaj;
-            entity.ImajDosyaUzantisi = model.ImajDosyaUzantisi?.ToLower();
+            if (model.Imaj != null && model.Imaj.Length > 0) // eğer model üzerinden imaj gelirse güncellesin gelmezse dokunmasın
+            {
+                entity.Imaj = model.Imaj;
+                entity.ImajDosyaUzantisi = model.ImajDosyaUzantisi.ToLower();
+            }
 
             Repo.Update(entity);
             return new SuccessResult();
@@ -91,6 +94,15 @@ namespace Business.Services
         public void Dispose()
         {
             Repo.Dispose();
+        }
+
+        public Result DeleteImage(int id)
+        {
+            Magaza entity = Repo.Query(m => m.Id == id).SingleOrDefault();
+            entity.Imaj = null;
+            entity.ImajDosyaUzantisi = null;
+            Repo.Update(entity);
+            return new SuccessResult();
         }
     }
 }

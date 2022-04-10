@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-12">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
 		@Html.AntiForgeryToken()
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="row mb-3">
@@ -27,6 +27,20 @@
                 </div>
             </div>
             <input type="hidden" asp-for="Id" />
+
+            <div class="row mb-3">
+                <label asp-for="Imaj" class="col-2 col-form-label"></label>
+                <div class="col-5">
+                    @if (!string.IsNullOrWhiteSpace(Model.ImajSrcDisplay))
+                    {
+                        <img src="@Model.ImajSrcDisplay" class="img-fluid" />
+                    }
+                    <input type="file" class="form-control" name="imaj" accept="@AppSettings.ImajDosyaUzantilari" />
+                    <input type="hidden" asp-for="ImajDosyaUzantisi" />
+                    <a asp-action="DeleteImage" asp-route-id="@Model.Id">İmaj Sil</a>
+                </div>
+            </div>
+
             <div class="row mb-3">
 				<div class="offset-2 col-5">
 					<input type="submit" value="Kaydet" class="btn btn-primary" />
