@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MvcWebUI.Models;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 
 namespace MvcWebUI.Controllers
 {
@@ -14,9 +15,13 @@ namespace MvcWebUI.Controllers
     {
         private readonly ISiparisService _siparisService;
 
-        public SiparislerController(ISiparisService siparisService)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public SiparislerController(ISiparisService siparisService, IHttpContextAccessor httpContextAccessor)
         {
             _siparisService = siparisService;
+
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Al()
@@ -88,6 +93,56 @@ namespace MvcWebUI.Controllers
             var result = _siparisService.Update(new SiparisModel() {Id = id.Value});
             TempData["Sonuc"] = result.Message;
             return RedirectToAction(nameof(Getir));
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task ExcelIndir()
+        {
+            var result = _siparisService.SiparisleriGetir();
+            if (result.Data != null && result.Data.Count > 0)
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                ExcelPackage excelPackage = new ExcelPackage();
+                ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add("Siparişler");
+
+                // 1. satır: sütun başlıkları
+                excelWorksheet.Cells["A1"].Value = "Sipariş No";
+                excelWorksheet.Cells["B1"].Value = "Kullanıcı Adı";
+                excelWorksheet.Cells["C1"].Value = "Sipariş Tarihi";
+                excelWorksheet.Cells["D1"].Value = "Durum";
+                excelWorksheet.Cells["E1"].Value = "Kategori";
+                excelWorksheet.Cells["F1"].Value = "Adı";
+                excelWorksheet.Cells["G1"].Value = "Birim Fiyatı";
+                excelWorksheet.Cells["H1"].Value = "Adet";
+                excelWorksheet.Cells["I1"].Value = "Toplam Ürün Birim Fiyatı";
+                excelWorksheet.Cells["J1"].Value = "Son Kullanma Tarihi";
+
+                // 2. satırdan itibaren veriler
+                for (int row = 0; row < result.Data.Count; row++)
+                {
+                    excelWorksheet.Cells["A" + (row + 2)].Value = result.Data[0].SiparisNo;
+                    excelWorksheet.Cells["B" + (row + 2)].Value = result.Data[0].Kullanici.KullaniciAdi;
+                    excelWorksheet.Cells["C" + (row + 2)].Value = result.Data[0].TarihDisplay;
+                    excelWorksheet.Cells["D" + (row + 2)].Value = result.Data[0].Durum;
+                    excelWorksheet.Cells["E" + (row + 2)].Value = result.Data[0].UrunSiparisJoin.Urun.KategoriAdiDisplay;
+                    excelWorksheet.Cells["F" + (row + 2)].Value = result.Data[0].UrunSiparisJoin.Urun.Adi;
+                    excelWorksheet.Cells["G" + (row + 2)].Value = result.Data[0].UrunSiparisJoin.Urun.BirimFiyatiDisplay;
+                    excelWorksheet.Cells["H" + (row + 2)].Value = result.Data[0].UrunSiparisJoin.UrunAdedi;
+                    excelWorksheet.Cells["I" + (row + 2)].Value = result.Data[0].ToplamUrunBirimFiyatiDisplay;
+                    excelWorksheet.Cells["J" + (row + 2)].Value = result.Data[0].UrunSiparisJoin.Urun.SonKullanmaTarihiDisplay;
+                }
+
+                excelWorksheet.Cells["A:AZ"].AutoFitColumns();
+
+                var excelData = excelPackage.GetAsByteArray();
+                _httpContextAccessor.HttpContext.Response.Headers.Clear();
+                _httpContextAccessor.HttpContext.Response.Clear();
+                _httpContextAccessor.HttpContext.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                _httpContextAccessor.HttpContext.Response.Headers.Add("content-length", excelData.Length.ToString());
+                _httpContextAccessor.HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=\"SiparişRaporu.xlsx\"");
+                await _httpContextAccessor.HttpContext.Response.Body.WriteAsync(excelData, 0, excelData.Length);
+                _httpContextAccessor.HttpContext.Response.Body.Flush();
+            }
         }
     }
 }

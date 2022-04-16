@@ -70,7 +70,13 @@ MVC:
 9) UrunlerRaporController
 9.1) Index Action -> Left outer join kullanımı, ViewComponent kullanımı
 
-Ekstra:
+MVC Ekstra:
 10) MagazalarController -> Imaj verilerinin veritabanında saklanması ve kullanılması
+11) SiparislerController
+12) RollerController
+13) KullanicilarController
+14) UlkelerController
+15) SehirlerController
+16) SehirlerAjaxController
 
-WebApi
+WebApi:

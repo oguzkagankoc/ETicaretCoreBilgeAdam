@@ -25,6 +25,8 @@ builder.Services.Configure(cultureUtil.AddCulture());
 // Add services to the container.
 builder.Services.AddControllersWithViews(); // MVC web uygulamasý
 
+builder.Services.AddHttpContextAccessor(); // sipariþ Excel raporu için
+
 #region Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(config =>
