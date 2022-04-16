@@ -9,6 +9,10 @@ namespace Business.Services.Bases
     public interface IKategoriService : IService<KategoriModel, Kategori, ETicaretContext>
     {
         // Async method
+        /// <summary>
+        /// Daha sonra ürünler raporunda kullanılacaktır.
+        /// </summary>
+        /// <returns></returns>
         Task<List<KategoriModel>> KategorileriGetirAsync();
     }
 }

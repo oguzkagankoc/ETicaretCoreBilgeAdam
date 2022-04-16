@@ -2,8 +2,10 @@
 using Business.Models.Filters;
 using Business.Models.Reports;
 using Business.Services;
+using Business.Services.Bases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcWebUI.Models;
 
 namespace MvcWebUI.Controllers
@@ -12,10 +14,12 @@ namespace MvcWebUI.Controllers
     public class UrunlerRaporController : Controller
     {
         private readonly IUrunService _urunService;
+        private readonly IKategoriService _kategoriService;
 
-        public UrunlerRaporController(IUrunService urunService)
+        public UrunlerRaporController(IUrunService urunService, IKategoriService kategoriService)
         {
             _urunService = urunService;
+            _kategoriService = kategoriService;
         }
 
         //public IActionResult Index()
@@ -33,7 +37,9 @@ namespace MvcWebUI.Controllers
             UrunlerRaporIndexViewModel viewModel = new UrunlerRaporIndexViewModel()
             {
                 UrunlerRapor = result.Data,
-                UrunlerFiltre = filtre
+                UrunlerFiltre = filtre,
+
+                //KategorilerSelectList = new SelectList(await _kategoriService.KategorileriGetirAsync(), "Id", "Adi")
             };
 
             return View(viewModel);

@@ -16,7 +16,74 @@
     <div class="col-10">
         <h5>Ürünler</h5>
         <hr />
-        <partial name="_Sonuc"/>
-        <partial name="_UrunlerRapor" model="Model.UrunlerRapor"/>
+        <form asp-action="Index" autocomplete="off" id="form">
+
+            @* 1. yöntem: *@
+            @*<div class="row">
+                <div class="col-2">
+                <label asp-for="UrunlerFiltre.KategoriId"></label>
+                </div>
+                <div class="col-4">
+                <select asp-for="UrunlerFiltre.KategoriId" asp-items="Model.KategorilerSelectList" class="form-control">
+                <option value="">-- Tüm Kategoriler --</option>
+                </select>
+                </div>
+                </div>*@
+            @* 2. yöntem: *@
+            <input type="hidden" asp-for="UrunlerFiltre.KategoriId"/>@* ViewComponent kullandığımız için KategoriId'yi gizleyip saklıyoruz *@
+
+            <div class="row">
+                <div class="col-2">
+                    <label asp-for="UrunlerFiltre.UrunAdi"></label>
+                </div>
+                <div class="col-4">
+                    <input asp-for="UrunlerFiltre.UrunAdi" class="form-control"/>
+                </div>
+                <div class="col-2">
+                    <label asp-for="UrunlerFiltre.BirimFiyatiBaslangic"></label>
+                </div>
+                <div class="col-4">
+                    <div class="input-group">
+                        <input asp-for="UrunlerFiltre.BirimFiyatiBaslangic" class="form-control"/>
+                        <span class="input-group-text">-</span>
+                        <input asp-for="UrunlerFiltre.BirimFiyatiBitis" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 30px;">
+                <div class="col-2">
+                    <label asp-for="UrunlerFiltre.StokMiktariBaslangic"></label>
+                </div>
+                <div class="col-4">
+                    <div class="input-group">
+                        <input asp-for="UrunlerFiltre.StokMiktariBaslangic" class="form-control"/>
+                        <span class="input-group-text">-</span>
+                        <input asp-for="UrunlerFiltre.StokMiktariBitis" class="form-control"/>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <label asp-for="UrunlerFiltre.SonKullanmaTarihiBaslangic"></label>
+                </div>
+                <div class="col-4">
+                    <div class="input-group">
+                        <input asp-for="UrunlerFiltre.SonKullanmaTarihiBaslangic" class="form-control"/>
+                        <span class="input-group-text">-</span>
+                        <input asp-for="UrunlerFiltre.SonKullanmaTarihiBitis" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 30px;">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary" id="ara"><i class="fas fa-search"></i> Ara</button>
+                    &nbsp;&nbsp;&nbsp;
+                    <a asp-action="Index" class="btn btn-info"><i class="fas fa-sync"></i> Temizle</a>
+                </div>
+            </div>
+            <hr />
+
+            <partial name="_Sonuc"/>
+
+            <partial name="_UrunlerRapor" model="Model.UrunlerRapor"/>
+        </form>
     </div>
 </div>

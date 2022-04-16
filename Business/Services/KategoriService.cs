@@ -98,6 +98,10 @@ namespace Business.Services
         }
 
         // Async method
+        /// <summary>
+        /// Daha sonra ürünler raporunda kullanılacaktır.
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<KategoriModel>> KategorileriGetirAsync() // asenkron metodlar mutlaka async Task dönmeli ve içinde çağrılan asenkron metodla birlikte await kullanılmalı!
         {
             List<KategoriModel> kategoriler;
