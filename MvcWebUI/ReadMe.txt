@@ -50,7 +50,7 @@ MVC:
 4.1) Giris Action -> farklı repository'lere tek bir DbContext enjekte edilmesi, inner join kullanımı, MVC SignIn işlemi, asenkron method kullanımı
 4.2) Cikis Action -> MVC SignOut işlemi
 4.3) YetkisizIslem Action
-4.4) Kayit Action -> service interface'lerine ekstra method tanımı, view'da radio button tag helper ve AJAX kullanımı
+4.4) Kayit Action -> service interface'lerine ekstra method tanımı, view'da radio button tag helper ve SehirlerAjaxController üzerinden AJAX kullanımı
 5) Program.cs
 5.1) AppCore'daki ConnectionConfig.ConnectionString özelliğinin appsettings.json'dan set edilmesi ve DbContext'ten türeyen context class'ında kullanımı
 5.2) MVC projesindeki Settings klasörü altındaki AppSettings class'ı üzerinden appsettings.json'daki AppSettings section'ı içerisindeki özelliklerin okunması
@@ -68,15 +68,14 @@ MVC:
 8.4) Details Action -> Sunucudaki fiziksel olarak yüklenmiş dosyanın Id.DosyaUzantısı şeklinde kullanılması
 8.5) DeleteImage Action -> Sunucudan fiziksel olarak dosya silme ve veritabanında ilgili dosya uzantısının null olarak güncellenmesi işlemi
 9) UrunlerRaporController
-9.1) Index Action -> Left outer join kullanımı, ViewComponent kullanımı, asenkron metodlar
+9.1) Index Action -> Left outer join kullanımı, ViewComponent kullanımı, asenkron metodlar, form ile AJAX kullanımı, filtreleme, sayfalama, sıralama
 
 MVC Ekstra:
 10) MagazalarController -> Imaj verilerinin veritabanında saklanması ve kullanılması
-11) SiparislerController
+11) SiparislerController -> Excel üzerinden rapor alınması
 12) RollerController
 13) KullanicilarController
 14) UlkelerController
 15) SehirlerController
-16) SehirlerAjaxController
 
 WebApi:

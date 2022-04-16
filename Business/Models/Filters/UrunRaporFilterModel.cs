@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using AppCore.Business.Validations;
 
 namespace Business.Models.Filters
 {
@@ -15,9 +16,12 @@ namespace Business.Models.Filters
         // double için giriş:1.2 - C# kullanım:12; giriş:1,2 - C# kullanım:1.2   *1
         // string için giriş:1.2 veya 1,2 - C# kullanım:1.2   *2
         [DisplayName("Birim Fiyatı")]
+        [StringDecimal(ErrorMessage = "{0} başlangıç değeri sayısal olmalıdır!")]
         //public double? BirimFiyatiBaslangic { get; set; } // *1
         public string BirimFiyatiBaslangic { get; set; } // *2
 
+        [DisplayName("Birim Fiyatı")]
+        [StringDecimal(ErrorMessage = "{0} bitiş değeri sayısal olmalıdır!")]
         //public double? BirimFiyatiBitis { get; set; } // *1
         public string BirimFiyatiBitis { get; set; } // *2
 

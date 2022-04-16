@@ -55,9 +55,6 @@ namespace MvcWebUI.Controllers
                 ViewBag.Sonuc = result.Message;
                 viewModel.UrunlerRapor = result.Data;
             }
-
-            //viewModel.KategorilerSelectList = new SelectList(await _kategoriService.KategorileriGetirAsync(), "Id", "Adi", viewModel.UrunlerFiltre.KategoriId);
-
             return PartialView("_UrunlerRapor", viewModel.UrunlerRapor);
         }
     }

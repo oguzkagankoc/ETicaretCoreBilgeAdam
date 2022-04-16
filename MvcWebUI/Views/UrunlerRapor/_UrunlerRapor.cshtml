@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<UrunRaporModel>
 
+<div asp-validation-summary="All" class="text-danger"></div>
+
 <partial name="_Sonuc"/>
 
 @if (Model != null && Model.Count() > 0)
