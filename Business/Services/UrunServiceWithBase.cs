@@ -203,7 +203,10 @@ namespace Business.Services
                             UrunAdi = urun.Adi,
                             UrunBirimFiyatiDisplay = urun.BirimFiyati.ToString("C2"),
                             UrunSonKullanmaTarihiDisplay = urun.SonKullanmaTarihi.HasValue ? urun.SonKullanmaTarihi.Value.ToShortDateString() : "",
-                            UrunStokMiktari = urun.StokMiktari
+                            UrunStokMiktari = urun.StokMiktari,
+
+                            UrunBirimFiyati = urun.BirimFiyati,
+                            UrunSonKullanmaTarihi = urun.SonKullanmaTarihi
                         };
             #endregion
 
@@ -211,6 +214,32 @@ namespace Business.Services
             //if (filtre.KategoriId != null)
             if (filtre.KategoriId.HasValue)
                 query = query.Where(q => q.KategoriId == filtre.KategoriId.Value);
+            if (!string.IsNullOrWhiteSpace(filtre.UrunAdi))
+                query = query.Where(q => q.UrunAdi.ToLower().Contains(filtre.UrunAdi.ToLower().Trim()));
+            if (!string.IsNullOrWhiteSpace(filtre.BirimFiyatiBaslangic))
+            {
+                double birimFiyatBaslangic = Convert.ToDouble(filtre.BirimFiyatiBaslangic.Trim().Replace(".", ","));
+                query = query.Where(q => q.UrunBirimFiyati >= birimFiyatBaslangic);
+            }
+            if (!string.IsNullOrWhiteSpace(filtre.BirimFiyatiBitis))
+            {
+                double birimFiyatBitis = Convert.ToDouble(filtre.BirimFiyatiBitis.Trim().Replace(".", ","));
+                query = query.Where(q => q.UrunBirimFiyati <= birimFiyatBitis);
+            }
+            if (filtre.StokMiktariBaslangic.HasValue)
+                query = query.Where(q => q.UrunStokMiktari >= filtre.StokMiktariBaslangic.Value);
+            if (filtre.StokMiktariBitis.HasValue)
+                query = query.Where(q => q.UrunStokMiktari <= filtre.StokMiktariBitis.Value);
+            if (!string.IsNullOrWhiteSpace(filtre.SonKullanmaTarihiBaslangic))
+            {
+                DateTime sonKullanmaTarihiBaslangic = DateTime.Parse(filtre.SonKullanmaTarihiBaslangic);
+                query = query.Where(q => q.UrunSonKullanmaTarihi >= sonKullanmaTarihiBaslangic);
+            }
+            if (!string.IsNullOrWhiteSpace(filtre.SonKullanmaTarihiBitis))
+            {
+                DateTime sonKullanmaTarihiBitis = DateTime.Parse(filtre.SonKullanmaTarihiBitis);
+                query = query.Where(q => q.UrunSonKullanmaTarihi <= sonKullanmaTarihiBitis);
+            }
             #endregion
 
             list = await query.ToListAsync();

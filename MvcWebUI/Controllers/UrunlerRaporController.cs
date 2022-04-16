@@ -44,5 +44,21 @@ namespace MvcWebUI.Controllers
 
             return View(viewModel);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(UrunlerRaporIndexViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Result<List<UrunRaporModel>> result = await _urunService.RaporGetirAsync(viewModel.UrunlerFiltre);
+                ViewBag.Sonuc = result.Message;
+                viewModel.UrunlerRapor = result.Data;
+            }
+
+            //viewModel.KategorilerSelectList = new SelectList(await _kategoriService.KategorileriGetirAsync(), "Id", "Adi", viewModel.UrunlerFiltre.KategoriId);
+
+            return PartialView("_UrunlerRapor", viewModel.UrunlerRapor);
+        }
     }
 }

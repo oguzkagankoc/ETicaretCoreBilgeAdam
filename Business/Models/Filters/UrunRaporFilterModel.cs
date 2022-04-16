@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Business.Models.Filters
 {
@@ -7,6 +8,7 @@ namespace Business.Models.Filters
         [DisplayName("Kategori")]
         public int? KategoriId { get; set; }
 
+        [StringLength(200, ErrorMessage = "{0} en fazla {1} karakter olmalıdır!")]
         [DisplayName("Ürün Adı")]
         public string UrunAdi { get; set; }
 

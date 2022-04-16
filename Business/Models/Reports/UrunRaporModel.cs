@@ -29,5 +29,9 @@ namespace Business.Models.Reports
 
         [DisplayName("Mağaza")]
         public string MagazaAdi { get; set; }
+
+        public double UrunBirimFiyati { get; set; }
+
+        public DateTime? UrunSonKullanmaTarihi { get; set; }
     }
 }

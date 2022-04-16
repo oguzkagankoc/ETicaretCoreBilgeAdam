@@ -16,7 +16,18 @@
     <div class="col-10">
         <h5>Ürünler</h5>
         <hr />
-        <form asp-action="Index" autocomplete="off" id="form">
+        <form asp-action="Index" autocomplete="off" id="form" data-ajax="true" data-ajax-method="post" data-ajax-mode="replacewith" data-ajax-update="#urunlerrapor">
+            @* 
+                data-ajax-mode:
+                replacewith: aşağıdaki urunlerrapor div'inin içerisini güncelleyecek. 
+                replace: aşağıdaki urunlerrapor div'ini komple sunucudan dönen veriyle değiştirecek.
+                before: aşağıdaki urunlerrapor div'inin üstüne sunucudan dönen veriyi ekleyecek.
+                after: aşağıdaki urunlerrapor div'inin altına sunucudan dönen veriyi ekleyecek.
+            *@
+            
+            @Html.AntiForgeryToken()
+            
+            <div asp-validation-summary="All" class="text-danger"></div>
 
             @* 1. yöntem: *@
             @*<div class="row">
@@ -66,9 +77,9 @@
                 </div>
                 <div class="col-4">
                     <div class="input-group">
-                        <input asp-for="UrunlerFiltre.SonKullanmaTarihiBaslangic" class="form-control"/>
+                        <input asp-for="UrunlerFiltre.SonKullanmaTarihiBaslangic" class="form-control tarih"/>
                         <span class="input-group-text">-</span>
-                        <input asp-for="UrunlerFiltre.SonKullanmaTarihiBitis" class="form-control"/>
+                        <input asp-for="UrunlerFiltre.SonKullanmaTarihiBitis" class="form-control tarih"/>
                     </div>
                 </div>
             </div>
@@ -79,11 +90,34 @@
                     <a asp-action="Index" class="btn btn-info"><i class="fas fa-sync"></i> Temizle</a>
                 </div>
             </div>
-            <hr />
+            <hr/>
 
-            <partial name="_Sonuc"/>
+            <div id="urunlerrapor">
+                <partial name="_UrunlerRapor" model="Model.UrunlerRapor"/>
+            </div>
 
-            <partial name="_UrunlerRapor" model="Model.UrunlerRapor"/>
         </form>
     </div>
 </div>
+
+@section Scripts
+{
+    <script src="/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+
+    @*https://uxsolutions.github.io/bootstrap-datepicker*@
+    <link rel="stylesheet" href="/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"/>
+    <script src="/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>
+
+    <script>
+        $(function() {
+            $('.tarih').datepicker({
+                todayBtn: "linked",
+                language: "tr",
+                orientation: "bottom auto",
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
+}
