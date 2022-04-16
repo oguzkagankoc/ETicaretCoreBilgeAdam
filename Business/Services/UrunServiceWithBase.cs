@@ -7,12 +7,13 @@ using Business.Models.Filters;
 using Business.Models.Reports;
 using DataAccess.Contexts;
 using DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Business.Services
 {
     public interface IUrunService : IService<UrunModel, Urun, ETicaretContext>
     {
-        Result<List<UrunRaporModel>> RaporGetir(UrunRaporFilterModel filtre);
+        Task<Result<List<UrunRaporModel>>> RaporGetirAsync(UrunRaporFilterModel filtre);
     }
 
     public class UrunService : IUrunService
@@ -169,7 +170,7 @@ namespace Business.Services
         left outer join ETicaretMagazalar m
         on um.MagazaId = m.Id
         */
-        public Result<List<UrunRaporModel>> RaporGetir(UrunRaporFilterModel filtre)
+        public async Task<Result<List<UrunRaporModel>>> RaporGetirAsync(UrunRaporFilterModel filtre) // asenkron metodlar mutlaka async Task dönmeli ve içinde çağrılan asenkron metodla birlikte await kullanılmalı!
         {
             List<UrunRaporModel> list;
 
@@ -212,7 +213,7 @@ namespace Business.Services
                 query = query.Where(q => q.KategoriId == filtre.KategoriId.Value);
             #endregion
 
-            list = query.ToList();
+            list = await query.ToListAsync();
             if (list.Count == 0)
                 return new ErrorResult<List<UrunRaporModel>>("Kayıt bulunamadı!");
             return new SuccessResult<List<UrunRaporModel>>(list.Count + " kayıt bulundu.", list);

@@ -1,4 +1,6 @@
-﻿using Business.Models.Filters;
+﻿using AppCore.Business.Models.Results;
+using Business.Models.Filters;
+using Business.Models.Reports;
 using Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,14 +19,15 @@ namespace MvcWebUI.Controllers
         }
 
         //public IActionResult Index()
-        public IActionResult Index(int? kategoriId)
+        //public IActionResult Index(int? kategoriId)
+        public async Task<IActionResult> Index(int? kategoriId) // asenkron metodlar mutlaka async Task dönmeli ve içinde çağrılan asenkron metodla birlikte await kullanılmalı!
         {
             UrunRaporFilterModel filtre = new UrunRaporFilterModel()
             {
                 KategoriId = kategoriId
             };
 
-            var result = _urunService.RaporGetir(filtre);
+            Result<List<UrunRaporModel>> result = await _urunService.RaporGetirAsync(filtre);
             ViewBag.Sonuc = result.Message;
 
             UrunlerRaporIndexViewModel viewModel = new UrunlerRaporIndexViewModel()
