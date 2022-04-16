@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UrunRaporModel>
+﻿@model UrunlerRaporIndexViewModel
 
 @{
     ViewData["Title"] = "Ürünler Raporu";
@@ -6,60 +6,17 @@
 
 <h1>@ViewData["Title"]</h1>
 
-@await Component.InvokeAsync("Kategoriler")
+<div class="row">
+    <div class="col-2">
 
-<partial name="_Sonuc" />
+        @*@await Component.InvokeAsync("Kategoriler")*@
+        @await Component.InvokeAsync("Kategoriler", Model.UrunlerFiltre.KategoriId)
 
-@if (Model != null && Model.Count() > 0)
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.MagazaAdi)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.KategoriAdi)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UrunAdi)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UrunBirimFiyatiDisplay)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UrunStokMiktari)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UrunSonKullanmaTarihiDisplay)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MagazaAdi)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.KategoriAdi)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UrunAdi)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UrunBirimFiyatiDisplay)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UrunStokMiktari)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UrunSonKullanmaTarihiDisplay)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+    </div>
+    <div class="col-10">
+        <h5>Ürünler</h5>
+        <hr />
+        <partial name="_Sonuc"/>
+        <partial name="_UrunlerRapor" model="Model.UrunlerRapor"/>
+    </div>
+</div>

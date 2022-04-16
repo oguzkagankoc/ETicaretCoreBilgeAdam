@@ -5,6 +5,7 @@ using Business.Models;
 using Business.Services.Bases;
 using DataAccess.Contexts;
 using DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Business.Services
 {
@@ -91,10 +92,22 @@ namespace Business.Services
             Repo.Delete(k => k.Id == id); 
             return new SuccessResult("Kategori başarıyla silindi.");
         }
-
         public void Dispose()
         {
             Repo.Dispose();
+        }
+
+        // Async method
+        public async Task<List<KategoriModel>> KategorileriGetirAsync() // asenkron metodlar mutlaka async Task dönmeli ve içinde await kullanılmalı!
+        {
+            List<KategoriModel> kategoriler;
+
+            //Task<List<KategoriModel>> task = Query().ToListAsync(); // *1
+            //kategoriler = task.Result;
+
+            kategoriler = await Query().ToListAsync(); // *2
+
+            return kategoriler;
         }
     }
 }

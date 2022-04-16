@@ -3,6 +3,7 @@ using AppCore.Business.Services.Bases;
 using AppCore.DataAccess.EntityFramework;
 using AppCore.DataAccess.EntityFramework.Bases;
 using Business.Models;
+using Business.Models.Filters;
 using Business.Models.Reports;
 using DataAccess.Contexts;
 using DataAccess.Entities;
@@ -11,7 +12,7 @@ namespace Business.Services
 {
     public interface IUrunService : IService<UrunModel, Urun, ETicaretContext>
     {
-        Result<List<UrunRaporModel>> RaporGetir();
+        Result<List<UrunRaporModel>> RaporGetir(UrunRaporFilterModel filtre);
     }
 
     public class UrunService : IUrunService
@@ -168,10 +169,11 @@ namespace Business.Services
         left outer join ETicaretMagazalar m
         on um.MagazaId = m.Id
         */
-        public Result<List<UrunRaporModel>> RaporGetir()
+        public Result<List<UrunRaporModel>> RaporGetir(UrunRaporFilterModel filtre)
         {
             List<UrunRaporModel> list;
 
+            #region Select Sorgusu
             var urunQuery = Repo.Query();
             var kategoriQuery = _kategoriRepo.Query();
             var urunMagazaQuery = _urunMagazaRepo.Query();
@@ -202,6 +204,13 @@ namespace Business.Services
                             UrunSonKullanmaTarihiDisplay = urun.SonKullanmaTarihi.HasValue ? urun.SonKullanmaTarihi.Value.ToShortDateString() : "",
                             UrunStokMiktari = urun.StokMiktari
                         };
+            #endregion
+
+            #region Filtre
+            //if (filtre.KategoriId != null)
+            if (filtre.KategoriId.HasValue)
+                query = query.Where(q => q.KategoriId == filtre.KategoriId.Value);
+            #endregion
 
             list = query.ToList();
             if (list.Count == 0)

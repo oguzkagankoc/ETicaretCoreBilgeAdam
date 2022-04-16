@@ -68,7 +68,7 @@ MVC:
 8.4) Details Action -> Sunucudaki fiziksel olarak yüklenmiş dosyanın Id.DosyaUzantısı şeklinde kullanılması
 8.5) DeleteImage Action -> Sunucudan fiziksel olarak dosya silme ve veritabanında ilgili dosya uzantısının null olarak güncellenmesi işlemi
 9) UrunlerRaporController
-9.1) Index Action -> Left outer join kullanımı, ViewComponent kullanımı
+9.1) Index Action -> Left outer join kullanımı, ViewComponent kullanımı, asenkron metodlar
 
 MVC Ekstra:
 10) MagazalarController -> Imaj verilerinin veritabanında saklanması ve kullanılması

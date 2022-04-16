@@ -1,19 +1,43 @@
 ﻿@model List<KategoriModel>
 
+@{
+    int? kategoriId = null;
+    if (ViewBag.KategoriId != null)
+        kategoriId = Convert.ToInt32(ViewBag.KategoriId);
+}
+
 <h5>Kategoriler</h5>
 <hr />
 
 @if (Model != null && Model.Count > 0)
 {
     <ul class="navbar-nav ul-kategoriler">
-        <li class="active">
-            <a asp-action="Index" asp-controller="UrunlerRapor">Tüm Kategoriler</a>
-        </li>
-        @foreach (KategoriModel kategori in Model)
+        @if (kategoriId == null)
+        {
+            <li class="active">
+                <a asp-action="Index" asp-controller="UrunlerRapor">Tüm Kategoriler</a>
+            </li>
+        }
+        else
         {
             <li>
-                 <a asp-action="Index" asp-controller="UrunlerRapor">@kategori.Adi</a>
+                <a asp-action="Index" asp-controller="UrunlerRapor">Tüm Kategoriler</a>
             </li>
+        }
+        @foreach (KategoriModel kategori in Model)
+        {
+            @if (kategoriId != null && kategoriId == kategori.Id)
+            {
+                <li class="active">
+                    <a asp-action="Index" asp-controller="UrunlerRapor" asp-route-kategoriId="@kategori.Id">@kategori.Adi</a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a asp-action="Index" asp-controller="UrunlerRapor" asp-route-kategoriId="@kategori.Id">@kategori.Adi</a>
+                </li>
+            }
         }
     </ul>
 }

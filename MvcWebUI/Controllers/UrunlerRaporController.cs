@@ -1,6 +1,8 @@
-﻿using Business.Services;
+﻿using Business.Models.Filters;
+using Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MvcWebUI.Models;
 
 namespace MvcWebUI.Controllers
 {
@@ -14,11 +16,24 @@ namespace MvcWebUI.Controllers
             _urunService = urunService;
         }
 
-        public IActionResult Index()
+        //public IActionResult Index()
+        public IActionResult Index(int? kategoriId)
         {
-            var result = _urunService.RaporGetir();
+            UrunRaporFilterModel filtre = new UrunRaporFilterModel()
+            {
+                KategoriId = kategoriId
+            };
+
+            var result = _urunService.RaporGetir(filtre);
             ViewBag.Sonuc = result.Message;
-            return View(result.Data);
+
+            UrunlerRaporIndexViewModel viewModel = new UrunlerRaporIndexViewModel()
+            {
+                UrunlerRapor = result.Data,
+                UrunlerFiltre = filtre
+            };
+
+            return View(viewModel);
         }
     }
 }
