@@ -20,7 +20,7 @@ namespace MvcWebUI.ViewComponents
 
             kategoriler = _kategoriService.Query().ToList();
 
-            return View(kategoriler);
+            return View(kategoriler); // view ~/Views/Shared/Components/Kategoriler/Default.cshtml altındadır
         }
     }
 }
