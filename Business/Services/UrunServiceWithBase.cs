@@ -1,4 +1,5 @@
-﻿using AppCore.Business.Models.Results;
+﻿using AppCore.Business.Models.Paging;
+using AppCore.Business.Models.Results;
 using AppCore.Business.Services.Bases;
 using AppCore.DataAccess.EntityFramework;
 using AppCore.DataAccess.EntityFramework.Bases;
@@ -13,7 +14,7 @@ namespace Business.Services
 {
     public interface IUrunService : IService<UrunModel, Urun, ETicaretContext>
     {
-        Task<Result<List<UrunRaporModel>>> RaporGetirAsync(UrunRaporFilterModel filtre);
+        Task<Result<List<UrunRaporModel>>> RaporGetirAsync(UrunRaporFilterModel filtre, PageModel sayfa);
     }
 
     public class UrunService : IUrunService
@@ -170,7 +171,7 @@ namespace Business.Services
         left outer join ETicaretMagazalar m
         on um.MagazaId = m.Id
         */
-        public async Task<Result<List<UrunRaporModel>>> RaporGetirAsync(UrunRaporFilterModel filtre) // asenkron metodlar mutlaka async Task dönmeli ve içinde çağrılan asenkron metodla birlikte await kullanılmalı!
+        public async Task<Result<List<UrunRaporModel>>> RaporGetirAsync(UrunRaporFilterModel filtre, PageModel sayfa) // asenkron metodlar mutlaka async Task dönmeli ve içinde çağrılan asenkron metodla birlikte await kullanılmalı!
         {
             List<UrunRaporModel> list;
 
@@ -210,6 +211,10 @@ namespace Business.Services
                         };
             #endregion
 
+            #region Sıra
+            query = query.OrderBy(q => q.MagazaAdi).ThenBy(q => q.KategoriAdi).ThenBy(q => q.UrunAdi); // *1
+            #endregion
+
             #region Filtre
             //if (filtre.KategoriId != null)
             if (filtre.KategoriId.HasValue)
@@ -240,6 +245,15 @@ namespace Business.Services
                 DateTime sonKullanmaTarihiBitis = DateTime.Parse(filtre.SonKullanmaTarihiBitis);
                 query = query.Where(q => q.UrunSonKullanmaTarihi <= sonKullanmaTarihiBitis);
             }
+            #endregion
+
+            #region Sayfa
+            sayfa.RecordsCount = query.Count();
+            int skip = (sayfa.PageNumber - 1) * sayfa.RecordsPerPageCount; // atlama değeri
+            int take = sayfa.RecordsPerPageCount; // alma değeri
+            query = query.Skip(skip).Take(take); // *1 Önce mutlaka bir özelliğe veya özelliklere göre sıralama yapılmalı!
+
+            sayfa.SetPages(); // sayfa listesini controller'da kullanabilmek için burada oluşturuyoruz, controller'da GetPages methoduyla sayfa listesine ulaşacağız
             #endregion
 
             list = await query.ToListAsync();

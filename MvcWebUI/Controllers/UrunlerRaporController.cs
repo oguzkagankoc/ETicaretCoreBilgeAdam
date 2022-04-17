@@ -1,4 +1,5 @@
-﻿using AppCore.Business.Models.Results;
+﻿using AppCore.Business.Models.Paging;
+using AppCore.Business.Models.Results;
 using Business.Models.Filters;
 using Business.Models.Reports;
 using Business.Services;
@@ -26,12 +27,18 @@ namespace MvcWebUI.Controllers
         //public IActionResult Index(int? kategoriId)
         public async Task<IActionResult> Index(int? kategoriId) // asenkron metodlar mutlaka async Task dönmeli ve içinde çağrılan asenkron metodla birlikte await kullanılmalı!
         {
+            #region Filtreleme
             UrunRaporFilterModel filtre = new UrunRaporFilterModel()
             {
                 KategoriId = kategoriId
             };
+            #endregion
 
-            Result<List<UrunRaporModel>> result = await _urunService.RaporGetirAsync(filtre);
+            #region Sayfalama
+            PageModel sayfa = new PageModel();
+            #endregion
+
+            Result<List<UrunRaporModel>> result = await _urunService.RaporGetirAsync(filtre, sayfa);
             ViewBag.Sonuc = result.Message;
 
             UrunlerRaporIndexViewModel viewModel = new UrunlerRaporIndexViewModel()
