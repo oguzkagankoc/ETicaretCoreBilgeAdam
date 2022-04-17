@@ -252,8 +252,6 @@ namespace Business.Services
             int skip = (sayfa.PageNumber - 1) * sayfa.RecordsPerPageCount; // atlama değeri
             int take = sayfa.RecordsPerPageCount; // alma değeri
             query = query.Skip(skip).Take(take); // *1 Önce mutlaka bir özelliğe veya özelliklere göre sıralama yapılmalı!
-
-            sayfa.SetPages(); // sayfa listesini controller'da kullanabilmek için burada oluşturuyoruz, controller'da GetPages methoduyla sayfa listesine ulaşacağız
             #endregion
 
             list = await query.ToListAsync();

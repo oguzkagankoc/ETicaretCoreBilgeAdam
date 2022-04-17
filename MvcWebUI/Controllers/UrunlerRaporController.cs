@@ -53,7 +53,7 @@ namespace MvcWebUI.Controllers
                 //KategorilerSelectList = new SelectList(await _kategoriService.KategorileriGetirAsync(), "Id", "Adi")
 
                 // Sayfalama
-                SayfalarSelectList = new SelectList(sayfa.GetPages(), "Value", "Text")
+                SayfalarSelectList = new SelectList(sayfa.Pages, "Value", "Text")
             };
 
             return View(viewModel);
@@ -74,7 +74,7 @@ namespace MvcWebUI.Controllers
                 viewModel.UrunlerRapor = result.Data;
 
                 // Sayfalama
-                viewModel.SayfalarSelectList = new SelectList(viewModel.Sayfa.GetPages(), "Value", "Text", viewModel.Sayfa.PageNumber);
+                viewModel.SayfalarSelectList = new SelectList(viewModel.Sayfa.Pages, "Value", "Text", viewModel.Sayfa.PageNumber);
             }
             return PartialView("_UrunlerRapor", viewModel);
         }
