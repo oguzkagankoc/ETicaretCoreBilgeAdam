@@ -52,11 +52,19 @@ namespace MvcWebUI.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult OlusturGonder(string Adi, string Aciklamasi) // kullanıcının girdiği kategori verileri gönderilir ve veritabanında oluşturulur
         {
+            if (string.IsNullOrWhiteSpace(Adi))
+                return View("Hata", "Kategori adı zorunludur!");
+            if (Adi.Length > 100)
+                return View("Hata", "Kategori adı en fazla 100 karakter olmalıdır!");
+            if (!string.IsNullOrWhiteSpace(Aciklamasi) && Aciklamasi.Length > 4000)
+                return View("Hata", "Kategori açıklaması en fazla 4000 karakter olmalıdır!");
+
             KategoriModel model = new KategoriModel()
             {
                 Adi = Adi,
                 Aciklamasi = Aciklamasi
             };
+
             Result result = _kategoriService.Add(model);
             if (result.IsSuccessful)
             {
