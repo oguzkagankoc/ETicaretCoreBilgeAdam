@@ -3,7 +3,7 @@
     public class PageModel
     {
         public int PageNumber { get; set; } = 1;
-        public int RecordsPerPageCount { get; set; } = 2;
+        public int RecordsPerPageCount { get; set; } = 10;
         public int RecordsCount { get; set; }
 
         List<PageItemModel> _pages;

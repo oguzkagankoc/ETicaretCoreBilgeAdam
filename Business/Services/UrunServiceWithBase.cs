@@ -259,7 +259,7 @@ namespace Business.Services
             list = await query.ToListAsync();
             if (list.Count == 0)
                 return new ErrorResult<List<UrunRaporModel>>("Kayıt bulunamadı!");
-            return new SuccessResult<List<UrunRaporModel>>(list.Count + " kayıt bulundu.", list);
+            return new SuccessResult<List<UrunRaporModel>>(sayfa.RecordsCount + " kayıt bulundu.", list);
         }
     }
 }

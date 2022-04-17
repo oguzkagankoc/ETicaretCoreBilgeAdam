@@ -1,37 +1,48 @@
-﻿@model IEnumerable<UrunRaporModel>
+﻿@model UrunlerRaporIndexViewModel
 
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <partial name="_Sonuc"/>
 
-@if (Model != null && Model.Count() > 0)
+<div class="row" style="padding-bottom: 15px;">
+    <div class="col-1">
+        <select asp-for="Sayfa.PageNumber" asp-items="Model.SayfalarSelectList" class="form-control" id="sayfa"></select>
+    </div>
+</div>
+
+@if (Model.UrunlerRapor != null && Model.UrunlerRapor.Count() > 0)
 {
     <table class="table table-striped">
         <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MagazaAdi)
+                @* 
+                    List kullanıldığında IEnumerable'da olduğu gibi özellik'lerdeki DisplayName'i kullanabilmek için model'deki 
+                    özellik adları kullanılamaz. Bu yüzden listedeki herhangi bir elemana ulaşmak (FirstOrDefault mantıklı)
+                    ve bu eleman üzerinden özellik adlarını kullanmak gerekir.
+                *@
+                @Html.DisplayNameFor(model => model.UrunlerRapor.FirstOrDefault().MagazaAdi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.KategoriAdi)
+                @Html.DisplayNameFor(model => model.UrunlerRapor.FirstOrDefault().KategoriAdi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UrunAdi)
+                @Html.DisplayNameFor(model => model.UrunlerRapor.FirstOrDefault().UrunAdi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UrunBirimFiyatiDisplay)
+                @Html.DisplayNameFor(model => model.UrunlerRapor.FirstOrDefault().UrunBirimFiyatiDisplay)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UrunStokMiktari)
+                @Html.DisplayNameFor(model => model.UrunlerRapor.FirstOrDefault().UrunStokMiktari)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UrunSonKullanmaTarihiDisplay)
+                @Html.DisplayNameFor(model => model.UrunlerRapor.FirstOrDefault().UrunSonKullanmaTarihiDisplay)
             </th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.UrunlerRapor)
         {
             <tr>
                 <td>

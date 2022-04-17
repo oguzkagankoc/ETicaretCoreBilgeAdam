@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcWebUI.Models;
+using MvcWebUI.Settings;
 
 namespace MvcWebUI.Controllers
 {
@@ -35,7 +36,10 @@ namespace MvcWebUI.Controllers
             #endregion
 
             #region Sayfalama
-            PageModel sayfa = new PageModel();
+            PageModel sayfa = new PageModel()
+            {
+                RecordsPerPageCount = AppSettings.SayfaKayitSayisi
+            };
             #endregion
 
             Result<List<UrunRaporModel>> result = await _urunService.RaporGetirAsync(filtre, sayfa);
@@ -47,6 +51,9 @@ namespace MvcWebUI.Controllers
                 UrunlerFiltre = filtre,
 
                 //KategorilerSelectList = new SelectList(await _kategoriService.KategorileriGetirAsync(), "Id", "Adi")
+
+                // Sayfalama
+                SayfalarSelectList = new SelectList(sayfa.GetPages(), "Value", "Text")
             };
 
             return View(viewModel);
@@ -58,11 +65,18 @@ namespace MvcWebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Result<List<UrunRaporModel>> result = await _urunService.RaporGetirAsync(viewModel.UrunlerFiltre);
+                #region Sayfalama
+                viewModel.Sayfa.RecordsPerPageCount = AppSettings.SayfaKayitSayisi;
+                #endregion
+
+                Result<List<UrunRaporModel>> result = await _urunService.RaporGetirAsync(viewModel.UrunlerFiltre, viewModel.Sayfa);
                 ViewBag.Sonuc = result.Message;
                 viewModel.UrunlerRapor = result.Data;
+
+                // Sayfalama
+                viewModel.SayfalarSelectList = new SelectList(viewModel.Sayfa.GetPages(), "Value", "Text", viewModel.Sayfa.PageNumber);
             }
-            return PartialView("_UrunlerRapor", viewModel.UrunlerRapor);
+            return PartialView("_UrunlerRapor", viewModel);
         }
     }
 }

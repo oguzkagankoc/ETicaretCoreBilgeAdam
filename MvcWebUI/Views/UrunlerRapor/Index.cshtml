@@ -91,7 +91,7 @@
             <hr/>
 
             <div id="urunlerrapor">
-                <partial name="_UrunlerRapor" model="Model.UrunlerRapor"/>
+                <partial name="_UrunlerRapor" model="Model"/>
             </div>
 
         </form>
@@ -115,6 +115,19 @@
                 orientation: "bottom auto",
                 autoclose: true,
                 todayHighlight: true
+            });
+
+            // Ara butonuna tıklandığında kayıtlar 1. sayfa üzerinden gelmeli.
+            // Sayfa numarası değiştiğinde form tekrar submit edilerek o sayfadaki kayıtlar getirilmeli.
+            $("#ara").click(function() {
+                $("#sayfa").val("1");
+            });
+
+            //$("#sayfa").change(function() { // AJAX kullanmasaydık sayfa change event'ini bu şekilde tanımlayabilirdik
+            //    $("#form").submit();
+            //});
+            $(document).on("change", "#sayfa", function() { // AJAX kullandığımız için sayfa change event'i bu şekilde tanımlanmalıdır
+                $("#form").submit();
             });
         });
     </script>
