@@ -130,12 +130,14 @@
                 todayHighlight: true
             });
 
+            // Sayfalama
             // Ara butonuna tıklandığında kayıtlar 1. sayfa üzerinden gelmeli.
             // Sayfa numarası değiştiğinde form tekrar submit edilerek o sayfadaki kayıtlar getirilmeli.
             $("#ara").click(function() {
                 $("#sayfa").val("1");
             });
 
+            // Sayfalama
             //$("#sayfa").change(function() { // AJAX kullanmasaydık sayfa change event'ini bu şekilde tanımlayabilirdik
             //    $("#form").submit();
             //});
@@ -143,11 +145,27 @@
                 $("#form").submit();
             });
 
+            // Sıralama 1
             $(document).on("change", ".sira", function() {
                 $("#form").submit();
             });
 
+            // Sıralama 2
+            $(document).on("click", ".orderbyexpressionlink", function (event) { // AJAX kullandığımız için orderbyexpressionlink click event'i bu şekilde tanımlanmalıdır.
+                event.preventDefault();
+                $("#orderbyexpressionselect").val($(this).text()); // tıklanan link'in yazısını alıp select'in value'sunu set ediyoruz.
+                var ascending = $("#orderbydirectionselect").val(); // asc için True, desc için False
+                if (ascending === "True") { // link'e tıkladıkça artanı azalan, azalanı artan olarak değiştiriyoruz.
+                    ascending = "False";
+                } else {
+                    ascending = "True";
+                }
+                $("#orderbydirectionselect").val(ascending); // yukarıda güncellediğimiz direction'ı select'in value'su olarak set ediyoruz.
+                $("#form").submit();
+            });
+
             $(".magazalar").select2();
+
         });
     </script>
 }

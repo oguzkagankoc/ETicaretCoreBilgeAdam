@@ -114,9 +114,12 @@ namespace MvcWebUI.Controllers
                 // Sayfalama
                 SayfalarSelectList = new SelectList(sayfa.Pages, "Value", "Text"),
 
-                // Sıralama
+                // Sıralama 1
                 SiraSutunBasliklariSelectList = new SelectList(siraSutunBasliklariSelectListItems, "Value", "Text"),
-                SiraYonSelectList = new SelectList(siraYonSelectListItems, "Value", "Text")
+                SiraYonSelectList = new SelectList(siraYonSelectListItems, "Value", "Text"),
+
+                // Sıralama 2
+                Sira = sira
             };
 
             return View(viewModel);

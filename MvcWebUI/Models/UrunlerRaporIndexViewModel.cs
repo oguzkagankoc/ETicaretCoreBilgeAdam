@@ -1,4 +1,5 @@
-﻿using AppCore.Business.Models.Ordering;
+﻿using System.ComponentModel;
+using AppCore.Business.Models.Ordering;
 using AppCore.Business.Models.Paging;
 using Business.Models.Filters;
 using Business.Models.Reports;
@@ -18,6 +19,7 @@ namespace MvcWebUI.Models
 
         public SelectList SayfalarSelectList { get; set; }
 
+        [DisplayName("Sıra")]
         public OrderModel Sira { get; set; }
 
         public SelectList SiraSutunBasliklariSelectList { get; set; }
