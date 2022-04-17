@@ -1,4 +1,5 @@
-﻿using AppCore.Business.Models.Paging;
+﻿using AppCore.Business.Models.Ordering;
+using AppCore.Business.Models.Paging;
 using Business.Models.Filters;
 using Business.Models.Reports;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,5 +17,13 @@ namespace MvcWebUI.Models
         public PageModel Sayfa { get; set; }
 
         public SelectList SayfalarSelectList { get; set; }
+
+        public OrderModel Sira { get; set; }
+
+        public SelectList SiraSutunBasliklariSelectList { get; set; }
+
+        public SelectList SiraYonSelectList { get; set; }
+
+        public MultiSelectList MagazalarMultiSelectList { get; set; }
     }
 }

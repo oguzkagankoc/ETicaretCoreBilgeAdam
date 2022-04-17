@@ -8,6 +8,15 @@
     <div class="col-1">
         <select asp-for="Sayfa.PageNumber" asp-items="Model.SayfalarSelectList" class="form-control" id="sayfa"></select>
     </div>
+    <div class="col-8">
+
+    </div>
+    <div class="col-2">
+        <select asp-for="Sira.Expression" asp-items="Model.SiraSutunBasliklariSelectList" class="form-control sira"></select>
+    </div>
+    <div class="col-1">
+        <select asp-for="Sira.DirectionAscending" asp-items="Model.SiraYonSelectList" class="form-control sira"></select>
+    </div>
 </div>
 
 @if (Model.UrunlerRapor != null && Model.UrunlerRapor.Count() > 0)
@@ -49,10 +58,24 @@
                     @Html.DisplayFor(modelItem => item.MagazaAdi)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.KategoriAdi)
+                    @if (string.IsNullOrWhiteSpace(item.KategoriAciklamasi))
+                    {
+                        @Html.DisplayFor(modelItem => item.KategoriAdi)
+                    }
+                    else
+                    {
+                        <a title="@item.KategoriAciklamasi" style="cursor: zoom-in;"><i class="fas fa-info-circle"></i> @item.KategoriAdi</a>
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UrunAdi)
+                    @if (string.IsNullOrWhiteSpace(item.UrunAciklamasi))
+                    {
+                        @Html.DisplayFor(modelItem => item.UrunAdi)
+                    }
+                    else
+                    {
+                        <a title="@item.UrunAciklamasi" style="cursor: zoom-in;"><i class="fas fa-info-circle"></i> @item.UrunAdi</a>
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.UrunBirimFiyatiDisplay)

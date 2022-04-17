@@ -82,6 +82,14 @@
                 </div>
             </div>
             <div class="row" style="padding-top: 30px;">
+                <div class="col-2">
+                    <label asp-for="UrunlerFiltre.MagazaIdleri"></label>
+                </div>
+                <div class="col-6">
+                    <select multiple asp-for="UrunlerFiltre.MagazaIdleri" asp-items="Model.MagazalarMultiSelectList" class="form-control magazalar"></select>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 30px;">
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary" id="ara"><i class="fas fa-search"></i> Ara</button>
                     &nbsp;&nbsp;&nbsp;
@@ -106,6 +114,11 @@
     <link rel="stylesheet" href="/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"/>
     <script src="/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
     <script src="/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>
+    
+    @* https://select2.org/ *@
+    <link rel="stylesheet" href="/lib/select2/css/select2.min.css" />
+    <script src="/lib/select2/js/select2.min.js"></script>
+    <script src="/lib/select2/js/i18n/tr.min.js"></script>
 
     <script>
         $(function() {
@@ -129,6 +142,12 @@
             $(document).on("change", "#sayfa", function() { // AJAX kullandığımız için sayfa change event'i bu şekilde tanımlanmalıdır
                 $("#form").submit();
             });
+
+            $(document).on("change", ".sira", function() {
+                $("#form").submit();
+            });
+
+            $(".magazalar").select2();
         });
     </script>
 }

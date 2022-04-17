@@ -1,4 +1,5 @@
-﻿using AppCore.Business.Models.Paging;
+﻿using AppCore.Business.Models.Ordering;
+using AppCore.Business.Models.Paging;
 using AppCore.Business.Models.Results;
 using AppCore.Business.Services.Bases;
 using AppCore.DataAccess.EntityFramework;
@@ -14,7 +15,7 @@ namespace Business.Services
 {
     public interface IUrunService : IService<UrunModel, Urun, ETicaretContext>
     {
-        Task<Result<List<UrunRaporModel>>> RaporGetirAsync(UrunRaporFilterModel filtre, PageModel sayfa);
+        Task<Result<List<UrunRaporModel>>> RaporGetirAsync(UrunRaporFilterModel filtre, PageModel sayfa, OrderModel sira);
     }
 
     public class UrunService : IUrunService
@@ -171,7 +172,7 @@ namespace Business.Services
         left outer join ETicaretMagazalar m
         on um.MagazaId = m.Id
         */
-        public async Task<Result<List<UrunRaporModel>>> RaporGetirAsync(UrunRaporFilterModel filtre, PageModel sayfa) // asenkron metodlar mutlaka async Task dönmeli ve içinde çağrılan asenkron metodla birlikte await kullanılmalı!
+        public async Task<Result<List<UrunRaporModel>>> RaporGetirAsync(UrunRaporFilterModel filtre, PageModel sayfa, OrderModel sira) // asenkron metodlar mutlaka async Task dönmeli ve içinde çağrılan asenkron metodla birlikte await kullanılmalı!
         {
             List<UrunRaporModel> list;
 
@@ -212,7 +213,40 @@ namespace Business.Services
             #endregion
 
             #region Sıra
-            query = query.OrderBy(q => q.MagazaAdi).ThenBy(q => q.KategoriAdi).ThenBy(q => q.UrunAdi); // *1
+            /*query = query.OrderBy(q => q.MagazaAdi).ThenBy(q => q.KategoriAdi).ThenBy(q => q.UrunAdi);*/ // *1, sira parametresi geldiğinden gerek kalmadı
+            switch (sira.Expression)
+            {
+                case "Kategori":
+                    query = sira.DirectionAscending
+                        ? query.OrderBy(q => q.KategoriAdi)
+                        : query.OrderByDescending(q => q.KategoriAdi);
+                    break;
+                case "Ürün":
+                    query = sira.DirectionAscending
+                        ? query.OrderBy(q => q.UrunAdi)
+                        : query.OrderByDescending(q => q.UrunAdi);
+                    break;
+                case "Birim Fiyatı":
+                    query = sira.DirectionAscending
+                        ? query.OrderBy(q => q.UrunBirimFiyati)
+                        : query.OrderByDescending(q => q.UrunBirimFiyati);
+                    break;
+                case "Stok Miktarı":
+                    query = sira.DirectionAscending
+                        ? query.OrderBy(q => q.UrunStokMiktari)
+                        : query.OrderByDescending(q => q.UrunStokMiktari);
+                    break;
+                case "Son Kullanma Tarihi":
+                    query = sira.DirectionAscending
+                        ? query.OrderBy(q => q.UrunSonKullanmaTarihi)
+                        : query.OrderByDescending(q => q.UrunSonKullanmaTarihi);
+                    break;
+                default:
+                    query = sira.DirectionAscending
+                        ? query.OrderBy(q => q.MagazaAdi)
+                        : query.OrderByDescending(q => q.MagazaAdi);
+                    break;
+            }
             #endregion
 
             #region Filtre
@@ -244,6 +278,10 @@ namespace Business.Services
             {
                 DateTime sonKullanmaTarihiBitis = DateTime.Parse(filtre.SonKullanmaTarihiBitis);
                 query = query.Where(q => q.UrunSonKullanmaTarihi <= sonKullanmaTarihiBitis);
+            }
+            if (filtre.MagazaIdleri != null && filtre.MagazaIdleri.Count > 0) // mağaza id'leri doluysa
+            {
+                query = query.Where(q => filtre.MagazaIdleri.Contains(q.MagazaId ?? -1)); // eğer MagazaId null ise -1 kullanılsın çünkü -1 id'sine sahip kaydın tabloda olması mümkün değil
             }
             #endregion
 

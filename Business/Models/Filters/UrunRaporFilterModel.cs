@@ -34,5 +34,8 @@ namespace Business.Models.Filters
         public string SonKullanmaTarihiBaslangic { get; set; } // DateTime için giriş: 16.04.2022 C# kullanım:2022 (yıl) 04 (ay) 16 (gün)
 
         public string SonKullanmaTarihiBitis { get; set; }
+
+        [DisplayName("Mağaza")]
+        public List<int> MagazaIdleri { get; set; }
     }
 }
