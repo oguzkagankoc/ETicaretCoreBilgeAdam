@@ -63,7 +63,7 @@ namespace AppCore.DataAccess.EntityFramework.Bases
             //DbContext.Set<TEntity>().RemoveRange(entities);
             foreach (var entity in entities)
             {
-                Delete(entity, save);
+                Delete(entity, false);
             }
 
             if (save)
