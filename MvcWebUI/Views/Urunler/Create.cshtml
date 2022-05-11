@@ -121,7 +121,15 @@
 *@
 @section Scripts
 {
-	@*https://uxsolutions.github.io/bootstrap-datepicker*@
+    @* 
+        Client-Side Validation: Tarayıcı üzerinden Javascript ile sunucuya istek gitmeden validasyonu aktif etmek için 
+        ~/Views/Shared/_ValidationScriptsPartial.cshtml partial view'ı partial tag helper'ı ile eklenmelidir. 
+        Eklenmediğinde istekler sunucuya giderek validasyon sunucu tarafında aksiyonda gerçekleşir, dolayısıyla Server-Side Validation
+        yapılmış olur.
+    *@
+    <partial name="_ValidationScriptsPartial" />
+
+    @*https://uxsolutions.github.io/bootstrap-datepicker*@
     <link rel="stylesheet" href="/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" />
     <script src="/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
     <script src="/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>
