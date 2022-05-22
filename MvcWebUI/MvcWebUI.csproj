@@ -8,14 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ScaffoldingTemplates\ControllerGenerator\**" />
-    <Compile Remove="ScaffoldingTemplates\ViewGenerator\**" />
-    <Content Remove="ScaffoldingTemplates\ControllerGenerator\**" />
-    <Content Remove="ScaffoldingTemplates\ViewGenerator\**" />
-    <EmbeddedResource Remove="ScaffoldingTemplates\ControllerGenerator\**" />
-    <EmbeddedResource Remove="ScaffoldingTemplates\ViewGenerator\**" />
-    <None Remove="ScaffoldingTemplates\ControllerGenerator\**" />
-    <None Remove="ScaffoldingTemplates\ViewGenerator\**" />
+    <Compile Remove="VisualStudioTemplates\ScaffoldingTemplates\ControllerGenerator\**" />
+    <Compile Remove="VisualStudioTemplates\ScaffoldingTemplates\ViewGenerator\**" />
+    <Content Remove="VisualStudioTemplates\ScaffoldingTemplates\ControllerGenerator\**" />
+    <Content Remove="VisualStudioTemplates\ScaffoldingTemplates\ViewGenerator\**" />
+    <EmbeddedResource Remove="VisualStudioTemplates\ScaffoldingTemplates\ControllerGenerator\**" />
+    <EmbeddedResource Remove="VisualStudioTemplates\ScaffoldingTemplates\ViewGenerator\**" />
+    <None Remove="VisualStudioTemplates\ScaffoldingTemplates\ControllerGenerator\**" />
+    <None Remove="VisualStudioTemplates\ScaffoldingTemplates\ViewGenerator\**" />
   </ItemGroup>
 
   <ItemGroup>

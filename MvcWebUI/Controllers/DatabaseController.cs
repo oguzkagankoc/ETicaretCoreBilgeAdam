@@ -10,6 +10,7 @@ namespace MvcWebUI.Controllers
 {
     public class DatabaseController : Controller
     {
+        //[NonAction] // aksiyonun web uygulaması üzerinden çağrılmasını engeller
         public IActionResult Seed() // ~/Database/Seed
         {
             //ETicaretContext db = new ETicaretContext();
