@@ -71,50 +71,60 @@ namespace @Model.ControllerNamespace
     {
     @:@string.Format("[Area(\"{0}\")]", Model.AreaName)
     }
-
-    var serviceInterfaceType = "I" + Model.ModelTypeName + "Service";
-    var serviceInterfaceName = Model.ModelVariable + "Service";
-    var constructorLine = "public " + Model.ControllerName + "(" + serviceInterfaceType + " " + serviceInterfaceName + ")";
-    var listLine = "List<" + Model.ModelTypeName + "> listOf" + Model.ModelVariable + " = null;";
-    var viewLine = "return View(listOf" + Model.ModelVariable + ");";
 }
     public class @Model.ControllerName : Controller
     {
-        // Add service injections here
-        private readonly @serviceInterfaceType @("_" + serviceInterfaceName);
+        private readonly @Model.ContextTypeName _context;
 
-        @constructorLine
+        public @(Model.ControllerName)(@Model.ContextTypeName context)
         {
-            @("_" + serviceInterfaceName) = @serviceInterfaceName;
+            _context = context;
         }
 
         // GET: @routePrefix
-
-        public IActionResult Index()
-        {
-            @listLine // TODO: Add get list service logic here
-            @viewLine
-        }
+@{
+        @:public IActionResult Index()
+        @:{
+    var includeExpressions = "";
+    includeExpressions = String.Join("", relatedProperties
+        .Values
+        .Select(property => String.Format(".Include({0} => {0}.{1})", lambdaVar, property.AssociationPropertyName)));
+    if (!String.IsNullOrEmpty(includeExpressions))
+    {
+            @:var @entitySetVar = _context.@entitySetName@includeExpressions;
+            @:return View(@(entitySetVar).ToList());
+    }
+    else
+    {
+            @:return View(_context.@(entitySetName).ToList());
+    }
+}        }
 
         // GET: @routePrefix/Details/5
-        public IActionResult Details(@primaryKeyShortTypeName id)
+        public IActionResult Details(@primaryKeyNullableTypeName id)
         {
-            @Model.ModelTypeName @Model.ModelVariable = null; // TODO: Add get item service logic here
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var @Model.ModelVariable = _context.@(entitySetName)@inlineIncludes
+                .SingleOrDefault(m => m.@primaryKeyName == id);
             if (@Model.ModelVariable == null)
             {
                 return NotFound();
             }
+
             return View(@Model.ModelVariable);
         }
 
         // GET: @routePrefix/Create
         public IActionResult Create()
         {
-            // Add get related items service logic here to set ViewData if necessary and update null parameter in SelectList with these items
 @{
     foreach (var property in relatedProperties.Values)
     {
-            @:ViewData["@(property.ForeignKeyPropertyNames[0])"] = new SelectList(null, "@property.PrimaryKeyNames[0]", "@property.DisplayPropertyName");
+            @:ViewData["@(property.ForeignKeyPropertyNames[0])"] = new SelectList(_context.@property.EntitySetName, "@property.PrimaryKeyNames[0]", "@property.DisplayPropertyName");
     }
 }            return View();
         }
@@ -133,32 +143,36 @@ namespace @Model.ControllerNamespace
     {
                 @:@(Model.ModelVariable).@primaryKeyName = Guid.NewGuid();
     }
-                @:// TODO: Add insert service logic here
+                @:_context.Add(@Model.ModelVariable);
+                @:_context.SaveChanges();
 }                return RedirectToAction(nameof(Index));
             }
-            // Add get related items service logic here to set ViewData if necessary and update null parameter in SelectList with these items
 @{
     foreach (var property in relatedProperties.Values)
     {
-            @:ViewData["@(property.ForeignKeyPropertyNames[0])"] = new SelectList(null, "@property.PrimaryKeyNames[0]", "@property.DisplayPropertyName", @(Model.ModelVariable).@property.ForeignKeyPropertyNames[0]);
+            @:ViewData["@(property.ForeignKeyPropertyNames[0])"] = new SelectList(_context.@property.EntitySetName, "@property.PrimaryKeyNames[0]", "@property.DisplayPropertyName", @(Model.ModelVariable).@property.ForeignKeyPropertyNames[0]);
     }
 }
             return View(@Model.ModelVariable);
         }
 
         // GET: @routePrefix/Edit/5
-        public IActionResult Edit(@primaryKeyShortTypeName id)
+        public IActionResult Edit(@primaryKeyNullableTypeName id)
         {
-            @Model.ModelTypeName @Model.ModelVariable = null; // TODO: Add get item service logic here
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var @Model.ModelVariable = _context.@(entitySetName).Find(id);
             if (@Model.ModelVariable == null)
             {
                 return NotFound();
             }
-            // Add get related items service logic here to set ViewData if necessary and update null parameter in SelectList with these items
 @{
     foreach (var property in relatedProperties.Values)
     {
-            @:ViewData["@(property.ForeignKeyPropertyNames[0])"] = new SelectList(null, "@property.PrimaryKeyNames[0]", "@property.DisplayPropertyName", @(Model.ModelVariable).@property.ForeignKeyPropertyNames[0]);
+            @:ViewData["@(property.ForeignKeyPropertyNames[0])"] = new SelectList(_context.@property.EntitySetName, "@property.PrimaryKeyNames[0]", "@property.DisplayPropertyName", @(Model.ModelVariable).@property.ForeignKeyPropertyNames[0]);
     }
 }
             return View(@Model.ModelVariable);
@@ -173,29 +187,34 @@ namespace @Model.ControllerNamespace
         {
             if (ModelState.IsValid)
             {
-@{
-                @:// TODO: Add update service logic here
-}
+                _context.Update(@Model.ModelVariable);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            // Add get related items service logic here to set ViewData if necessary and update null parameter in SelectList with these items
 @{
     foreach (var property in relatedProperties.Values)
     {
-            @:ViewData["@(property.ForeignKeyPropertyNames[0])"] = new SelectList(null, "@property.PrimaryKeyNames[0]", "@property.DisplayPropertyName", @(Model.ModelVariable).@property.ForeignKeyPropertyNames[0]);
+            @:ViewData["@(property.ForeignKeyPropertyNames[0])"] = new SelectList(_context.@property.EntitySetName, "@property.PrimaryKeyNames[0]", "@property.DisplayPropertyName", @(Model.ModelVariable).@property.ForeignKeyPropertyNames[0]);
     }
 }
             return View(@Model.ModelVariable);
         }
 
         // GET: @routePrefix/Delete/5
-        public IActionResult Delete(@primaryKeyShortTypeName id)
+        public IActionResult Delete(@primaryKeyNullableTypeName id)
         {
-            @Model.ModelTypeName @Model.ModelVariable = null; // TODO: Add get item service logic here
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var @Model.ModelVariable = _context.@(entitySetName)@inlineIncludes
+                .SingleOrDefault(m => m.@primaryKeyName == id);
             if (@Model.ModelVariable == null)
             {
                 return NotFound();
             }
+
             return View(@Model.ModelVariable);
         }
 
@@ -204,7 +223,9 @@ namespace @Model.ControllerNamespace
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(@primaryKeyShortTypeName id)
         {
-            // TODO: Add delete service logic here
+            var @Model.ModelVariable = _context.@(entitySetName).Find(id);
+            _context.@(entitySetName).Remove(@Model.ModelVariable);
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 	}
