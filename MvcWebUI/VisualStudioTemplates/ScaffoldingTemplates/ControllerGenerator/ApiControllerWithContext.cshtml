@@ -33,8 +33,8 @@ namespace @Model.ControllerNamespace
     var serviceInterfaceType = "I" + Model.ModelTypeName + "Service";
     var serviceInterfaceName = Model.ModelVariable + "Service";
     var constructorLine = "public " + Model.ControllerName + "(" + serviceInterfaceType + " " + serviceInterfaceName + ")";
-    var listLine = "List<" + Model.ModelTypeName + "> listOf" + Model.ModelVariable + " = null;";
-    var okLine = "return Ok(listOf" + Model.ModelVariable + ");";
+    var listLine = "List<" + Model.ModelTypeName + "> " + Model.ModelVariable + "list = null;";
+    var okLine = "return Ok(" + Model.ModelVariable + "list);";
 }
     [Route("api/[controller]")]
     [ApiController]

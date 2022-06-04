@@ -75,8 +75,8 @@ namespace @Model.ControllerNamespace
     var serviceInterfaceType = "I" + Model.ModelTypeName + "Service";
     var serviceInterfaceName = Model.ModelVariable + "Service";
     var constructorLine = "public " + Model.ControllerName + "(" + serviceInterfaceType + " " + serviceInterfaceName + ")";
-    var listLine = "List<" + Model.ModelTypeName + "> listOf" + Model.ModelVariable + " = null;";
-    var viewLine = "return View(listOf" + Model.ModelVariable + ");";
+    var listLine = "List<" + Model.ModelTypeName + "> " + Model.ModelVariable + "list = null;";
+    var viewLine = "return View(" + Model.ModelVariable + "list);";
 }
     public class @Model.ControllerName : Controller
     {
@@ -89,7 +89,7 @@ namespace @Model.ControllerNamespace
         }
 
         // GET: @routePrefix
-		public IActionResult Index()
+        public IActionResult Index()
         {
             @listLine // TODO: Add get list service logic here
             @viewLine
